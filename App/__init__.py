@@ -1,0 +1,22 @@
+from flask import Flask
+
+from App.apis import init_api
+from App.ext import init_ext
+from App.models import init_elastic
+from App.settings import init_config
+
+
+def create_app(config):
+    app = Flask(__name__)
+
+    app.config.from_pyfile(config)
+
+    init_config(app)
+
+    init_api(app)
+
+    init_ext(app)
+
+    init_elastic(app)
+
+    return app
