@@ -8,6 +8,8 @@ DOCKERFILE=./build/Docker/Dockerfile
 
 mkdir ${BUILD_DIR}
 
+pip freeze > requirements.txt
+
 tar -zcf ${BUILD_DIR}/dicer2_${VERSION}_src.tar.gz ./App/ ./manager.py ./requirements.txt ./LICENSE ./README.md
 
 cp ${DOCKERFILE} ${BUILD_DIR}

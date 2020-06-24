@@ -29,6 +29,9 @@ class Base(Document):
         if self.isExist(index_id):
             ForbiddenAbort(f"Index '{index_id}' is already exist!")
 
+        if index_id[0] == "_":
+            ForbiddenAbort(f"Index name can not start with '_'")
+
         title = kwargs.get("title")
 
         new_index = BaseIndex(id=index_id, title=title, task_count=0, tasks=[], created_at=datetime.now())

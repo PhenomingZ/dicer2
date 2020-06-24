@@ -23,6 +23,9 @@ class BaseTask(InnerDoc):
         if self.isExist(doc_id):
             ForbiddenAbort(f"Document '{doc_id}' is already exist!")
 
+        if doc_id[0] == "_":
+            ForbiddenAbort(f"Document name can not start with '_'")
+
         title = kwargs.get("title")
 
         new_document = BaseDocument(id=doc_id, title=title, created_at=datetime.now())

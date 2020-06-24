@@ -4,7 +4,7 @@ import jieba
 class JaccardIndex(object):
 
     @classmethod
-    def jaccrad(cls, str1, str2):
+    def jaccard(cls, str1, str2):
         terms_reference = jieba.cut(str2)  # 默认精准模式
         terms_model = jieba.cut(str1)
         grams_reference = list(terms_reference)  # 去重；如果不需要就改为list

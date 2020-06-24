@@ -4,6 +4,7 @@ from App.apis.DocumentsResource import DocumentsResource
 from App.apis.IndexResource import IndexResource
 from App.apis.MainResource import MainResource
 from App.apis.SingleSearchResource import SingleSearchResource
+from App.apis.SummaryResource import SummaryResource
 from App.apis.TaskResource import TaskResource
 
 api = Api()
@@ -16,6 +17,9 @@ def init_api(app):
 # Main
 api.add_resource(MainResource, "/", endpoint="main")
 
+# Summary of dicer2
+api.add_resource(SummaryResource, "/_summary/", endpoint="_summary")
+
 # CURD for index
 api.add_resource(IndexResource, "/<string:index>/", endpoint="index")
 
@@ -26,6 +30,4 @@ api.add_resource(TaskResource, "/<string:index>/<string:task>/", endpoint="task"
 api.add_resource(DocumentsResource, "/<string:index>/<string:task>/<string:document>/", endpoint="doc")
 
 # Search for single document
-api.add_resource(SingleSearchResource, "/single/_search/", endpoint="single_search")
-
-# TODO 添加获取整个 .dicer2_base 信息的路由，便于前端查询所有信息
+api.add_resource(SingleSearchResource, "/_single/_search/", endpoint="single_search")

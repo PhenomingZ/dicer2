@@ -23,6 +23,9 @@ class BaseIndex(InnerDoc):
         if self.isExist(task_id):
             ForbiddenAbort(f"Task '{task_id}' is already exist!")
 
+        if task_id[0] == "_":
+            ForbiddenAbort(f"Task name can not start with '_'")
+
         title = kwargs.get("title")
 
         new_task = BaseTask(id=task_id, title=title, doc_count=0, docs=[], created_at=datetime.now())

@@ -53,7 +53,7 @@ class SingleSearchResource(Dicer2Resource):
                     if hit.doc_id == doc_id or len(hit.body) <= minimal_line_length:
                         continue
 
-                    jaccard_score = JaccardIndex.jaccrad(line, hit.body)
+                    jaccard_score = JaccardIndex.jaccard(line, hit.body)
                     if jaccard_score <= jaccard_threshold_value:
                         continue
 
