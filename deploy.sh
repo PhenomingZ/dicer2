@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# docker run -it -p 9605:9605 --network 7x-docker-2-es-instances_es7net --link es7_01:elastic dicer2:v0.1.0
+#  docker run -it -p 9605:9605 --network docker_es7net --rm --link es7_01:elasticsearch dicer2:v0.1.1
 
-VERSION="v0.1.0"
+VERSION="v0.1.3"
 BUILD_DIR=./build/Docker/${VERSION}
 DOCKERFILE=./build/Docker/Dockerfile
 
@@ -14,6 +14,7 @@ cp ${DOCKERFILE} ${BUILD_DIR}
 sed -i "" "s/<version>/${VERSION}/" ${BUILD_DIR}/Dockerfile
 
 cd ${BUILD_DIR}
-docker build -t dicer2:${VERSION} .
+docker build -t phenoming/dicer2:${VERSION} .
 
-#docker save dicer2:${VERSION} | gzip -c > dicer2_${VERSION}_img.tar.gz
+#docker save phenoming/dicer2:${VERSION} | gzip -c > dicer2_${VERSION}_img.tar.gz
+#docker push phenoming/dicer2:${VERSION}

@@ -27,3 +27,5 @@ api.add_resource(DocumentsResource, "/<string:index>/<string:task>/<string:docum
 
 # Search for single document
 api.add_resource(SingleSearchResource, "/single/_search/", endpoint="single_search")
+
+# TODO 添加获取整个 .dicer2_base 信息的路由，便于前端查询所有信息

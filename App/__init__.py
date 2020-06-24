@@ -2,7 +2,7 @@ from flask import Flask
 
 from App.apis import init_api
 from App.ext import init_ext
-from App.models import init_elastic
+from App.hooks import init_hook
 from App.settings import init_config
 
 
@@ -17,6 +17,6 @@ def create_app(config):
 
     init_ext(app)
 
-    init_elastic(app)
+    init_hook(app)
 
     return app

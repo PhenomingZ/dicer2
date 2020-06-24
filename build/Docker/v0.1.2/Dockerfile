@@ -1,8 +1,8 @@
-# docker run -it -p 9605:9605 --network 7x-docker-2-es-instances_es7net --link es7_01:elastic dicer2:v0.1.0
+# docker run -it -p 9605:9605 --network 7x-docker-2-es-instances_es7net --link es7_01:elastic dicer2:v0.1.1
 
 FROM dicer2-base:v0.1.0
 
-ENV VERSION="v0.1.0"
+ENV VERSION="v0.1.2"
 ENV DICER2_HOME="/usr/local/dicer2"
 ENV PIP_MIRROR="https://pypi.tuna.tsinghua.edu.cn/simple"
 ENV DICER2_CONFIG_PATH="settings/dicer2.docker.config.py"

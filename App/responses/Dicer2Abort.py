@@ -21,3 +21,7 @@ def ForbiddenAbort(data):
 
 def NotFoundAbort(data):
     BaseAbort(404, "NOT FOUND", data)
+
+
+def ElasticSearchConnectionRefusedAbort(data):
+    BaseAbort(500, "ElasticSearch Connection Refused", data)

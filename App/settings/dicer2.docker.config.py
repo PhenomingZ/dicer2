@@ -1,5 +1,5 @@
 # ElasticSearch cluster host
-ELASTICSEARCH_HOST = "elastic"
+ELASTICSEARCH_HOST = "elasticsearch"
 
 # Minimal line length used to check repetition
 MINIMAL_LINE_LENGTH = 25
