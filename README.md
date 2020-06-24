@@ -25,7 +25,7 @@
 
 **DICER2**（读作`/daisə tuː/`）是一个基于**ElasticSearch**的高效中文文档查重服务。它致力于帮助用户搭建有自建文档库需求的中文文档查重服务，并且支持集群部署与横向扩展。**DICER2**使用**Gunicorn + Flask App**提供多进程的web服务用于接收RESTful请求，使用**Elasticsearch**作为文档索引和存储数据库，可满足大并发的生产环境的使用。
 
-<h2 id="Setup" align="center">Setup DICER2</h2>
+<h2 id="setup" align="center">Setup DICER2</h2>
 
 当前版本（v0.1.2）推荐使用**Docker-Compose**环境部署和使用**DICER2**。由于**DICER2**依赖于**ElasticSearch**集群环境，我们提供了相关镜像和**YAML**文件用于一键部署完整的应用环境，具体步骤如下：
 
@@ -48,7 +48,9 @@
 
 ### 3. 启动服务
 
->    **DICER2**默认监听`9605`端口，**ElasticSearch**默认监听`9200`端口，**Cerebro**默认监听`9000`端口，启动服务前请确保这些端口没有冲突。
+>    **DICER2**默认监听`9605`端口，**ElasticSearch**默认监听`9200`端口，**Cerebro**默认监听`9000`端口
+>
+>   启动服务前请确保这些端口没有冲突。
 
 首先在终端中切换至**YAML**文件所在的目录，并确保该目录中有且仅有刚刚下载的一个**YAML**文件，之后执行如下命令启动服务：
 
