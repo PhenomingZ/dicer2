@@ -43,7 +43,7 @@
 
 <h2 id="setup-dicer2" align="center">Setup DICER2</h2>
 
-当前版本（v0.1.2）推荐使用**Docker-Compose**环境部署和使用**DICER2**。由于**DICER2**依赖于**ElasticSearch**集群环境，我们提供了相关镜像和**YAML**文件用于一键部署完整的应用环境，具体步骤如下：
+当前版本（v0.1.3）推荐使用**Docker-Compose**环境部署和使用**DICER2**。由于**DICER2**依赖于**ElasticSearch**集群环境，我们提供了相关镜像和**YAML**文件用于一键部署完整的应用环境，具体步骤如下：
 
 ### 1. 安装Docker-Compose
 
@@ -60,7 +60,7 @@
 *   ElasticSearch集群
 *   Cerebro管理工具
 
-下载地址：[点击下载](./build/Docker/v0.1.2/dicer2-docker-compose.yaml)
+下载地址：[点击下载](./build/Docker/v0.1.3/dicer2-docker-compose.yaml)
 
 ### 3. 启动服务
 
@@ -79,7 +79,7 @@ docker-compose up
 如果因网络原因，无法顺利拉取镜像，也可预先下载好所需镜像并导入本机后再启动服务，所需镜像拉取命令如下：
 
 ```bash
-docker pull phenoming/dicer2:v0.1.2
+docker pull phenoming/dicer2:v0.1.3
 docker pull phenoming/elasticsearch:v0.1.1
 docker pull phenoming/cerebro:v0.1.1
 ```
@@ -93,7 +93,7 @@ docker pull phenoming/cerebro:v0.1.1
 ```bash
 $ docker ps
 IMAGE                            STATUS          NAMES
-phenoming/dicer2:v0.1.2          Up 2 seconds    dicer2
+phenoming/dicer2:v0.1.3          Up 2 seconds    dicer2
 phenoming/cerebro:v0.1.1         Up 2 seconds    cerebro
 phenoming/elasticsearch:v0.1.1   Up 2 seconds    es7_01
 phenoming/elasticsearch:v0.1.1   Up 2 seconds    es7_02
@@ -111,7 +111,7 @@ curl --location --request GET 'http://localhost:9605/'
 {
     "name": "Dicer2",
     "version": {
-        "dicer2_version": "v0.1.2",
+        "dicer2_version": "v0.1.3",
         "elastic_search_version": "7.6.2"
     },
     "msg": "Check your documents cooler!"
