@@ -1,7 +1,8 @@
 <p align="center">
       <img src="./static/logo.png" width="200">
 </p>
-<h6 align="center">基于ElasticSearch的高效文档查重工具</h6>
+
+<p align="center">基于ElasticSearch的高效文档查重工具</p>
 
 <p align="center">
    <a href="#introduction">Introduction</a> •
