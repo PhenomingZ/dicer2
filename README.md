@@ -155,17 +155,7 @@ curl --location --request POST 'localhost:9605/machine-learning/' \
 获得返回值如下即表明创建成功：
 
 ```json
-{
-    "meta": {
-        "took": 208,
-        "msg": "CREATED",
-        "status": 201
-    },
-    "data": {
-        "index": "machine-learning",
-        "title": "机器学习"
-    }
-}
+{"meta": {"took": 208, "msg": "CREATED", "status": 201}, "data": {"index": "machine-learning", "title": "机器学习"}}
 ```
 
 ### 2. 创建年级
