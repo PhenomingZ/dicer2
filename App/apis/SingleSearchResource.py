@@ -57,6 +57,7 @@ class SingleSearchResource(Dicer2Resource):
                     if jaccard_score <= jaccard_threshold_value:
                         continue
 
+                    # TODO 返回值中不应包含doc_id 而是应该包含index、task和document
                     line_result["similar"].append({
                         "score": hit.meta.score,
                         "jaccard": jaccard_score,
