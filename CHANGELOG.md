@@ -1,6 +1,6 @@
 **v0.1.3 Change Log (2020.06.24)**
 1. 对于index、task和document的接口中的POST请求增加了不能以下划线开头的限制，所有的以下划线开头的路由均作为保留字
-2. 修改了单文档查重的路由，由"single/_search"改为"_single/_search"
+2. 修改了单文档查重的路由，由`single/_search`改为`_single/_search`
 3. 优化了默认配置项中Jaccard距离的阈值为0.4（从0.5下调）
 
 **v0.1.2 Change Log (2020.06.24)**  

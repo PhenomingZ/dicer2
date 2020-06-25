@@ -7,7 +7,13 @@ curl --location --request POST 'localhost:9605/machine-learning/' \
 	"title": "机器学习"
 }'
 
-# 为刚创建的课程创建一个班级
+# 为刚创建的课程创建两个年级
+curl --location --request POST 'localhost:9605/machine-learning/2019-spring/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"title": "2019年机器学习春季班"
+}'
+
 curl --location --request POST 'localhost:9605/machine-learning/2020-spring/' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -15,14 +21,26 @@ curl --location --request POST 'localhost:9605/machine-learning/2020-spring/' \
 }'
 
 # 上传学生的作业文档
-curl --location --request POST 'localhost:9605/machine-learning/2020-spring/SY1806700/' \
---form 'file=@docs/SY1806700.docx' \
---form 'title=软件测试技术课程心得体会'
+curl --location --request POST 'localhost:9605/machine-learning/2019-spring/SY1906000/' \
+--form 'file=@docs/SY1906000.docx' \
+--form 'title=李四的机器学习结课论文'
 
-curl --location --request POST 'localhost:9605/machine-learning/2020-spring/SY1806701/' \
---form 'file=@docs/SY1806701.docx' \
---form 'title=软件测试技术课程心得体会'
+curl --location --request POST 'localhost:9605/machine-learning/2019-spring/SY1906001/' \
+--form 'file=@docs/SY1906001.docx' \
+--form 'title=王五的机器学习结课论文'
 
-curl --location --request POST 'localhost:9605/machine-learning/2020-spring/SY1806702/' \
---form 'file=@docs/SY1806702.docx' \
---form 'title=软件测试技术课程心得体会'
+curl --location --request POST 'localhost:9605/machine-learning/2020-spring/SY2006000/' \
+--form 'file=@docs/SY2006000.docx' \
+--form 'title=张三的机器学习结课论文'
+
+# 进行查重
+curl --location --request GET 'localhost:9605/_single/_search/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "index": "machine-learning",
+    "task": "2020-spring",
+    "document": "SY2006000",
+    "search_range": {
+        "machine-learning": ["2019-spring", "2020-spring"]
+    }
+}'
