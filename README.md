@@ -28,7 +28,7 @@
 **v0.1.4 Change Log (2020.06.26)**
 
 1. 优化了接口返回值字段
-2. 在单篇文档的查重结果中，添加了重复率（repetitive_rate）字段
+2. 在单篇文档的查重结果中，添加了全文复制比（repetitive_rate）字段
 
 **v0.1.3 Change Log (2020.06.24)**
 
@@ -1088,36 +1088,59 @@ GET localhost:9605/machine-learning/2020-spring/SY2006000/
 *   请求方法：GET
 *   请求参数：
 
-| 参数名       | 参数说明               | 备注                               |
-| ------------ | ---------------------- | ---------------------------------- |
-| index        | 待查文档的index的id    | 不能为空，携带在请求体或表单数据中 |
-| task         | 待查文档的task的id     | 不能为空，携带在请求体或表单数据中 |
-| document     | 待查文档的document的id | 不能为空，携带在请求体或表单数据中 |
-| search_range | 查重范围               | 不能为空，携带在请求体或表单数据中 |
+| 参数名       | 参数说明                                                     | 备注                               |
+| ------------ | ------------------------------------------------------------ | ---------------------------------- |
+| index        | 待查文档的index的id                                          | 不能为空，携带在请求体或表单数据中 |
+| task         | 待查文档的task的id                                           | 不能为空，携带在请求体或表单数据中 |
+| document     | 待查文档的document的id                                       | 不能为空，携带在请求体或表单数据中 |
+| search_range | 查重范围，其表示格式为：<br />{index:[task list], index:[task list]} | 不能为空，携带在请求体或表单数据中 |
 
 *   请求样例
 
 ```http
-GET localhost:9605/machine-learning/2020-spring/SY2006000/
+GET localhost:9605/_single/_search/
+{
+    "index": "machine-learning",
+    "task": "2020-spring",
+    "document": "SY2006000",
+    "search_range": {
+        "machine-learning": ["2019-spring", "2020-spring"]
+    }
+}
 ```
 
 *   响应参数
 
-| 参数名     | 参数说明           | 备注                                       |
-| ---------- | ------------------ | ------------------------------------------ |
-| index      | index的id          |                                            |
-| task       | task的id           |                                            |
-| document   | document的id       |                                            |
-| title      | document的标题名   |                                            |
-| created_at | document创建的时间 |                                            |
-| body       | document的完整内容 | 文档内容根据数据库中建立索引的粒度进行拆分 |
+| 参数名                  | 参数说明           | 备注 |
+| ----------------------- | ------------------ | ---- |
+| index                   | index的id          |      |
+| task                    | task的id           |      |
+| document                | document的id       |      |
+| title                   | document的标题名   |      |
+| repetitive_rate         | 全文复制比         |      |
+| result                  | document的完整内容 |      |
+| result.origin           |                    |      |
+| result.index            |                    |      |
+| result.task             |                    |      |
+| result.document         |                    |      |
+| result.part             |                    |      |
+| result.total            |                    |      |
+| result.similar          |                    |      |
+| result.similar.score    |                    |      |
+| result.similar.jaccard  |                    |      |
+| result.similar.index    |                    |      |
+| result.similar.task     |                    |      |
+| result.similar.document |                    |      |
+| result.similar          |                    |      |
+| result.similar          |                    |      |
+| result.similar          |                    |      |
 
 *   响应数据
 
 ```json
 {
     "meta": {
-        "took": 44,
+        "took": 178,
         "msg": "OK",
         "status": 200
     },
@@ -1125,14 +1148,49 @@ GET localhost:9605/machine-learning/2020-spring/SY2006000/
         "index": "machine-learning",
         "task": "2020-spring",
         "document": "SY2006000",
-        "title": "张三-SY2006000-机器学习大作业",
-        "created_at": "2020-06-26T14:52:58.023486",
-        "body": [
-            "机器学习作业样例",
-            "2020年机器学习春季班-SY1806700",
-            "机器学习(Machine Learning, ML)是一门多领域交叉学科，涉及概率论、统计学、逼近论、凸分析、算法复杂度理论等多门学科。",
-            "专门研究计算机怎样模拟或实现人类的学习行为，以获取新的知识或技能，重新组织已有的知识结构使之不断改善自身的性能。",
-            "它是人工智能的核心，是使计算机具有智能的根本途径，其应用遍及人工智能的各个领域，它主要使用归纳、综合而不是演绎。"
+        "title": "张三的机器学习结课论文",
+        "repetitive_rate": 0.4,
+        "result": [
+            {
+                "origin": "机器学习是一门研究计算机是如何模拟或实现人类行为，获取新知识并将其重新整理为现有的知识体系以此来提升自身能力和性能。",
+                "index": "machine-learning",
+                "task": "2020-spring",
+                "document": "SY2006000",
+                "part": 3,
+                "total": 5,
+                "similar": [
+                    {
+                        "score": 20.308796,
+                        "jaccard": 0.45652173913043476,
+                        "index": "machine-learning",
+                        "task": "2019-spring",
+                        "document": "SY1906000",
+                        "body": "专门研究计算机怎样模拟或实现人类的学习行为，以获取新的知识或技能，重新组织已有的知识结构使之不断改善自身的性能。",
+                        "part": 3,
+                        "total": 4
+                    }
+                ]
+            },
+            {
+                "origin": "有些人认为，机器是由人生产的，其动作也是完全根据人类的设计决定的，人类完全不必担心机器会超过人类",
+                "index": "machine-learning",
+                "task": "2020-spring",
+                "document": "SY2006000",
+                "part": 4,
+                "total": 5,
+                "similar": [
+                    {
+                        "score": 14.6125145,
+                        "jaccard": 0.4444444444444444,
+                        "index": "machine-learning",
+                        "task": "2019-spring",
+                        "document": "SY1906001",
+                        "body": "机器的能力是否能超过人的，很多持否定意见的人的一个主要论据是：机器是人造的，其性能和动作完全是由设计者规定的，因此无论如何其能力也不会超过设计者本人。",
+                        "part": 2,
+                        "total": 3
+                    }
+                ]
+            }
         ]
     }
 }

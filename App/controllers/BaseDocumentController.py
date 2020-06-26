@@ -6,7 +6,7 @@ from App.utils.DocumentTools import DocumentTools
 from App.utils.DocxLoader import DocxLoader
 
 
-def save_article(index_id, task_id, document_id, file):
+def save_article(index_id, task_id, document_id, file, title):
     docx_loader = DocxLoader(file)
     line_list = docx_loader.text
     tags_list = docx_loader.tags
@@ -15,7 +15,7 @@ def save_article(index_id, task_id, document_id, file):
     total_parts = len(line_list) - 1
 
     for count, line in enumerate(line_list):
-        article = Article(index=index_id, task=task_id, document=document_id, doc_id=doc_id,
+        article = Article(index=index_id, task=task_id, document=document_id, title=title, doc_id=doc_id,
                           vector="default", tags=tags_list[count], body=line, part=count, total=total_parts)
         article.save(index=index_id)
 
@@ -47,7 +47,8 @@ class BaseDocumentController(BaseTaskController):
         task_instance = index_instance.get_task(task_id)
         task_instance.add_doc(document_id, **kwargs)
 
-        save_article(index_id, task_id, document_id, file)
+        title = kwargs.get("title")
+        save_article(index_id, task_id, document_id, file, title)
 
         self.base.save()
 

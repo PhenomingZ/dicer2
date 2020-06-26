@@ -28,6 +28,7 @@ class SingleSearchResource(Dicer2Resource):
 
         document = BaseController().get_document(index_id, task_id, document_id)
         body = document.body
+        total_parts = len(body)
 
         document_result = []
 
@@ -37,11 +38,8 @@ class SingleSearchResource(Dicer2Resource):
 
             line_result = {
                 "origin": line,
-                "index": index_id,
-                "task": task_id,
-                "document": document_id,
                 "part": line_num,
-                "total": len(body),
+                "total": total_parts,
                 "similar": []
             }
 
@@ -63,6 +61,7 @@ class SingleSearchResource(Dicer2Resource):
                         "index": hit.index,
                         "task": hit.task,
                         "document": hit.document,
+                        "title": hit.title,
                         "body": hit.body,
                         "part": hit.part,
                         "total": hit.total
@@ -70,5 +69,12 @@ class SingleSearchResource(Dicer2Resource):
             if line_result["similar"]:
                 document_result.append(line_result)
 
-        response_data = dict(result=document_result)
+        # 全文复制比
+        if total_parts == 0:
+            repetitive_rate = 0
+        else:
+            repetitive_rate = len(document_result) / total_parts
+
+        response_data = dict(index=index_id, task=task_id, document=document_id, title=document.title,
+                             repetitive_rate=repetitive_rate, result=document_result)
         return OKResponse(response_data, start_time)

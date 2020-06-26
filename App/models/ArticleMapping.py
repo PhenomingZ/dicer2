@@ -6,6 +6,7 @@ class Article(Document):
     index = Keyword()
     task = Keyword()
     document = Keyword()
+    title = Text(analyzer="ik_max_word", search_analyzer="ik_smart")
     doc_id = Keyword()
     part = Integer()
     total = Integer()
