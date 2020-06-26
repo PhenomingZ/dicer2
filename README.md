@@ -1111,36 +1111,34 @@ GET localhost:9605/_single/_search/
 
 *   响应参数
 
-| 参数名                  | 参数说明           | 备注 |
-| ----------------------- | ------------------ | ---- |
-| index                   | index的id          |      |
-| task                    | task的id           |      |
-| document                | document的id       |      |
-| title                   | document的标题名   |      |
-| repetitive_rate         | 全文复制比         |      |
-| result                  | document的完整内容 |      |
-| result.origin           |                    |      |
-| result.index            |                    |      |
-| result.task             |                    |      |
-| result.document         |                    |      |
-| result.part             |                    |      |
-| result.total            |                    |      |
-| result.similar          |                    |      |
-| result.similar.score    |                    |      |
-| result.similar.jaccard  |                    |      |
-| result.similar.index    |                    |      |
-| result.similar.task     |                    |      |
-| result.similar.document |                    |      |
-| result.similar          |                    |      |
-| result.similar          |                    |      |
-| result.similar          |                    |      |
+| 参数名                  | 参数说明                           | 备注 |
+| ----------------------- | ---------------------------------- | ---- |
+| index                   | index的id                          |      |
+| task                    | task的id                           |      |
+| document                | document的id                       |      |
+| title                   | document的标题名                   |      |
+| repetitive_rate         | 全文复制比                         |      |
+| result                  | 查重结果列表                       |      |
+| result.origin           | 疑似抄袭的原句                     |      |
+| result.part             | 疑似抄袭的原句在原文中所处的分段   |      |
+| result.total            | 疑似抄袭的原句所属原文总分段数     |      |
+| result.similar          | 与原句相似的句子列表               |      |
+| result.similar.score    | 相似得分（受句子长度和重复率影响） |      |
+| result.similar.jaccard  | 归一Jaccard距离，范围0~1           |      |
+| result.similar.index    | 相似句子的index                    |      |
+| result.similar.task     | 相似句子的task                     |      |
+| result.similar.document | 相似句子的document                 |      |
+| result.similar.title    | 相似句子的标题名                   |      |
+| result.similar.body     | 相似句子的内容                     |      |
+| result.similar.part     | 相似句子在其所属文档中所处的分段   |      |
+| result.similar.total    | 相似句子所属文档的总分段数         |      |
 
 *   响应数据
 
 ```json
 {
     "meta": {
-        "took": 178,
+        "took": 111,
         "msg": "OK",
         "status": 200
     },
@@ -1153,9 +1151,6 @@ GET localhost:9605/_single/_search/
         "result": [
             {
                 "origin": "机器学习是一门研究计算机是如何模拟或实现人类行为，获取新知识并将其重新整理为现有的知识体系以此来提升自身能力和性能。",
-                "index": "machine-learning",
-                "task": "2020-spring",
-                "document": "SY2006000",
                 "part": 3,
                 "total": 5,
                 "similar": [
@@ -1165,29 +1160,10 @@ GET localhost:9605/_single/_search/
                         "index": "machine-learning",
                         "task": "2019-spring",
                         "document": "SY1906000",
+                        "title": "李四的机器学习结课论文",
                         "body": "专门研究计算机怎样模拟或实现人类的学习行为，以获取新的知识或技能，重新组织已有的知识结构使之不断改善自身的性能。",
                         "part": 3,
                         "total": 4
-                    }
-                ]
-            },
-            {
-                "origin": "有些人认为，机器是由人生产的，其动作也是完全根据人类的设计决定的，人类完全不必担心机器会超过人类",
-                "index": "machine-learning",
-                "task": "2020-spring",
-                "document": "SY2006000",
-                "part": 4,
-                "total": 5,
-                "similar": [
-                    {
-                        "score": 14.6125145,
-                        "jaccard": 0.4444444444444444,
-                        "index": "machine-learning",
-                        "task": "2019-spring",
-                        "document": "SY1906001",
-                        "body": "机器的能力是否能超过人的，很多持否定意见的人的一个主要论据是：机器是人造的，其性能和动作完全是由设计者规定的，因此无论如何其能力也不会超过设计者本人。",
-                        "part": 2,
-                        "total": 3
                     }
                 ]
             }
