@@ -1,3 +1,7 @@
+**v0.1.4 Change Log (2020.06.26)**
+1. 优化了接口返回值字段
+2. 在单篇文档的查重结果中，添加了重复率（repetitive_rate）字段
+
 **v0.1.3 Change Log (2020.06.24)**
 1. 对于index、task和document的接口中的POST请求增加了不能以下划线开头的限制，所有的以下划线开头的路由均作为保留字
 2. 修改了单文档查重的路由，由`single/_search`改为`_single/_search`

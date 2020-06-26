@@ -1,8 +1,10 @@
+import json
 from datetime import datetime
 
 from App.apis.Dicer2Resource import Dicer2Resource
 from App.controllers import BaseController
 from App.responses import OKResponse, CreatedResponse, DeletedResponse, UpdatedResponse
+from App.utils.DateEncoder import DateEncoder
 
 
 class IndexResource(Dicer2Resource):
@@ -57,7 +59,10 @@ class IndexResource(Dicer2Resource):
 
         tasks_list = list()
         for task in result.tasks:
-            tasks_list.append(task.id)
+            task_info = dict(task=task.id, title=task.title, created_at=task.created_at)
+            tasks_list.append(task_info)
 
-        response_data = dict(task_count=result.task_count, tasks=tasks_list)
-        return OKResponse(data=response_data, start_time=start_time)
+        response_data = dict(index=index, title=result.title, created_at=result.created_at,
+                             task_count=result.task_count, tasks=tasks_list)
+
+        return OKResponse(data=DateEncoder.jsonify(response_data), start_time=start_time)

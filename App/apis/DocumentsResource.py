@@ -4,6 +4,8 @@ from App.responses import OKResponse, CreatedResponse, DeletedResponse, UpdatedR
 
 from datetime import datetime
 
+from App.utils.DateEncoder import DateEncoder
+
 
 class DocumentsResource(Dicer2Resource):
 
@@ -16,7 +18,7 @@ class DocumentsResource(Dicer2Resource):
 
         BaseController().create_document(index, task, document, file=file, title=title)
 
-        response_data = dict(title=title, index=index, task=task)
+        response_data = dict(index=index, task=task, document=document, title=title)
         return CreatedResponse(data=response_data, start_time=start_time)
 
     @classmethod
@@ -37,7 +39,7 @@ class DocumentsResource(Dicer2Resource):
 
         BaseController().update_document(index, task, document, file=file, title=title)
 
-        response_data = dict(title=title, index=index, task=task)
+        response_data = dict(index=index, task=task, document=document, title=title)
         return UpdatedResponse(data=response_data, start_time=start_time)
 
     @classmethod
@@ -49,7 +51,7 @@ class DocumentsResource(Dicer2Resource):
 
         BaseController().update_document(index, task, document, file=file, title=title)
 
-        response_data = dict(title=title, index=index, task=task)
+        response_data = dict(index=index, task=task, document=document, title=title)
         return UpdatedResponse(data=response_data, start_time=start_time)
 
     @classmethod
@@ -58,5 +60,6 @@ class DocumentsResource(Dicer2Resource):
 
         result = BaseController().get_document(index, task, document)
 
-        response_data = dict(title=result.title, index=index, task=task, body=result.body)
-        return OKResponse(data=response_data, start_time=start_time)
+        response_data = dict(index=index, task=task, document=document, title=result.title,
+                             created_at=result.created_at, body=result.body)
+        return OKResponse(data=DateEncoder.jsonify(response_data), start_time=start_time)

@@ -4,6 +4,7 @@ from App.controllers import BaseController
 from datetime import datetime
 
 from App.responses import OKResponse, CreatedResponse, DeletedResponse, UpdatedResponse
+from App.utils.DateEncoder import DateEncoder
 
 
 class TaskResource(Dicer2Resource):
@@ -35,7 +36,7 @@ class TaskResource(Dicer2Resource):
 
         BaseController().update_task(index_id=index, task_id=task, title=title)
 
-        response_data = dict(index=index, task=task)
+        response_data = dict(index=index, task=task, title=title)
         return UpdatedResponse(data=response_data, start_time=start_time)
 
     @classmethod
@@ -46,7 +47,7 @@ class TaskResource(Dicer2Resource):
 
         BaseController().update_task(index_id=index, task_id=task, title=title)
 
-        response_data = dict(index=index, task=task)
+        response_data = dict(index=index, task=task, title=title)
         return UpdatedResponse(data=response_data, start_time=start_time)
 
     @classmethod
@@ -57,7 +58,10 @@ class TaskResource(Dicer2Resource):
 
         docs_list = list()
         for doc in result.docs:
-            docs_list.append(doc.id)
+            doc_info = dict(doc=doc.id, title=doc.title, created_at=doc.created_at)
+            docs_list.append(doc_info)
 
-        response_data = dict(name=task, doc_count=result.doc_count, docs=docs_list)
-        return OKResponse(data=response_data, start_time=start_time)
+        response_data = dict(index=index, task=task, title=result.title, created_at=result.created_at,
+                             doc_count=result.doc_count, docs=docs_list)
+
+        return OKResponse(data=DateEncoder.jsonify(response_data), start_time=start_time)

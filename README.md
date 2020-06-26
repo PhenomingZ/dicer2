@@ -25,7 +25,13 @@
 
 <h2 id="change-log" align="center">Change Log</h2>
 
+**v0.1.4 Change Log (2020.06.26)**
+
+1. 优化了接口返回值字段
+2. 在单篇文档的查重结果中，添加了重复率（repetitive_rate）字段
+
 **v0.1.3 Change Log (2020.06.24)**
+
 1. 对于index、task和document的接口中的POST请求增加了不能以下划线开头的限制，所有的以下划线开头的路由均作为保留字
 2. 修改了单文档查重的路由，由`single/_search`改为`_single/_search`
 3. 优化了默认配置项中Jaccard距离的阈值为0.4（从0.5下调）
@@ -44,7 +50,7 @@
 
 <h2 id="setup-dicer2" align="center">Setup DICER2</h2>
 
-当前版本（v0.1.3）推荐使用**Docker-Compose**环境部署和使用**DICER2**。由于**DICER2**依赖于**ElasticSearch**集群环境，提供了相关镜像和**YAML**文件用于一键部署完整的应用环境，具体步骤如下：
+当前版本（v0.1.4）推荐使用**Docker-Compose**环境部署和使用**DICER2**。由于**DICER2**依赖于**ElasticSearch**集群环境，提供了相关镜像和**YAML**文件用于一键部署完整的应用环境，具体步骤如下：
 
 ### 1. 安装Docker-Compose
 
@@ -61,7 +67,7 @@
 *   ElasticSearch集群
 *   Cerebro管理工具
 
-下载地址：[点击下载](build/Docker/v0.1.3/docker-compose.yaml)
+下载地址：[点击下载](build/Docker/v0.1.4/docker-compose.yaml)
 
 ### 3. 启动服务
 
@@ -80,7 +86,7 @@ docker-compose up
 如果因网络原因，无法顺利拉取镜像，也可预先下载好所需镜像并导入本机后再启动服务，所需镜像拉取命令如下：
 
 ```bash
-docker pull phenoming/dicer2:v0.1.3
+docker pull phenoming/dicer2:v0.1.4
 docker pull phenoming/elasticsearch:v0.1.1
 docker pull phenoming/cerebro:v0.1.1
 ```
@@ -94,7 +100,7 @@ docker pull phenoming/cerebro:v0.1.1
 ```bash
 $ docker ps
 IMAGE                            STATUS          NAMES
-phenoming/dicer2:v0.1.3          Up 2 seconds    dicer2
+phenoming/dicer2:v0.1.4          Up 2 seconds    dicer2
 phenoming/cerebro:v0.1.1         Up 2 seconds    cerebro
 phenoming/elasticsearch:v0.1.1   Up 2 seconds    es7_01
 phenoming/elasticsearch:v0.1.1   Up 2 seconds    es7_02
@@ -112,7 +118,7 @@ curl --location --request GET 'http://localhost:9605/'
 {
     "name": "Dicer2",
     "version": {
-        "dicer2_version": "v0.1.3",
+        "dicer2_version": "v0.1.4",
         "elastic_search_version": "7.6.2"
     },
     "msg": "Check your documents cooler!"
@@ -329,3 +335,808 @@ curl --location --request GET 'localhost:9605/_single/_search/' \
 ```
 
 经过对比可以发现，这两个句子确实存在抄袭现象，**DICER2**具有检测出替换词语、改变语序、插入无关语句等抄袭手段！
+
+<h2 id="api" align="center">API</h2>
+
+### 1. 接口说明
+
+*   API版本：v0.1.4
+*   基准地址：`http://localhost:9605/`
+*   使用 HTTP Status Code 标识状态
+*   数据返回格式统一使用 JSON
+*   暂不支持授权认证
+
+#### 1.1 支持的请求方法
+
+- GET（SELECT）：从服务器取出资源（一项或多项）
+- POST（CREATE）：在服务器新建一个资源
+- PUT（UPDATE）：在服务器更新资源（客户端提供改变后的完整资源）
+- PATCH（UPDATE）：在服务器更新资源（客户端提供改变的属性）
+- DELETE（DELETE）：从服务器删除资源
+
+#### 1.2 通用返回状态说明
+
+| *状态码* | *含义*                | *说明*                               |
+| -------- | --------------------- | ------------------------------------ |
+| 200      | OK                    | 请求成功、更新成功、删除成功         |
+| 201      | CREATED               | 创建成功                             |
+| 400      | BAD REQUEST           | 请求中包含不支持的参数或请求格式错误 |
+| 403      | FORBIDDEN             | 请求的资源被禁止访问                 |
+| 404      | NOT FOUND             | 请求的资源不存在                     |
+| 500      | INTERNAL SERVER ERROR | 内部错误                             |
+
+### 2. 课程管理（Index Management）
+
+每一个课程对应**DICER2**中的一个**Index**，这是文档存储的最上级目录。
+
+#### 2.1 创建课程
+
+*   请求路径：`http://localhost:9605/:index/`
+*   请求方法：POST
+*   请求参数：
+
+| 参数名 | 参数说明      | 备注                               |
+| ------ | ------------- | ---------------------------------- |
+| :index | index的id     | 不能为空，携带在`url`中            |
+| title  | index的标题名 | 不能为空，携带在请求体或表单数据中 |
+
+*   请求样例
+
+```http
+POST localhost:9605/machine-learning/
+{
+	"title": "机器学习"
+}
+```
+
+*   响应参数
+
+| 参数名 | 参数说明      | 备注 |
+| ------ | ------------- | ---- |
+| index  | index的id     |      |
+| title  | index的标题名 |      |
+
+*   响应数据
+
+```json
+{
+    "meta": {
+        "took": 208,
+        "msg": "CREATED",
+        "status": 201
+    },
+    "data": {
+        "index": "machine-learning",
+        "title": "机器学习"
+    }
+}
+```
+
+#### 2.2 删除课程
+
+*   请求路径：`http://localhost:9605/:index/`
+*   请求方法：DELETE
+*   请求参数：
+
+| 参数名 | 参数说明  | 备注                    |
+| ------ | --------- | ----------------------- |
+| :index | index的id | 不能为空，携带在`url`中 |
+
+*   请求样例
+
+```http
+DELETE localhost:9605/machine-learning/
+```
+
+*   响应参数
+
+| 参数名 | 参数说明  | 备注 |
+| ------ | --------- | ---- |
+| index  | index的id |      |
+
+*   响应数据
+
+```json
+{
+    "meta": {
+        "took": 511,
+        "msg": "DELETED",
+        "status": 200
+    },
+    "data": {
+        "index": "machine-learning"
+    }
+}
+```
+
+#### 2.3 课程信息完整更新
+
+*   请求路径：`http://localhost:9605/:index/`
+*   请求方法：PUT
+*   请求参数：
+
+| 参数名 | 参数说明      | 备注                               |
+| ------ | ------------- | ---------------------------------- |
+| :index | index的id     | 不能为空，携带在`url`中            |
+| title  | index的标题名 | 不能为空，携带在请求体或表单数据中 |
+
+*   请求样例
+
+```http
+PUT localhost:9605/machine-learning/
+{
+	"title": "人工智能大赛"
+}
+```
+
+*   响应参数
+
+| 参数名 | 参数说明      | 备注 |
+| ------ | ------------- | ---- |
+| index  | index的id     |      |
+| title  | index的标题名 |      |
+
+*   响应数据
+
+```json
+{
+    "meta": {
+        "took": 41,
+        "msg": "UPDATED",
+        "status": 200
+    },
+    "data": {
+        "index": "machine-learning",
+        "title": "人工智能大赛"
+    }
+}
+```
+
+#### 2.4 课程信息部分更新
+
+*   请求路径：`http://localhost:9605/:index/`
+*   请求方法：PATCH
+*   请求参数：
+
+| 参数名 | 参数说明      | 备注                               |
+| ------ | ------------- | ---------------------------------- |
+| :index | index的id     | 不能为空，携带在`url`中            |
+| title  | index的标题名 | 可以为空，携带在请求体或表单数据中 |
+
+*   请求样例
+
+```http
+PATCH localhost:9605/machine-learning/
+{
+	"title": "2020年机器学习算法大赛"
+}
+```
+
+*   响应参数
+
+| 参数名 | 参数说明      | 备注 |
+| ------ | ------------- | ---- |
+| index  | index的id     |      |
+| title  | index的标题名 |      |
+
+*   响应数据
+
+```json
+{
+    "meta": {
+        "took": 34,
+        "msg": "UPDATED",
+        "status": 200
+    },
+    "data": {
+        "index": "machine-learning",
+        "title": "2020年机器学习算法大赛"
+    }
+}
+```
+
+#### 2.5 获取课程信息
+
+*   请求路径：`http://localhost:9605/:index/`
+*   请求方法：GET
+*   请求参数：
+
+| 参数名 | 参数说明  | 备注                    |
+| ------ | --------- | ----------------------- |
+| :index | index的id | 不能为空，携带在`url`中 |
+
+*   请求样例
+
+```http
+GET localhost:9605/machine-learning/
+```
+
+*   响应参数
+
+| 参数名           | 参数说明                  | 备注 |
+| ---------------- | ------------------------- | ---- |
+| index            | index的id                 |      |
+| title            | index的标题名             |      |
+| created_at       | index的创建时间           |      |
+| task_count       | 当前index中包含的task数量 |      |
+| tasks            | 当前index中包含的task列表 |      |
+| tasks.task       | task的id                  |      |
+| tasks.title      | task的标题名              |      |
+| tasks.created_at | task的创建时间            |      |
+
+*   响应数据
+
+```json
+{
+    "meta": {
+        "took": 6,
+        "msg": "OK",
+        "status": 200
+    },
+    "data": {
+        "index": "machine-learning",
+        "title": "2020年机器学习算法大赛",
+        "created_at": "2020-06-26 03:55:03",
+        "task_count": 1,
+        "tasks": [
+            {
+                "task": "2019-spring",
+                "title": "2019年机器学习春季班",
+                "created_at": "2020-06-26 12:57:28"
+            }
+        ]
+    }
+}
+```
+
+### 3. 班级管理（Task Management）
+
+每一个班级对应**DICER2**中的一个**Task**，这是文档存储的中间级目录。
+
+#### 3.1 创建班级
+
+*   请求路径：`http://localhost:9605/:index/:task/`
+*   请求方法：POST
+*   请求参数：
+
+| 参数名 | 参数说明     | 备注                               |
+| ------ | ------------ | ---------------------------------- |
+| :index | index的id    | 不能为空，携带在`url`中            |
+| :task  | task的id     | 不能为空，携带在`url`中            |
+| title  | task的标题名 | 不能为空，携带在请求体或表单数据中 |
+
+*   请求样例
+
+```http
+POST localhost:9605/machine-learning/2020-spring/
+{
+	"title": "2020年机器学习春季班"
+}
+```
+
+*   响应参数
+
+| 参数名 | 参数说明    | 备注 |
+| ------ | ----------- | ---- |
+| index  | index的id   |      |
+| task   | task的id    |      |
+| title  | ask的标题名 |      |
+
+*   响应数据
+
+```json
+{
+    "meta": {
+        "took": 35,
+        "msg": "CREATED",
+        "status": 201
+    },
+    "data": {
+        "index": "machine-learning",
+        "task": "2020-spring",
+        "title": "2020年机器学习春季班"
+    }
+}
+```
+
+#### 3.2 删除班级
+
+*   请求路径：`http://localhost:9605/:index/:task/`
+*   请求方法：DELETE
+*   请求参数：
+
+| 参数名 | 参数说明  | 备注                    |
+| ------ | --------- | ----------------------- |
+| :index | index的id | 不能为空，携带在`url`中 |
+| :task  | task的id  | 不能为空，携带在`url`中 |
+
+*   请求样例
+
+```http
+DELETE localhost:9605/machine-learning/2020-spring/
+```
+
+*   响应参数
+
+| 参数名 | 参数说明  | 备注 |
+| ------ | --------- | ---- |
+| index  | index的id |      |
+| task   | task的id  |      |
+
+*   响应数据
+
+```json
+{
+    "meta": {
+        "took": 29,
+        "msg": "DELETED",
+        "status": 200
+    },
+    "data": {
+        "index": "machine-learning",
+        "task": "2020-spring"
+    }
+}
+```
+
+#### 3.3 班级信息完整更新
+
+*   请求路径：`http://localhost:9605/:index/:task/`
+*   请求方法：PUT
+*   请求参数：
+
+| 参数名 | 参数说明     | 备注                               |
+| ------ | ------------ | ---------------------------------- |
+| :index | index的id    | 不能为空，携带在`url`中            |
+| :task  | task的id     | 不能为空，携带在`url`中            |
+| title  | task的标题名 | 不能为空，携带在请求体或表单数据中 |
+
+*   请求样例
+
+```http
+PUT localhost:9605/machine-learning/2020-spring/
+{
+	"title": "2020届机器学习强化班"
+}
+```
+
+*   响应参数
+
+| 参数名 | 参数说明     | 备注 |
+| ------ | ------------ | ---- |
+| index  | index的id    |      |
+| task   | task的id     |      |
+| title  | task的标题名 |      |
+
+*   响应数据
+
+```json
+{
+    "meta": {
+        "took": 26,
+        "msg": "UPDATED",
+        "status": 200
+    },
+    "data": {
+        "index": "machine-learning",
+        "task": "2020-spring",
+        "title": "2020届机器学习强化班"
+    }
+}
+```
+
+#### 3.4 班级信息部分更新
+
+*   请求路径：`http://localhost:9605/:index/:task/`
+*   请求方法：PATCH
+*   请求参数：
+
+| 参数名 | 参数说明     | 备注                               |
+| ------ | ------------ | ---------------------------------- |
+| :index | index的id    | 不能为空，携带在`url`中            |
+| :task  | task的id     | 不能为空，携带在`url`中            |
+| title  | task的标题名 | 可以为空，携带在请求体或表单数据中 |
+
+*   请求样例
+
+```http
+PATCH localhost:9605/machine-learning/2020-spring/
+{
+	"title": "2020届机器学习进阶班"
+}
+```
+
+*   响应参数
+
+| 参数名 | 参数说明     | 备注 |
+| ------ | ------------ | ---- |
+| index  | index的id    |      |
+| task   | task的id     |      |
+| title  | task的标题名 |      |
+
+*   响应数据
+
+```json
+{
+    "meta": {
+        "took": 19,
+        "msg": "UPDATED",
+        "status": 200
+    },
+    "data": {
+        "index": "machine-learning",
+        "task": "2020-spring",
+        "title": "2020届机器学习进阶班"
+    }
+}
+```
+
+#### 3.5 获取班级信息
+
+*   请求路径：`http://localhost:9605/:index/:task/`
+*   请求方法：GET
+*   请求参数：
+
+| 参数名 | 参数说明  | 备注                    |
+| ------ | --------- | ----------------------- |
+| :index | index的id | 不能为空，携带在`url`中 |
+| :task  | task的id  | 不能为空，携带在`url`中 |
+
+*   请求样例
+
+```http
+GET localhost:9605/machine-learning/2020-spring/
+```
+
+*   响应参数
+
+| 参数名          | 参数说明                 | 备注 |
+| --------------- | ------------------------ | ---- |
+| index           | index的id                |      |
+| task            | task的id                 |      |
+| title           | task的标题名             |      |
+| created_at      | task的创建时间           |      |
+| doc_count       | task中包含的document数量 |      |
+| docs            | task中包含的document列表 |      |
+| docs.doc        | document的id             |      |
+| ocs.title       | document的标题名         |      |
+| docs.created_at | document的创建时间       |      |
+
+*   响应数据
+
+```json
+{
+    "meta": {
+        "took": 6,
+        "msg": "OK",
+        "status": 200
+    },
+    "data": {
+        "index": "machine-learning",
+        "task": "2020-spring",
+        "title": "2020届机器学习进阶班",
+        "created_at": "2020-06-26 13:33:01",
+        "doc_count": 1,
+        "docs": [
+            {
+                "doc": "SY2006000",
+                "title": "张三的机器学习结课论文",
+                "created_at": "2020-06-26T13:56:51.294184"
+            }
+        ]
+    }
+}
+```
+
+### 4. 文档管理（Document Management）
+
+每一个文档对应**DICER2**中的一个**Document**，这是文档存储的最小单位。
+
+#### 4.1 创建文档
+
+*   请求路径：`http://localhost:9605/:index/:task/:document/`
+*   请求方法：POST
+*   请求参数：
+
+| 参数名    | 参数说明               | 备注                               |
+| --------- | ---------------------- | ---------------------------------- |
+| :index    | index的id              | 不能为空，携带在`url`中            |
+| :task     | task的id               | 不能为空，携带在`url`中            |
+| :document | document的id           | 不能为空，携带在`url`中            |
+| title     | document的标题名       | 不能为空，携带在请求体或表单数据中 |
+| file      | 用于建立document的文件 | 不能为空，携带在表单数据中         |
+
+*   请求样例
+
+```http
+POST localhost:9605/machine-learning/2020-spring/SY2006000/
+{
+	"title": "张三的机器学习结课论文"
+}
+```
+
+*   响应参数
+
+| 参数名   | 参数说明         | 备注 |
+| -------- | ---------------- | ---- |
+| index    | index的id        |      |
+| task     | task的id         |      |
+| document | document的id     |      |
+| title    | document的标题名 |      |
+
+*   响应数据
+
+```json
+{
+    "meta": {
+        "took": 201,
+        "msg": "CREATED",
+        "status": 201
+    },
+    "data": {
+        "index": "machine-learning",
+        "task": "2020-spring",
+        "document": "SY2006000",
+        "title": "张三的机器学习结课论文"
+    }
+}
+```
+
+#### 4.2 删除文档
+
+*   请求路径：`http://localhost:9605/:index/:task/:document/`
+*   请求方法：DELETE
+*   请求参数：
+
+| 参数名    | 参数说明     | 备注                    |
+| --------- | ------------ | ----------------------- |
+| :index    | index的id    | 不能为空，携带在`url`中 |
+| :task     | task的id     | 不能为空，携带在`url`中 |
+| :document | document的id | 不能为空，携带在`url`中 |
+
+*   请求样例
+
+```http
+DELETE localhost:9605/machine-learning/2020-spring/SY2006000/
+```
+
+*   响应参数
+
+| 参数名   | 参数说明     | 备注 |
+| -------- | ------------ | ---- |
+| index    | index的id    |      |
+| task     | task的id     |      |
+| document | document的id |      |
+
+*   响应数据
+
+```json
+{
+    "meta": {
+        "took": 304,
+        "msg": "DELETED",
+        "status": 200
+    },
+    "data": {
+        "index": "machine-learning",
+        "task": "2020-spring",
+        "document": "SY2006000"
+    }
+}
+```
+
+#### 4.3 文档信息完整更新
+
+*   请求路径：`http://localhost:9605/:index/:task/:document/`
+*   请求方法：PUT
+*   请求参数：
+
+| 参数名    | 参数说明               | 备注                               |
+| --------- | ---------------------- | ---------------------------------- |
+| :index    | index的id              | 不能为空，携带在`url`中            |
+| :task     | task的id               | 不能为空，携带在`url`中            |
+| :document | document的id           | 不能为空，携带在`url`中            |
+| title     | document的标题名       | 不能为空，携带在请求体或表单数据中 |
+| file      | 用于建立document的文件 | 不能为空，携带在表单数据中         |
+
+*   请求样例
+
+```http
+PUT localhost:9605/machine-learning/2020-spring/SY2006000/
+{
+	"title": "张三-SY2006000-机器学习"
+}
+```
+
+*   响应参数
+
+| 参数名   | 参数说明         | 备注 |
+| -------- | ---------------- | ---- |
+| index    | index的id        |      |
+| task     | task的id         |      |
+| document | document的id     |      |
+| title    | document的标题名 |      |
+
+*   响应数据
+
+```json
+{
+    "meta": {
+        "took": 207,
+        "msg": "UPDATED",
+        "status": 200
+    },
+    "data": {
+        "index": "machine-learning",
+        "task": "2020-spring",
+        "document": "SY2006000",
+        "title": "张三-SY2006000-机器学习"
+    }
+}
+```
+
+#### 4.4 文档信息部分更新
+
+*   请求路径：`http://localhost:9605/:index/:task/:document/`
+*   请求方法：PATCH
+*   请求参数：
+
+| 参数名    | 参数说明               | 备注                               |
+| --------- | ---------------------- | ---------------------------------- |
+| :index    | index的id              | 不能为空，携带在`url`中            |
+| :task     | task的id               | 不能为空，携带在`url`中            |
+| :document | document的id           | 不能为空，携带在`url`中            |
+| title     | document的标题名       | 可以为空，携带在请求体或表单数据中 |
+| file      | 用于建立document的文件 | 可以为空，携带在表单数据中         |
+
+*   请求样例
+
+```http
+PATCH localhost:9605/machine-learning/2020-spring/SY2006000/
+{
+	"title": "张三-SY2006000-机器学习大作业"
+}
+```
+
+*   响应参数
+
+| 参数名   | 参数说明         | 备注 |
+| -------- | ---------------- | ---- |
+| index    | index的id        |      |
+| task     | task的id         |      |
+| document | document的id     |      |
+| title    | document的标题名 |      |
+
+*   响应数据
+
+```json
+{
+    "meta": {
+        "took": 32,
+        "msg": "UPDATED",
+        "status": 200
+    },
+    "data": {
+        "index": "machine-learning",
+        "task": "2020-spring",
+        "document": "SY2006000",
+        "title": "张三-SY2006000-机器学习大作业"
+    }
+}
+```
+
+#### 4.5 获取文档信息
+
+*   请求路径：`http://localhost:9605/:index/:task/:document/`
+*   请求方法：GET
+*   请求参数：
+
+| 参数名    | 参数说明     | 备注                    |
+| --------- | ------------ | ----------------------- |
+| :index    | index的id    | 不能为空，携带在`url`中 |
+| :task     | task的id     | 不能为空，携带在`url`中 |
+| :document | document的id | 不能为空，携带在`url`中 |
+
+*   请求样例
+
+```http
+GET localhost:9605/machine-learning/2020-spring/SY2006000/
+```
+
+*   响应参数
+
+| 参数名     | 参数说明           | 备注                                       |
+| ---------- | ------------------ | ------------------------------------------ |
+| index      | index的id          |                                            |
+| task       | task的id           |                                            |
+| document   | document的id       |                                            |
+| title      | document的标题名   |                                            |
+| created_at | document创建的时间 |                                            |
+| body       | document的完整内容 | 文档内容根据数据库中建立索引的粒度进行拆分 |
+
+*   响应数据
+
+```json
+{
+    "meta": {
+        "took": 44,
+        "msg": "OK",
+        "status": 200
+    },
+    "data": {
+        "index": "machine-learning",
+        "task": "2020-spring",
+        "document": "SY2006000",
+        "title": "张三-SY2006000-机器学习大作业",
+        "created_at": "2020-06-26T14:52:58.023486",
+        "body": [
+            "机器学习作业样例",
+            "2020年机器学习春季班-SY1806700",
+            "机器学习(Machine Learning, ML)是一门多领域交叉学科，涉及概率论、统计学、逼近论、凸分析、算法复杂度理论等多门学科。",
+            "专门研究计算机怎样模拟或实现人类的学习行为，以获取新的知识或技能，重新组织已有的知识结构使之不断改善自身的性能。",
+            "它是人工智能的核心，是使计算机具有智能的根本途径，其应用遍及人工智能的各个领域，它主要使用归纳、综合而不是演绎。"
+        ]
+    }
+}
+```
+
+### 5. 文档查重
+
+#### 5.1 单篇文档查重
+
+*   请求路径：`http://localhost:9605/_single/_search/`
+*   请求方法：GET
+*   请求参数：
+
+| 参数名       | 参数说明               | 备注                               |
+| ------------ | ---------------------- | ---------------------------------- |
+| index        | 待查文档的index的id    | 不能为空，携带在请求体或表单数据中 |
+| task         | 待查文档的task的id     | 不能为空，携带在请求体或表单数据中 |
+| document     | 待查文档的document的id | 不能为空，携带在请求体或表单数据中 |
+| search_range | 查重范围               | 不能为空，携带在请求体或表单数据中 |
+
+*   请求样例
+
+```http
+GET localhost:9605/machine-learning/2020-spring/SY2006000/
+```
+
+*   响应参数
+
+| 参数名     | 参数说明           | 备注                                       |
+| ---------- | ------------------ | ------------------------------------------ |
+| index      | index的id          |                                            |
+| task       | task的id           |                                            |
+| document   | document的id       |                                            |
+| title      | document的标题名   |                                            |
+| created_at | document创建的时间 |                                            |
+| body       | document的完整内容 | 文档内容根据数据库中建立索引的粒度进行拆分 |
+
+*   响应数据
+
+```json
+{
+    "meta": {
+        "took": 44,
+        "msg": "OK",
+        "status": 200
+    },
+    "data": {
+        "index": "machine-learning",
+        "task": "2020-spring",
+        "document": "SY2006000",
+        "title": "张三-SY2006000-机器学习大作业",
+        "created_at": "2020-06-26T14:52:58.023486",
+        "body": [
+            "机器学习作业样例",
+            "2020年机器学习春季班-SY1806700",
+            "机器学习(Machine Learning, ML)是一门多领域交叉学科，涉及概率论、统计学、逼近论、凸分析、算法复杂度理论等多门学科。",
+            "专门研究计算机怎样模拟或实现人类的学习行为，以获取新的知识或技能，重新组织已有的知识结构使之不断改善自身的性能。",
+            "它是人工智能的核心，是使计算机具有智能的根本途径，其应用遍及人工智能的各个领域，它主要使用归纳、综合而不是演绎。"
+        ]
+    }
+}
+```
+
+
+

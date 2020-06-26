@@ -2,7 +2,7 @@
 
 #  docker run -it -p 9605:9605 --network docker_es7net --rm --link es7_01:elasticsearch dicer2:v0.1.1
 
-VERSION="v0.1.3"
+VERSION="v0.1.4"
 BUILD_DIR=./build/Docker/${VERSION}
 DOCKERFILE=./build/Docker/Dockerfile
 

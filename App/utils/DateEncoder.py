@@ -10,3 +10,7 @@ class DateEncoder(json.JSONEncoder):
             return obj.strftime("%Y-%m-%d")
         else:
             return json.JSONEncoder.default(self, obj)
+
+    @classmethod
+    def jsonify(cls, data):
+        return json.loads(json.dumps(data, cls=cls))
