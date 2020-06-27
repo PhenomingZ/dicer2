@@ -1,6 +1,6 @@
 # docker run -it -p 9605:9605 --network 7x-docker-2-es-instances_es7net --link es7_01:elastic dicer2:v0.1.1
 
-FROM phenoming/dicer2-base:v0.1.0
+FROM phenoming/dicer2-base:v0.1.5
 
 ENV VERSION="<version>"
 ENV DICER2_HOME="/usr/local/dicer2"
