@@ -28,13 +28,17 @@ class SingleSearchResource(Dicer2Resource):
 
         document = BaseController().get_document(index_id, task_id, document_id)
         body = document.body
+
         total_parts = len(body)
+        total_valid_parts = 0
 
         document_result = []
 
         for line_num, line in enumerate(body):
             if len(line) <= minimal_line_length:
                 continue
+
+            total_valid_parts += 1
 
             line_result = {
                 "origin": line,
@@ -70,10 +74,10 @@ class SingleSearchResource(Dicer2Resource):
                 document_result.append(line_result)
 
         # 全文复制比
-        if total_parts == 0:
+        if total_valid_parts == 0:
             repetitive_rate = 0
         else:
-            repetitive_rate = len(document_result) / total_parts
+            repetitive_rate = len(document_result) / total_valid_parts
 
         response_data = dict(index=index_id, task=task_id, document=document_id, title=document.title,
                              repetitive_rate=repetitive_rate, result=document_result)
