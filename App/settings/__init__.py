@@ -14,6 +14,9 @@ def init_config(app):
     new_config.JACCARD_THRESHOLD_VALUE = app.config["JACCARD_THRESHOLD_VALUE"]
     print(f"JACCARD_THRESHOLD_VALUE = {new_config.JACCARD_THRESHOLD_VALUE}")
 
+    new_config.IMAGE_HAMMING_THRESHOLD_VALUE = app.config["IMAGE_HAMMING_THRESHOLD_VALUE"]
+    print(f"IMAGE_HAMMING_THRESHOLD_VALUE = {new_config.IMAGE_HAMMING_THRESHOLD_VALUE}")
+
     global config
     config = new_config
 

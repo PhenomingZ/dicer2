@@ -9,14 +9,17 @@ from App.utils.DocxLoader import DocxLoader
 def save_article(index_id, task_id, document_id, file, title):
     docx_loader = DocxLoader(file)
     line_list = docx_loader.text
-    tags_list = docx_loader.tags
 
     doc_id = DocumentTools.get_doc_id(index_id, task_id, document_id)
     total_parts = len(line_list) - 1
 
     for count, line in enumerate(line_list):
+        image_marker, body = line[0], line[1]
+
+        is_image = False if image_marker == 0 else True
+
         article = Article(index=index_id, task=task_id, document=document_id, title=title, doc_id=doc_id,
-                          vector="default", tags=tags_list[count], body=line, part=count, total=total_parts)
+                          vector="default", is_image=is_image, body=body, part=count, total=total_parts)
         article.save(index=index_id)
 
 
@@ -36,7 +39,9 @@ def get_article(index_id, task_id, document_id):
 
     body = []
     for hit in doc_search.scan():
-        body.append(hit.body)
+        image_marker = 1 if hit.is_image else 0
+
+        body.append((image_marker, hit.body))
 
     return body
 
@@ -65,10 +70,12 @@ class BaseDocumentController(BaseTaskController):
         index_instance = self.get_index(index_id)
         task_instance = index_instance.get_task(task_id)
         task_instance.update_doc(document_id, **kwargs)
+        article = task_instance.get_doc(document_id)
+        title = article.title
 
         if file:
             delete_article(index_id, task_id, document_id)
-            save_article(index_id, task_id, document_id, file)
+            save_article(index_id, task_id, document_id, file, title)
 
         self.base.save()
 

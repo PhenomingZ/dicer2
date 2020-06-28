@@ -51,10 +51,10 @@ class BaseTask(InnerDoc):
         for doc_loc, doc_item in enumerate(self.docs):
             if doc_item.id == doc_id:
                 return doc_item
-        ForbiddenAbort(f"Task '{doc_id}' is not exist!")
+        ForbiddenAbort(f"Document '{doc_id}' is not exist!")
 
     def get_doc_loc(self, doc_id):
         for doc_loc, doc_item in enumerate(self.docs):
             if doc_item.id == doc_id:
                 return doc_loc
-        ForbiddenAbort(f"Task '{doc_id}' is not exist!")
+        ForbiddenAbort(f"Document '{doc_id}' is not exist!")

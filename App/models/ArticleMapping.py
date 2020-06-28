@@ -1,4 +1,4 @@
-from elasticsearch_dsl import Document, Text, Keyword, Integer
+from elasticsearch_dsl import Document, Text, Keyword, Integer, Boolean
 
 
 # 该类用于指定待查文档存入ElasticSearch包含的字段
@@ -11,7 +11,7 @@ class Article(Document):
     part = Integer()
     total = Integer()
     vector = Keyword()
-    tags = Text(analyzer="ik_max_word", search_analyzer="ik_smart")
+    is_image = Boolean()
     body = Text(analyzer="ik_max_word", search_analyzer="ik_smart")
 
     class Index:
