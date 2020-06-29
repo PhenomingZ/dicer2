@@ -1184,10 +1184,10 @@ GET localhost:9605/_single/_search/
                 "similar": [
                     {
                         "similarity": 0.9242424242424242,
-                        "index": "course-one",
-                        "task": "2015",
-                        "document": "2015001",
-                        "title": "软件测试技术课程心得体会2015001",
+                        "index": "machine-learning",
+                        "task": "2019-spring",
+                        "document": "SY1906001",
+                        "title": "王五的机器学习结课论文",
                         "body": 9259613880691195903,
                         "part": 50,
                         "total": 50
