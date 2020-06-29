@@ -43,7 +43,6 @@
 **即将更新**
 
 1.  即将支持pdf、txt文件类型
-2.  即将支持文档中图片参与查重
 3.  即将支持文档版本快照、版本间对比功能
 
 点击链接查看完整的更新日志：[点击查看](CHANGELOG.md)
@@ -389,7 +388,7 @@ curl --location --request GET 'localhost:9605/_single/_search/' \
 
 *   请求样例
 
-```http
+```json
 POST localhost:9605/machine-learning/
 {
 	"title": "机器学习"
@@ -431,7 +430,7 @@ POST localhost:9605/machine-learning/
 
 *   请求样例
 
-```http
+```json
 DELETE localhost:9605/machine-learning/
 ```
 
@@ -469,7 +468,7 @@ DELETE localhost:9605/machine-learning/
 
 *   请求样例
 
-```http
+```json
 PUT localhost:9605/machine-learning/
 {
 	"title": "人工智能大赛"
@@ -512,7 +511,7 @@ PUT localhost:9605/machine-learning/
 
 *   请求样例
 
-```http
+```json
 PATCH localhost:9605/machine-learning/
 {
 	"title": "2020年机器学习算法大赛"
@@ -554,7 +553,7 @@ PATCH localhost:9605/machine-learning/
 
 *   请求样例
 
-```http
+```json
 GET localhost:9605/machine-learning/
 ```
 
@@ -614,7 +613,7 @@ GET localhost:9605/machine-learning/
 
 *   请求样例
 
-```http
+```json
 POST localhost:9605/machine-learning/2020-spring/
 {
 	"title": "2020年机器学习春季班"
@@ -659,7 +658,7 @@ POST localhost:9605/machine-learning/2020-spring/
 
 *   请求样例
 
-```http
+```json
 DELETE localhost:9605/machine-learning/2020-spring/
 ```
 
@@ -700,7 +699,7 @@ DELETE localhost:9605/machine-learning/2020-spring/
 
 *   请求样例
 
-```http
+```json
 PUT localhost:9605/machine-learning/2020-spring/
 {
 	"title": "2020届机器学习强化班"
@@ -746,7 +745,7 @@ PUT localhost:9605/machine-learning/2020-spring/
 
 *   请求样例
 
-```http
+```json
 PATCH localhost:9605/machine-learning/2020-spring/
 {
 	"title": "2020届机器学习进阶班"
@@ -791,7 +790,7 @@ PATCH localhost:9605/machine-learning/2020-spring/
 
 *   请求样例
 
-```http
+```json
 GET localhost:9605/machine-learning/2020-spring/
 ```
 
@@ -855,7 +854,7 @@ GET localhost:9605/machine-learning/2020-spring/
 
 *   请求样例
 
-```http
+```json
 POST localhost:9605/machine-learning/2020-spring/SY2006000/
 {
 	"title": "张三的机器学习结课论文"
@@ -903,7 +902,7 @@ POST localhost:9605/machine-learning/2020-spring/SY2006000/
 
 *   请求样例
 
-```http
+```json
 DELETE localhost:9605/machine-learning/2020-spring/SY2006000/
 ```
 
@@ -948,7 +947,7 @@ DELETE localhost:9605/machine-learning/2020-spring/SY2006000/
 
 *   请求样例
 
-```http
+```json
 PUT localhost:9605/machine-learning/2020-spring/SY2006000/
 {
 	"title": "张三-SY2006000-机器学习"
@@ -998,7 +997,7 @@ PUT localhost:9605/machine-learning/2020-spring/SY2006000/
 
 *   请求样例
 
-```http
+```json
 PATCH localhost:9605/machine-learning/2020-spring/SY2006000/
 {
 	"title": "张三-SY2006000-机器学习大作业"
@@ -1046,7 +1045,7 @@ PATCH localhost:9605/machine-learning/2020-spring/SY2006000/
 
 *   请求样例
 
-```http
+```json
 GET localhost:9605/machine-learning/2020-spring/SY2006000/
 ```
 
@@ -1104,7 +1103,7 @@ GET localhost:9605/machine-learning/2020-spring/SY2006000/
 
 *   请求样例
 
-```http
+```json
 GET localhost:9605/_single/_search/
 {
     "index": "machine-learning",
