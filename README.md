@@ -25,6 +25,10 @@
 
 <h2 id="change-log" align="center">Change Log</h2>
 
+**v0.1.5 Change Log (2020.06.27)**
+1. 优化了全文复制比的算法，被筛除的短句将不再参与复制比计算
+2. 图片现在可以参与相似度的计算了，图片将会被转化为hash值使用汉明距离进行相似度计算
+
 **v0.1.4 Change Log (2020.06.26)**
 
 1. 优化了接口返回值字段
@@ -46,7 +50,7 @@
 
 <h2 id="setup-dicer2" align="center">Setup DICER2</h2>
 
-当前版本（v0.1.4）推荐使用**Docker-Compose**环境部署和使用**DICER2**。由于**DICER2**依赖于**ElasticSearch**集群环境，提供了相关镜像和**YAML**文件用于一键部署完整的应用环境，具体步骤如下：
+当前版本（v0.1.5）推荐使用**Docker-Compose**环境部署和使用**DICER2**。由于**DICER2**依赖于**ElasticSearch**集群环境，提供了相关镜像和**YAML**文件用于一键部署完整的应用环境，具体步骤如下：
 
 ### 1. 安装Docker-Compose
 
@@ -63,7 +67,7 @@
 *   ElasticSearch集群
 *   Cerebro管理工具
 
-下载地址：[点击下载](build/Docker/v0.1.4/docker-compose.yaml)
+下载地址：[点击下载](build/Docker/v0.1.5/docker-compose.yaml)
 
 ### 3. 启动服务
 
@@ -82,7 +86,7 @@ docker-compose up
 如果因网络原因，无法顺利拉取镜像，也可预先下载好所需镜像并导入本机后再启动服务，所需镜像拉取命令如下：
 
 ```bash
-docker pull phenoming/dicer2:v0.1.4
+docker pull phenoming/dicer2:v0.1.5
 docker pull phenoming/elasticsearch:v0.1.1
 docker pull phenoming/cerebro:v0.1.1
 ```
@@ -96,7 +100,7 @@ docker pull phenoming/cerebro:v0.1.1
 ```bash
 $ docker ps
 IMAGE                            STATUS          NAMES
-phenoming/dicer2:v0.1.4          Up 2 seconds    dicer2
+phenoming/dicer2:v0.1.5          Up 2 seconds    dicer2
 phenoming/cerebro:v0.1.1         Up 2 seconds    cerebro
 phenoming/elasticsearch:v0.1.1   Up 2 seconds    es7_01
 phenoming/elasticsearch:v0.1.1   Up 2 seconds    es7_02
@@ -114,7 +118,7 @@ curl --location --request GET 'http://localhost:9605/'
 {
     "name": "Dicer2",
     "version": {
-        "dicer2_version": "v0.1.4",
+        "dicer2_version": "v0.1.5",
         "elastic_search_version": "7.6.2"
     },
     "msg": "Check your documents cooler!"
@@ -157,7 +161,7 @@ curl --location --request POST 'localhost:9605/machine-learning/' \
 获得返回值如下即表明创建成功：
 
 ```json
-{"meta": {"took": 208, "msg": "CREATED", "status": 201}, "data": {"index": "machine-learning", "title": "机器学习"}}
+{"meta": {"took": 209, "msg": "CREATED", "status": 201}, "data": {"index": "machine-learning", "title": "机器学习"}}
 ```
 
 ### 2. 创建年级
@@ -235,11 +239,11 @@ curl --location --request POST 'localhost:9605/machine-learning/2020-spring/SY20
 返回的内容如下：
 
 ```json
-{"meta": {"took": 97, "msg": "CREATED", "status": 201}, "data": {"title": "李四的机器学习结课论文", "index": "machine-learning", "task": "2019-spring"}}
+{"meta": {"took": 151, "msg": "CREATED", "status": 201}, "data": {"index": "machine-learning", "task": "2019-spring", "document": "SY1906000", "title": "李四的机器学习结课论文"}}
 
-{"meta": {"took": 98, "msg": "CREATED", "status": 201}, "data": {"title": "王五的机器学习结课论文", "index": "machine-learning", "task": "2019-spring"}}
+{"meta": {"took": 85, "msg": "CREATED", "status": 201}, "data": {"index": "machine-learning", "task": "2019-spring", "document": "SY1906001", "title": "王五的机器学习结课论文"}}
 
-{"meta": {"took": 94, "msg": "CREATED", "status": 201}, "data": {"title": "张三的机器学习结课论文",  "index": "machine-learning", "task": "2020-spring"}}
+{"meta": {"took": 111, "msg": "CREATED", "status": 201}, "data": {"index": "machine-learning", "task": "2020-spring", "document": "SY2006000", "title": "张三的机器学习结课论文"}}
 ```
 
 ### 4. 文档查重
@@ -269,24 +273,30 @@ curl --location --request GET 'localhost:9605/_single/_search/' \
 ```json
 {
     "meta": {
-        "took": 96,
+        "took": 66,
         "msg": "OK",
         "status": 200
     },
     "data": {
+        "index": "machine-learning",
+        "task": "2020-spring",
+        "document": "SY2006000",
+        "title": "张三的机器学习结课论文",
+        "repetitive_rate": 0.6666666666666666,
         "result": [
             {
                 "origin": "机器学习是一门研究计算机是如何模拟或实现人类行为，获取新知识并将其重新整理为现有的知识体系以此来提升自身能力和性能。",
-                "index": "machine-learning",
-                "task": "2020-spring",
-                "document": "SY2006000",
+                "is_image": false,
                 "part": 3,
                 "total": 5,
                 "similar": [
                     {
                         "score": 20.308796,
                         "jaccard": 0.45652173913043476,
-                        "doc_id": "machine-learning-2019-spring-SY1906000",
+                        "index": "machine-learning",
+                        "task": "2019-spring",
+                        "document": "SY1906000",
+                        "title": "李四的机器学习结课论文",
                         "body": "专门研究计算机怎样模拟或实现人类的学习行为，以获取新的知识或技能，重新组织已有的知识结构使之不断改善自身的性能。",
                         "part": 3,
                         "total": 4
@@ -295,16 +305,17 @@ curl --location --request GET 'localhost:9605/_single/_search/' \
             },
             {
                 "origin": "有些人认为，机器是由人生产的，其动作也是完全根据人类的设计决定的，人类完全不必担心机器会超过人类",
-                "index": "machine-learning",
-                "task": "2020-spring",
-                "document": "SY2006000",
+                "is_image": false,
                 "part": 4,
                 "total": 5,
                 "similar": [
                     {
                         "score": 14.6125145,
                         "jaccard": 0.4444444444444444,
-                        "doc_id": "machine-learning-2019-spring-SY1906001",
+                        "index": "machine-learning",
+                        "task": "2019-spring",
+                        "document": "SY1906001",
+                        "title": "王五的机器学习结课论文",
                         "body": "机器的能力是否能超过人的，很多持否定意见的人的一个主要论据是：机器是人造的，其性能和动作完全是由设计者规定的，因此无论如何其能力也不会超过设计者本人。",
                         "part": 2,
                         "total": 3
@@ -336,7 +347,7 @@ curl --location --request GET 'localhost:9605/_single/_search/' \
 
 ### 1. 接口说明
 
-*   API版本：v0.1.4
+*   API版本：v0.1.5
 *   基准地址：`http://localhost:9605/`
 *   使用 HTTP Status Code 标识状态
 *   数据返回格式统一使用 JSON
@@ -1107,27 +1118,29 @@ GET localhost:9605/_single/_search/
 
 *   响应参数
 
-| 参数名                  | 参数说明                           | 备注 |
-| ----------------------- | ---------------------------------- | ---- |
-| index                   | index的id                          |      |
-| task                    | task的id                           |      |
-| document                | document的id                       |      |
-| title                   | document的标题名                   |      |
-| repetitive_rate         | 全文复制比                         |      |
-| result                  | 查重结果列表                       |      |
-| result.origin           | 疑似抄袭的原句                     |      |
-| result.part             | 疑似抄袭的原句在原文中所处的分段   |      |
-| result.total            | 疑似抄袭的原句所属原文总分段数     |      |
-| result.similar          | 与原句相似的句子列表               |      |
-| result.similar.score    | 相似得分（受句子长度和重复率影响） |      |
-| result.similar.jaccard  | 归一Jaccard距离，范围0~1           |      |
-| result.similar.index    | 相似句子的index                    |      |
-| result.similar.task     | 相似句子的task                     |      |
-| result.similar.document | 相似句子的document                 |      |
-| result.similar.title    | 相似句子的标题名                   |      |
-| result.similar.body     | 相似句子的内容                     |      |
-| result.similar.part     | 相似句子在其所属文档中所处的分段   |      |
-| result.similar.total    | 相似句子所属文档的总分段数         |      |
+| 参数名                   | 参数说明                           | 备注               |
+| ------------------------ | ---------------------------------- | ------------------ |
+| index                    | index的id                          |                    |
+| task                     | task的id                           |                    |
+| document                 | document的id                       |                    |
+| title                    | document的标题名                   |                    |
+| repetitive_rate          | 全文复制比                         |                    |
+| result                   | 查重结果列表                       |                    |
+| result.origin            | 疑似抄袭的原句                     |                    |
+| result.is_image          | 表示该句子是否为图片               |                    |
+| result.part              | 疑似抄袭的原句在原文中所处的分段   |                    |
+| result.total             | 疑似抄袭的原句所属原文总分段数     |                    |
+| result.similar           | 与原句相似的句子列表               |                    |
+| result.similar.score     | 相似得分（受句子长度和重复率影响） | 仅文本类型有此字段 |
+| result.similar.jaccard   | 归一Jaccard距离，范围0~1           | 仅文本类型有此字段 |
+| result.similar.similarit | 图片之间的相似度                   | 仅图片类型有此字段 |
+| result.similar.index     | 相似句子的index                    |                    |
+| result.similar.task      | 相似句子的task                     |                    |
+| result.similar.document  | 相似句子的document                 |                    |
+| result.similar.title     | 相似句子的标题名                   |                    |
+| result.similar.body      | 相似句子的内容                     |                    |
+| result.similar.part      | 相似句子在其所属文档中所处的分段   |                    |
+| result.similar.total     | 相似句子所属文档的总分段数         |                    |
 
 *   响应数据
 
@@ -1147,6 +1160,7 @@ GET localhost:9605/_single/_search/
         "result": [
             {
                 "origin": "机器学习是一门研究计算机是如何模拟或实现人类行为，获取新知识并将其重新整理为现有的知识体系以此来提升自身能力和性能。",
+                "is_image": false,
                 "part": 3,
                 "total": 5,
                 "similar": [
@@ -1160,6 +1174,24 @@ GET localhost:9605/_single/_search/
                         "body": "专门研究计算机怎样模拟或实现人类的学习行为，以获取新的知识或技能，重新组织已有的知识结构使之不断改善自身的性能。",
                         "part": 3,
                         "total": 4
+                    }
+                ]
+            },
+            {
+                "origin": 9331955148527763455,
+                "is_image": true,
+                "part": 24,
+                "total": 83,
+                "similar": [
+                    {
+                        "similarity": 0.9242424242424242,
+                        "index": "course-one",
+                        "task": "2015",
+                        "document": "2015001",
+                        "title": "软件测试技术课程心得体会2015001",
+                        "body": 9259613880691195903,
+                        "part": 50,
+                        "total": 50
                     }
                 ]
             }
