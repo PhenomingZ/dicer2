@@ -14,3 +14,11 @@ class DateEncoder(json.JSONEncoder):
     @classmethod
     def jsonify(cls, data):
         return json.loads(json.dumps(data, cls=cls))
+
+    @classmethod
+    def save(cls, path, data):
+        with open(path, "w") as fp:
+            d = cls.jsonify(data)
+            s = json.dumps(d)
+            fp.write(s)
+            fp.close()

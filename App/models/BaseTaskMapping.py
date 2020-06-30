@@ -28,7 +28,14 @@ class BaseTask(InnerDoc):
 
         title = kwargs.get("title")
 
-        new_document = BaseDocument(id=doc_id, title=title, created_at=datetime.now())
+        new_document = BaseDocument(
+            id=doc_id,
+            version=1,
+            title=title,
+            created_at=datetime.now(),
+            updated_at=datetime.now()
+        )
+
         self.docs.append(new_document)
         self.doc_count += 1
 
@@ -40,6 +47,10 @@ class BaseTask(InnerDoc):
     def update_doc(self, doc_id, **kwargs):
         old_doc = self.get_doc(doc_id)
         doc_loc = self.get_doc_loc(doc_id)
+
+        old_doc.version += 1
+        old_doc.updated_at = datetime.now()
+
         title = kwargs.get("title")
 
         if title:

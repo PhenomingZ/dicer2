@@ -17,6 +17,9 @@ def init_config(app):
     new_config.IMAGE_HAMMING_THRESHOLD_VALUE = app.config["IMAGE_HAMMING_THRESHOLD_VALUE"]
     print(f"IMAGE_HAMMING_THRESHOLD_VALUE = {new_config.IMAGE_HAMMING_THRESHOLD_VALUE}")
 
+    new_config.DICER2_STORAGE_PATH = app.config["DICER2_STORAGE_PATH"]
+    print(f"DICER2_STORAGE_PATH = {new_config.DICER2_STORAGE_PATH}")
+
     global config
     config = new_config
 

@@ -1,12 +1,15 @@
 version: '2.2'
 services:
   dicer2:
-    image: phenoming/dicer2:v0.1.5
+    image: phenoming/dicer2:v0.1.6
     container_name: dicer2
     depends_on:
       - elasticsearch
       - elasticsearch2
     restart: on-failure
+    volumes:
+      - dicer2data:/usr/local/dicer2/store
+      - logsdata:/usr/local/dicer2/logs
     ports:
       - "9605:9605"
     networks:
@@ -35,7 +38,7 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - dicer2data1:/usr/share/elasticsearch/data
+      - esdata1:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
     networks:
@@ -55,15 +58,19 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - dicer2data2:/usr/share/elasticsearch/data
+      - esdata2:/usr/share/elasticsearch/data
     networks:
       - dicer2net
 
 
 volumes:
-  dicer2data1:
+  logsdata:
     driver: local
-  dicer2data2:
+  dicer2data:
+    driver: local
+  esdata1:
+    driver: local
+  esdata2:
     driver: local
 
 networks:

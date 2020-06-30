@@ -1,9 +1,10 @@
 from flask_restful import Resource
 
-dicer2_version = "v0.1.5"
+dicer2_version = "v0.1.6"
 elastic_search_version = "7.6.2"
 
 
+# TODO 在这里要检查ES集群的健康状态并返回
 class MainResource(Resource):
 
     @staticmethod
