@@ -6,6 +6,7 @@ from elasticsearch_dsl import Search
 
 from App.controllers.BaseTaskController import BaseTaskController
 from App.models import Article
+from App.responses import NotFoundAbort
 from App.utils.DateEncoder import DateEncoder
 from App.utils.DocumentTools import DocumentTools
 from App.utils.DocxLoader import DocxLoader
@@ -48,8 +49,12 @@ def get_document_storage_path(index_id, task_id, document_id, version, makedir=F
 
 def get_article_data(index_id, task_id, document_id, version):
     file_path = get_document_storage_path(index_id, task_id, document_id, version, makedir=False)
-    fp = open(file_path, "r")
-    return json.load(fp)
+
+    try:
+        fp = open(file_path, "r")
+        return json.load(fp)
+    except FileNotFoundError as e:
+        NotFoundAbort(f"Version '{version}' of document '{index_id}/{task_id}/{document_id}' is not exist")
 
 
 class BaseDocumentController(BaseTaskController):
@@ -78,7 +83,17 @@ class BaseDocumentController(BaseTaskController):
 
         self.base.save()
 
-    def delete_document(self, index_id, task_id, document_id):
+    def delete_document(self, index_id, task_id, document_id, version):
+
+        if version:
+            version_file_path = get_document_storage_path(index_id, task_id, document_id, version, makedir=False)
+            try:
+                os.remove(version_file_path)
+            except FileNotFoundError:
+                NotFoundAbort(f"Version '{version}' of document '{index_id}/{task_id}/{document_id}' is not exist")
+
+            return
+
         task_instance = self.get_task_instance(index_id, task_id)
         task_instance.del_doc(document_id)
 
@@ -109,8 +124,12 @@ class BaseDocumentController(BaseTaskController):
 
         self.base.save()
 
-    def get_document(self, index_id, task_id, document_id):
+    def get_document(self, index_id, task_id, document_id, version):
         task_instance = self.get_task_instance(index_id, task_id)
         article = task_instance.get_doc(document_id)
-        article.body = get_article_data(index_id, task_id, document_id, article.version).get("body")
+
+        if not version:
+            version = article.version
+
+        article.body = get_article_data(index_id, task_id, document_id, version).get("body")
         return article

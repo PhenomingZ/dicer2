@@ -25,7 +25,9 @@ class DocumentsResource(Dicer2Resource):
     def delete(cls, index, task, document):
         start_time = datetime.now()
 
-        BaseController().delete_document(index, task, document)
+        version = cls.get_parameter("version", required=False, location=["json", "form"])
+
+        BaseController().delete_document(index, task, document, version)
 
         response_data = dict(index=index, task=task, document=document)
         return DeletedResponse(data=response_data, start_time=start_time)
@@ -58,7 +60,12 @@ class DocumentsResource(Dicer2Resource):
     def get(cls, index, task, document):
         start_time = datetime.now()
 
-        result = BaseController().get_document(index, task, document)
+        version = cls.get_parameter("version", required=False, location=["json", "form"])
+
+        result = BaseController().get_document(index, task, document, version)
+
+        if not version:
+            version = "latest"
 
         body = []
 
@@ -68,6 +75,6 @@ class DocumentsResource(Dicer2Resource):
                 continue
             body.append(line[1])
 
-        response_data = dict(index=index, task=task, document=document, title=result.title,
-                             created_at=result.created_at, body=body)
+        response_data = dict(index=index, task=task, document=document, version=version,
+                             title=result.title, created_at=result.created_at, body=body)
         return OKResponse(data=DateEncoder.jsonify(response_data), start_time=start_time)
