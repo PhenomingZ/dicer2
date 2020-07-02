@@ -6,7 +6,6 @@ from elasticsearch_dsl import Search
 
 from App.controllers.BaseTaskController import BaseTaskController
 from App.models import Article
-from App.settings import get_config
 from App.utils.DateEncoder import DateEncoder
 from App.utils.DocumentTools import DocumentTools
 from App.utils.DocxLoader import DocxLoader
@@ -37,12 +36,8 @@ def delete_article(index_id, task_id, document_id):
         Search(index=index_id).query("match", doc_id=doc_id).delete()
 
 
-def get_storage_path(index_id, task_id, document_id):
-    return os.path.join(get_config().DICER2_STORAGE_PATH, index_id, task_id, document_id)
-
-
 def get_document_storage_path(index_id, task_id, document_id, version, makedir=False):
-    storage_path = get_storage_path(index_id, task_id, document_id)
+    storage_path = BaseDocumentController.get_storage_path(index_id, task_id, document_id)
 
     if makedir:
         os.makedirs(storage_path, exist_ok=True)
@@ -62,7 +57,6 @@ class BaseDocumentController(BaseTaskController):
         index_instance = self.get_index(index_id)
         return index_instance.get_task(task_id)
 
-    # TODO 在删除index、task和document时，也需要删除对应的持久化文件
     # TODO 添加查询历史版本的API
     def persistence_version(self, index_id, task_id, document_id, docx_loader, version):
         task_instance = self.get_task_instance(index_id, task_id)
@@ -88,7 +82,9 @@ class BaseDocumentController(BaseTaskController):
         task_instance = self.get_task_instance(index_id, task_id)
         task_instance.del_doc(document_id)
 
-        shutil.rmtree(get_storage_path(index_id, task_id, document_id))
+        storage_path = self.get_storage_path(index_id, task_id, document_id)
+        shutil.rmtree(storage_path, ignore_errors=True)
+
         delete_article(index_id, task_id, document_id)
 
         self.base.save()

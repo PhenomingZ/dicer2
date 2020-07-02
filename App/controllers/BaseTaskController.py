@@ -1,3 +1,5 @@
+import shutil
+
 from elasticsearch import NotFoundError
 from elasticsearch_dsl import Search
 
@@ -21,6 +23,11 @@ class BaseTaskController(BaseIndexController):
     def delete_task(self, index_id, task_id):
         index_instance = self.get_index(index_id)
         index_instance.del_task(task_id)
+
+        # 删除持久化文件
+        storage_path = self.get_storage_path(index_id, task_id)
+        shutil.rmtree(storage_path, ignore_errors=True)
+
         self.clear_all_docs(index_id, task_id)
         self.base.save()
 
