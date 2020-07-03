@@ -35,3 +35,5 @@ api.add_resource(DocumentsResource, "/<string:index>/<string:task>/<string:docum
 
 # Search for single document
 api.add_resource(SingleSearchResource, "/_single/_search/", endpoint="single_search")
+
+# TODO 添加重新加载配置项的API

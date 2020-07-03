@@ -25,7 +25,12 @@
 
 <h2 id="change-log" align="center">Change Log</h2>
 
+**v0.1.7 Change Log (2020.07.04)**
+
+1. 修复了当文档版本快照不存在的情况下获取版本列表提示ElasticSearch连接错误的BUG
+
 **v0.1.6 Change Log (2020.07.03)**
+
 1. 增加了文档版本快照功能，支持记录每一次提交的文档信息
 2. 现在可以单独获取或删除特定版本的文档
 3. 增加了获取某个文档的版本列表的接口
@@ -55,7 +60,7 @@
 
 <h2 id="setup-dicer2" align="center">Setup DICER2</h2>
 
-当前版本（v0.1.6）推荐使用**Docker-Compose**环境部署和使用**DICER2**。由于**DICER2**依赖于**ElasticSearch**集群环境，提供了相关镜像和**YAML**文件用于一键部署完整的应用环境，具体步骤如下：
+当前版本（v0.1.7）推荐使用**Docker-Compose**环境部署和使用**DICER2**。由于**DICER2**依赖于**ElasticSearch**集群环境，提供了相关镜像和**YAML**文件用于一键部署完整的应用环境，具体步骤如下：
 
 ### 1. 安装Docker-Compose
 
@@ -72,7 +77,7 @@
 *   ElasticSearch集群
 *   Cerebro管理工具
 
-下载地址：[点击下载](build/Docker/v0.1.6/docker-compose.yaml)
+下载地址：[点击下载](build/Docker/v0.1.7/docker-compose.yaml)
 
 ### 3. 启动服务
 
@@ -91,7 +96,7 @@ docker-compose up
 如果因网络原因，无法顺利拉取镜像，也可预先下载好所需镜像并导入本机后再启动服务，所需镜像拉取命令如下：
 
 ```bash
-docker pull phenoming/dicer2:v0.1.6
+docker pull phenoming/dicer2:v0.1.7
 docker pull phenoming/elasticsearch:v0.1.1
 docker pull phenoming/cerebro:v0.1.1
 ```
@@ -105,7 +110,7 @@ docker pull phenoming/cerebro:v0.1.1
 ```bash
 $ docker ps
 IMAGE                            STATUS          NAMES
-phenoming/dicer2:v0.1.6          Up 2 seconds    dicer2
+phenoming/dicer2:v0.1.7          Up 2 seconds    dicer2
 phenoming/cerebro:v0.1.1         Up 2 seconds    cerebro
 phenoming/elasticsearch:v0.1.1   Up 2 seconds    es7_01
 phenoming/elasticsearch:v0.1.1   Up 2 seconds    es7_02
@@ -123,7 +128,7 @@ curl --location --request GET 'http://localhost:9605/'
 {
     "name": "Dicer2",
     "version": {
-        "dicer2_version": "v0.1.6",
+        "dicer2_version": "v0.1.7",
         "elastic_search_version": "7.6.2"
     },
     "msg": "Check your documents cooler!"

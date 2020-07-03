@@ -2,7 +2,7 @@
 
 FROM phenoming/dicer2-base:v0.1.5
 
-ENV VERSION="v0.1.6"
+ENV VERSION="v0.1.7"
 ENV DICER2_HOME="/usr/local/dicer2"
 ENV PIP_MIRROR="https://pypi.tuna.tsinghua.edu.cn/simple"
 ENV DICER2_CONFIG_PATH="settings/dicer2_docker_config.py"

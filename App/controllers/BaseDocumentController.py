@@ -54,7 +54,7 @@ def get_article_data(index_id, task_id, document_id, version):
         fp = open(file_path, "r")
         return json.load(fp)
     except FileNotFoundError:
-        NotFoundAbort(f"Version '{version}' of document '{index_id}/{task_id}/{document_id}' is not exist")
+        NotFoundAbort(f"Version '{version}' of document '{index_id}'-'{task_id}'-'{document_id}' is not exist")
 
 
 class BaseDocumentController(BaseTaskController):
@@ -64,7 +64,11 @@ class BaseDocumentController(BaseTaskController):
 
     def list_versions(self, index_id, task_id, document_id):
         storage_path = self.get_storage_path(index_id, task_id, document_id)
-        file_list = os.listdir(storage_path)
+
+        try:
+            file_list = os.listdir(storage_path)
+        except FileNotFoundError:
+            NotFoundAbort(f"Document '{index_id}'-'{task_id}'-'{document_id}' is not exist")
 
         version_list = []
 
@@ -143,7 +147,7 @@ class BaseDocumentController(BaseTaskController):
 
         self.base.save()
 
-    def get_document(self, index_id, task_id, document_id, version):
+    def get_document(self, index_id, task_id, document_id, version=None):
         task_instance = self.get_task_instance(index_id, task_id)
         article = task_instance.get_doc(document_id)
 
