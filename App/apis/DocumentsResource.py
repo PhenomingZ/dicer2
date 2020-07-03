@@ -76,6 +76,6 @@ class DocumentsResource(Dicer2Resource):
             else:
                 body.append(line[1])
 
-        response_data = dict(index=index, task=task, document=document, version=version,
-                             title=result.title, created_at=result.created_at, body=body)
+        response_data = dict(index=index, task=task, document=document, version=version, title=result.title,
+                             created_at=result.created_at, updated_at=result.updated_at, body=body)
         return OKResponse(data=DateEncoder.jsonify(response_data), start_time=start_time)

@@ -25,6 +25,10 @@
 
 <h2 id="change-log" align="center">Change Log</h2>
 
+**v0.1.6 Change Log (2020.07.03)**
+1. 增加了文档版本管理功能，支持对版本的更新历史进行记录
+2. 可以获取或删除特定版本的文档
+
 **v0.1.5 Change Log (2020.06.29)**
 
 1. 优化了全文复制比的算法，被筛除的短句将不再参与复制比计算
@@ -50,7 +54,7 @@
 
 <h2 id="setup-dicer2" align="center">Setup DICER2</h2>
 
-当前版本（v0.1.5）推荐使用**Docker-Compose**环境部署和使用**DICER2**。由于**DICER2**依赖于**ElasticSearch**集群环境，提供了相关镜像和**YAML**文件用于一键部署完整的应用环境，具体步骤如下：
+当前版本（v0.1.6）推荐使用**Docker-Compose**环境部署和使用**DICER2**。由于**DICER2**依赖于**ElasticSearch**集群环境，提供了相关镜像和**YAML**文件用于一键部署完整的应用环境，具体步骤如下：
 
 ### 1. 安装Docker-Compose
 
@@ -86,7 +90,7 @@ docker-compose up
 如果因网络原因，无法顺利拉取镜像，也可预先下载好所需镜像并导入本机后再启动服务，所需镜像拉取命令如下：
 
 ```bash
-docker pull phenoming/dicer2:v0.1.5
+docker pull phenoming/dicer2:v0.1.6
 docker pull phenoming/elasticsearch:v0.1.1
 docker pull phenoming/cerebro:v0.1.1
 ```
@@ -100,7 +104,7 @@ docker pull phenoming/cerebro:v0.1.1
 ```bash
 $ docker ps
 IMAGE                            STATUS          NAMES
-phenoming/dicer2:v0.1.5          Up 2 seconds    dicer2
+phenoming/dicer2:v0.1.6          Up 2 seconds    dicer2
 phenoming/cerebro:v0.1.1         Up 2 seconds    cerebro
 phenoming/elasticsearch:v0.1.1   Up 2 seconds    es7_01
 phenoming/elasticsearch:v0.1.1   Up 2 seconds    es7_02
@@ -118,7 +122,7 @@ curl --location --request GET 'http://localhost:9605/'
 {
     "name": "Dicer2",
     "version": {
-        "dicer2_version": "v0.1.5",
+        "dicer2_version": "v0.1.6",
         "elastic_search_version": "7.6.2"
     },
     "msg": "Check your documents cooler!"
@@ -347,11 +351,12 @@ curl --location --request GET 'localhost:9605/_single/_search/' \
 
 ### 1. 接口说明
 
-*   API版本：v0.1.5
+*   API版本：v0.1.6
 *   基准地址：`http://localhost:9605/`
 *   使用 HTTP Status Code 标识状态
 *   数据返回格式统一使用 JSON
 *   暂不支持授权认证
+*   所有以下划线开头的路由均为保留字
 
 #### 1.1 支持的请求方法
 
@@ -895,16 +900,20 @@ POST localhost:9605/machine-learning/2020-spring/SY2006000/
 *   请求方法：DELETE
 *   请求参数：
 
-| 参数名    | 参数说明     | 备注                    |
-| --------- | ------------ | ----------------------- |
-| :index    | index的id    | 不能为空，携带在`url`中 |
-| :task     | task的id     | 不能为空，携带在`url`中 |
-| :document | document的id | 不能为空，携带在`url`中 |
+| 参数名    | 参数说明         | 备注                                                         |
+| --------- | ---------------- | ------------------------------------------------------------ |
+| :index    | index的id        | 不能为空，携带在`url`中                                      |
+| :task     | task的id         | 不能为空，携带在`url`中                                      |
+| :document | document的id     | 不能为空，携带在`url`中                                      |
+| version   | document的版本号 | 可以为空，携带在请求体或表单数据中，若有此参数则删除文档的指定版本，若无此参数则删除整个文档 |
 
 *   请求样例
 
 ```
 DELETE localhost:9605/machine-learning/2020-spring/SY2006000/
+{
+	version: 2
+}
 ```
 
 *   响应参数
@@ -1038,28 +1047,33 @@ PATCH localhost:9605/machine-learning/2020-spring/SY2006000/
 *   请求方法：GET
 *   请求参数：
 
-| 参数名    | 参数说明     | 备注                    |
-| --------- | ------------ | ----------------------- |
-| :index    | index的id    | 不能为空，携带在`url`中 |
-| :task     | task的id     | 不能为空，携带在`url`中 |
-| :document | document的id | 不能为空，携带在`url`中 |
+| 参数名    | 参数说明         | 备注                               |
+| --------- | ---------------- | ---------------------------------- |
+| :index    | index的id        | 不能为空，携带在`url`中            |
+| :task     | task的id         | 不能为空，携带在`url`中            |
+| :document | document的id     | 不能为空，携带在`url`中            |
+| version   | document的版本号 | 可以为空，携带在请求体或表单数据中 |
 
 *   请求样例
 
 ```
 GET localhost:9605/machine-learning/2020-spring/SY2006000/
+{
+	version: 2
+}
 ```
 
 *   响应参数
 
-| 参数名     | 参数说明           | 备注                                       |
-| ---------- | ------------------ | ------------------------------------------ |
-| index      | index的id          |                                            |
-| task       | task的id           |                                            |
-| document   | document的id       |                                            |
-| title      | document的标题名   |                                            |
-| created_at | document创建的时间 |                                            |
-| body       | document的完整内容 | 文档内容根据数据库中建立索引的粒度进行拆分 |
+| 参数名     | 参数说明           | 备注                                              |
+| ---------- | ------------------ | ------------------------------------------------- |
+| index      | index的id          |                                                   |
+| task       | task的id           |                                                   |
+| document   | document的id       |                                                   |
+|            | document的版本号   | 若请求参数中不包含version，则默认为最新版本latest |
+| title      | document的标题名   |                                                   |
+| created_at | document创建的时间 |                                                   |
+| body       | document的完整内容 | 文档内容根据数据库中建立索引的粒度进行拆分        |
 
 *   响应数据
 
@@ -1074,14 +1088,75 @@ GET localhost:9605/machine-learning/2020-spring/SY2006000/
         "index": "machine-learning",
         "task": "2020-spring",
         "document": "SY2006000",
+        "version": "latest",
         "title": "张三-SY2006000-机器学习大作业",
-        "created_at": "2020-06-26T14:52:58.023486",
+        "created_at": "2020-07-03 13:10:39",
+        "updated_at": "2020-07-03 21:16:03",
         "body": [
             "机器学习作业样例",
             "2020年机器学习春季班-SY1806700",
             "机器学习(Machine Learning, ML)是一门多领域交叉学科，涉及概率论、统计学、逼近论、凸分析、算法复杂度理论等多门学科。",
             "专门研究计算机怎样模拟或实现人类的学习行为，以获取新的知识或技能，重新组织已有的知识结构使之不断改善自身的性能。",
             "它是人工智能的核心，是使计算机具有智能的根本途径，其应用遍及人工智能的各个领域，它主要使用归纳、综合而不是演绎。"
+        ]
+    }
+}
+```
+
+#### 4.6 获取文档版本列表
+
+*   请求路径：`http://localhost:9605/_version/:index/:task/:document/`
+*   请求方法：GET
+*   请求参数：
+
+| 参数名    | 参数说明     | 备注                    |
+| --------- | ------------ | ----------------------- |
+| :index    | index的id    | 不能为空，携带在`url`中 |
+| :task     | task的id     | 不能为空，携带在`url`中 |
+| :document | document的id | 不能为空，携带在`url`中 |
+
+*   请求样例
+
+```
+GET localhost:9605/_versions/machine-learning/2020-spring/SY2006000/
+```
+
+*   响应参数
+
+| 参数名              | 参数说明           | 备注 |
+| ------------------- | ------------------ | ---- |
+| index               | index的id          |      |
+| task                | task的id           |      |
+| document            | document的id       |      |
+| versions            | document的版本列表 |      |
+| versions.version    | 某个版本的版本号   |      |
+| versions.title      | 某个版本的标题名   |      |
+| versions.updated_at | 某个版本创建的时间 |      |
+
+*   响应数据
+
+```json
+{
+    "meta": {
+        "took": 8,
+        "msg": "OK",
+        "status": 200
+    },
+    "data": {
+        "index": "1",
+        "task": "1",
+        "document": "1",
+        "versions": [
+            {
+                "version": 1,
+                "title": "张三的结课论文",
+                "updated_at": "2020-07-03 21:16:03"
+            },
+            {
+                "version": 2,
+                "title": "张三的结课论文最新版",
+                "updated_at": "2020-07-04 20:19:33"
+            }
         ]
     }
 }

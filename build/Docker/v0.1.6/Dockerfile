@@ -10,7 +10,7 @@ ENV GUNICORN_CONFIG_PATH="App/settings/gunicorn_config.py"
 
 LABEL version=${VERSION} author="Charles Zhang" email="694556046@qq.com"
 
-RUN mkdir -p ${DICER2_HOME}/logs
+RUN mkdir -p ${DICER2_HOME}
 
 WORKDIR ${DICER2_HOME}
 
