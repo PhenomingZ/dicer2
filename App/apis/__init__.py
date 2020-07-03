@@ -1,5 +1,6 @@
 from flask_restful import Api
 
+from App.apis.VersionsResource import VersionsResource
 from App.apis.DocumentsResource import DocumentsResource
 from App.apis.IndexResource import IndexResource
 from App.apis.MainResource import MainResource
@@ -19,6 +20,9 @@ api.add_resource(MainResource, "/", endpoint="main")
 
 # Summary of dicer2
 api.add_resource(SummaryResource, "/_summary/", endpoint="_summary")
+
+# Versions view of document
+api.add_resource(VersionsResource, "/_versions/<string:index>/<string:task>/<string:document>/", endpoint="_versions")
 
 # CURD for index
 api.add_resource(IndexResource, "/<string:index>/", endpoint="index")

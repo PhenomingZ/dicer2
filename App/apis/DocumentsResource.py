@@ -72,8 +72,9 @@ class DocumentsResource(Dicer2Resource):
         # 筛选文档的查询结果，如果这一行是文本则显示，图片筛除
         for line in result.body:
             if line[0] == 1:
-                continue
-            body.append(line[1])
+                body.append("[图片]")
+            else:
+                body.append(line[1])
 
         response_data = dict(index=index, task=task, document=document, version=version,
                              title=result.title, created_at=result.created_at, body=body)

@@ -53,7 +53,7 @@ def get_article_data(index_id, task_id, document_id, version):
     try:
         fp = open(file_path, "r")
         return json.load(fp)
-    except FileNotFoundError as e:
+    except FileNotFoundError:
         NotFoundAbort(f"Version '{version}' of document '{index_id}/{task_id}/{document_id}' is not exist")
 
 
@@ -62,7 +62,26 @@ class BaseDocumentController(BaseTaskController):
         index_instance = self.get_index(index_id)
         return index_instance.get_task(task_id)
 
-    # TODO 添加查询历史版本的API
+    def list_versions(self, index_id, task_id, document_id):
+        storage_path = self.get_storage_path(index_id, task_id, document_id)
+        file_list = os.listdir(storage_path)
+
+        version_list = []
+
+        for file in file_list:
+            fp = open(os.path.join(storage_path, file), "r")
+            version = json.load(fp)
+            meta_data = dict(
+                version=version["version"],
+                title=version["title"],
+                updated_at=version["updated_at"]
+            )
+            version_list.append(meta_data)
+            fp.close()
+
+        version_list.sort(key=lambda v: v["version"])
+        return version_list
+
     def persistence_version(self, index_id, task_id, document_id, docx_loader, version):
         task_instance = self.get_task_instance(index_id, task_id)
         doc_data = task_instance.get_doc(document_id).to_dict()
