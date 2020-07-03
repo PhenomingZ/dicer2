@@ -71,7 +71,7 @@
 *   ElasticSearch集群
 *   Cerebro管理工具
 
-下载地址：[点击下载](build/Docker/v0.1.5/docker-compose.yaml)
+下载地址：[点击下载](build/Docker/v0.1.6/docker-compose.yaml)
 
 ### 3. 启动服务
 
