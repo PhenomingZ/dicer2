@@ -357,7 +357,7 @@ curl --location --request GET 'localhost:9605/_single/_search/' \
 
 ### 1. 接口说明
 
-*   API版本：v0.1.6
+*   API版本：v0.1.7
 *   基准地址：`http://localhost:9605/`
 *   使用 HTTP Status Code 标识状态
 *   数据返回格式统一使用 JSON
@@ -383,11 +383,112 @@ curl --location --request GET 'localhost:9605/_single/_search/' \
 | 404      | NOT FOUND             | 请求的资源不存在                     |
 | 500      | INTERNAL SERVER ERROR | 内部错误                             |
 
-### 2. 课程管理（Index Management）
+### 2. 基本接口
+
+#### 2.1 获取基本信息
+
+*   请求路径：`http://localhost:9605/`
+*   请求方法：GET
+*   请求参数：
+
+| 参数名 | 参数说明 | 备注 |
+| ------ | -------- | ---- |
+| 无     |          |      |
+
+*   请求样例
+
+```
+GET localhost:9605/
+```
+
+*   响应参数
+
+| 参数名 | 参数说明       | 备注 |
+| ------ | -------------- | ---- |
+| index  | DICER2版本信息 |      |
+| title  | 欢迎信息       |      |
+
+*   响应数据
+
+```json
+{
+    "name": "Dicer2",
+    "version": {
+        "dicer2_version": "v0.1.7",
+        "elastic_search_version": "7.6.2"
+    },
+    "msg": "Check your documents cooler!"
+}
+```
+
+#### 2.2 获取课程目录
+
+*   请求路径：`http://localhost:9605/_summary/`
+*   请求方法：GET
+*   请求参数：
+
+| 参数名 | 参数说明 | 备注 |
+| ------ | -------- | ---- |
+| 无     |          |      |
+
+*   请求样例
+
+```
+GET localhost:9605/_summary/
+```
+
+*   响应参数
+
+| 参数名      | 参数说明   | 备注                                             |
+| ----------- | ---------- | ------------------------------------------------ |
+| index_count | 课程的数量 |                                                  |
+| 欢迎信息    | 课程列表   | 课程列表中包含每门课程下属的作业和文档的基本信息 |
+
+*   响应数据
+
+```json
+{
+    "meta": {
+        "took": 9,
+        "msg": "OK",
+        "status": 200
+    },
+    "data": {
+        "index_count": 1,
+        "index": [
+            {
+                "id": "deep-learning",
+                "title": "机器学习",
+                "task_count": 1,
+                "created_at": "2020-07-04 08:47:02",
+                "tasks": [
+                    {
+                        "id": "2020",
+                        "title": "2020年机器学习春季班",
+                        "doc_count": 1,
+                        "created_at": "2020-07-04 08:47:37",
+                        "docs": [
+                            {
+                                "id": "2020001",
+                                "version": 1,
+                                "title": "张三的机器学习结课论文",
+                                "created_at": "2020-07-04 08:47:49",
+                                "updated_at": "2020-07-04 08:47:49"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
+```
+
+### 3. 课程管理（Index Management）
 
 每一个课程对应**DICER2**中的一个**Index**，这是文档存储的最上级目录。
 
-#### 2.1 创建课程
+#### 3.1 创建课程
 
 *   请求路径：`http://localhost:9605/:index/`
 *   请求方法：POST
@@ -430,7 +531,7 @@ POST localhost:9605/machine-learning/
 }
 ```
 
-#### 2.2 删除课程
+#### 3.2 删除课程
 
 *   请求路径：`http://localhost:9605/:index/`
 *   请求方法：DELETE
@@ -467,7 +568,7 @@ DELETE localhost:9605/machine-learning/
 }
 ```
 
-#### 2.3 课程信息完整更新
+#### 3.3 课程信息完整更新
 
 *   请求路径：`http://localhost:9605/:index/`
 *   请求方法：PUT
@@ -510,7 +611,7 @@ PUT localhost:9605/machine-learning/
 }
 ```
 
-#### 2.4 课程信息部分更新
+#### 3.4 课程信息部分更新
 
 *   请求路径：`http://localhost:9605/:index/`
 *   请求方法：PATCH
@@ -553,7 +654,7 @@ PATCH localhost:9605/machine-learning/
 }
 ```
 
-#### 2.5 获取课程信息
+#### 3.5 获取课程信息
 
 *   请求路径：`http://localhost:9605/:index/`
 *   请求方法：GET
@@ -607,11 +708,11 @@ GET localhost:9605/machine-learning/
 }
 ```
 
-### 3. 班级管理（Task Management）
+### 4. 班级管理（Task Management）
 
 每一个班级对应**DICER2**中的一个**Task**，这是文档存储的中间级目录。
 
-#### 3.1 创建班级
+#### 4.1 创建班级
 
 *   请求路径：`http://localhost:9605/:index/:task/`
 *   请求方法：POST
@@ -657,7 +758,7 @@ POST localhost:9605/machine-learning/2020-spring/
 }
 ```
 
-#### 3.2 删除班级
+#### 4.2 删除班级
 
 *   请求路径：`http://localhost:9605/:index/:task/`
 *   请求方法：DELETE
@@ -697,7 +798,7 @@ DELETE localhost:9605/machine-learning/2020-spring/
 }
 ```
 
-#### 3.3 班级信息完整更新
+#### 4.3 班级信息完整更新
 
 *   请求路径：`http://localhost:9605/:index/:task/`
 *   请求方法：PUT
@@ -743,7 +844,7 @@ PUT localhost:9605/machine-learning/2020-spring/
 }
 ```
 
-#### 3.4 班级信息部分更新
+#### 4.4 班级信息部分更新
 
 *   请求路径：`http://localhost:9605/:index/:task/`
 *   请求方法：PATCH
@@ -789,7 +890,7 @@ PATCH localhost:9605/machine-learning/2020-spring/
 }
 ```
 
-#### 3.5 获取班级信息
+#### 4.5 获取班级信息
 
 *   请求路径：`http://localhost:9605/:index/:task/`
 *   请求方法：GET
@@ -846,11 +947,11 @@ GET localhost:9605/machine-learning/2020-spring/
 }
 ```
 
-### 4. 文档管理（Document Management）
+### 5. 文档管理（Document Management）
 
 每一个文档对应**DICER2**中的一个**Document**，这是文档存储的最小单位。
 
-#### 4.1 创建文档
+#### 5.1 创建文档
 
 *   请求路径：`http://localhost:9605/:index/:task/:document/`
 *   请求方法：POST
@@ -900,7 +1001,7 @@ POST localhost:9605/machine-learning/2020-spring/SY2006000/
 }
 ```
 
-#### 4.2 删除文档
+#### 5.2 删除文档
 
 *   请求路径：`http://localhost:9605/:index/:task/:document/`
 *   请求方法：DELETE
@@ -947,7 +1048,7 @@ DELETE localhost:9605/machine-learning/2020-spring/SY2006000/
 }
 ```
 
-#### 4.3 文档信息完整更新
+#### 5.3 文档信息完整更新
 
 *   请求路径：`http://localhost:9605/:index/:task/:document/`
 *   请求方法：PUT
@@ -997,7 +1098,7 @@ PUT localhost:9605/machine-learning/2020-spring/SY2006000/
 }
 ```
 
-#### 4.4 文档信息部分更新
+#### 5.4 文档信息部分更新
 
 *   请求路径：`http://localhost:9605/:index/:task/:document/`
 *   请求方法：PATCH
@@ -1047,7 +1148,7 @@ PATCH localhost:9605/machine-learning/2020-spring/SY2006000/
 }
 ```
 
-#### 4.5 获取文档信息
+#### 5.5 获取文档信息
 
 *   请求路径：`http://localhost:9605/:index/:task/:document/`
 *   请求方法：GET
@@ -1109,7 +1210,7 @@ GET localhost:9605/machine-learning/2020-spring/SY2006000/
 }
 ```
 
-#### 4.6 获取文档版本列表
+#### 5.6 获取文档版本列表
 
 *   请求路径：`http://localhost:9605/_version/:index/:task/:document/`
 *   请求方法：GET
@@ -1168,9 +1269,9 @@ GET localhost:9605/_versions/machine-learning/2020-spring/SY2006000/
 }
 ```
 
-### 5. 文档查重
+### 6. 文档查重
 
-#### 5.1 单篇文档查重
+#### 6.1 单篇文档查重
 
 *   请求路径：`http://localhost:9605/_single/_search/`
 *   请求方法：GET
