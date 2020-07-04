@@ -65,6 +65,7 @@ class BaseDocumentController(BaseTaskController):
     def list_versions(self, index_id, task_id, document_id):
         storage_path = self.get_storage_path(index_id, task_id, document_id)
 
+        file_list = []
         try:
             file_list = os.listdir(storage_path)
         except FileNotFoundError:

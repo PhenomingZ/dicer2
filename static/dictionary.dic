@@ -6,3 +6,4 @@ jieba
 gunicorn
 errorlog
 accesslog
+phenoming
