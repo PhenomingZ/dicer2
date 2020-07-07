@@ -2,6 +2,8 @@ from datetime import datetime
 
 from App.apis.SearchResource import SearchResource
 from App.controllers import BaseController
+from App.jobs import get_result_queue
+from App.jobs.JobController import JobController
 from App.responses import OKResponse
 
 
@@ -10,6 +12,9 @@ class SingleSearchResource(SearchResource):
     @classmethod
     def get(cls):
         start_time = datetime.now()
+
+        JobController.add_job()
+        result_queue = get_result_queue()
 
         index_id = cls.get_parameter("index", required=True, location=["json", "form"])
         task_id = cls.get_parameter("task", required=True, location=["json", "form"])

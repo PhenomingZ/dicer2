@@ -1,7 +1,7 @@
 from flask import Flask
 
 from App.apis import init_api
-from App.controllers import init_job
+from App.jobs import init_job
 from App.ext import init_ext
 from App.hooks import init_hook
 from App.settings import init_config
