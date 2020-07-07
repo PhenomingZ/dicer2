@@ -1273,7 +1273,7 @@ GET localhost:9605/_versions/machine-learning/2020-spring/SY2006000/
 
 #### 6.1 单篇文档查重
 
-*   请求路径：`http://localhost:9605/_single/_search/`
+*   请求路径：`http://localhost:9605/_search/_single/`
 *   请求方法：GET
 *   请求参数：
 
@@ -1287,7 +1287,7 @@ GET localhost:9605/_versions/machine-learning/2020-spring/SY2006000/
 *   请求样例
 
 ```
-GET localhost:9605/_single/_search/
+GET localhost:9605/_search/_single/
 {
     "index": "machine-learning",
     "task": "2020-spring",

@@ -20,10 +20,12 @@ def init_config(app):
     new_config.DICER2_STORAGE_PATH = app.config["DICER2_STORAGE_PATH"]
     print(f"DICER2_STORAGE_PATH = {new_config.DICER2_STORAGE_PATH}")
 
+    new_config.JOB_PROCESSING_NUM = app.config["JOB_PROCESSING_NUM"]
+    print(f"JOB_PROCESSING_NUM = {new_config.JOB_PROCESSING_NUM}")
+
     global config
     config = new_config
 
 
 def get_config():
-    global config
     return config

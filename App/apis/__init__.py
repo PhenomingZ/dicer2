@@ -1,5 +1,6 @@
 from flask_restful import Api
 
+from App.apis.MultipleSearchResource import MultipleSearchResource
 from App.apis.VersionsResource import VersionsResource
 from App.apis.DocumentsResource import DocumentsResource
 from App.apis.IndexResource import IndexResource
@@ -34,6 +35,9 @@ api.add_resource(TaskResource, "/<string:index>/<string:task>/", endpoint="task"
 api.add_resource(DocumentsResource, "/<string:index>/<string:task>/<string:document>/", endpoint="doc")
 
 # Search for single document
-api.add_resource(SingleSearchResource, "/_single/_search/", endpoint="single_search")
+api.add_resource(SingleSearchResource, "/_search/_single/", endpoint="single_search")
+
+# Search for multiple documents
+api.add_resource(MultipleSearchResource, "/_search/_multiple/", endpoint="multiple_search")
 
 # TODO 添加重新加载配置项的API
