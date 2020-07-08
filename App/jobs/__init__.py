@@ -11,7 +11,7 @@ result_queue = None
 
 def init_job(app):
     global job_processing_pool
-    job_processing_pool = multiprocessing.Pool(app.config['JOB_PROCESSING_NUM'])
+    job_processing_pool = multiprocessing.Pool(app.config['JOB_PROCESSING_NUM'] + 1)
 
     global result_queue
     result_queue = multiprocessing.Manager().Queue()
