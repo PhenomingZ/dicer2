@@ -8,4 +8,4 @@ class BaseDocument(InnerDoc):
     created_at = Date()
     updated_at = Date()
 
-    body = []
+    body = Text()
