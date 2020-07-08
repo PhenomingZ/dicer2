@@ -2,6 +2,8 @@ from datetime import datetime
 
 from App.apis.SearchResource import SearchResource
 from App.controllers import BaseController
+from App.jobs import get_result_queue
+from App.jobs.JobFactory import JobFactory, JobType
 from App.responses import OKResponse
 
 
@@ -19,9 +21,13 @@ class SingleSearchResource(SearchResource):
         document = BaseController().get_document(index_id, task_id, document_id)
         body = document.body
 
-        similarity_search_result = cls.get_similarity_search_result(index_id, task_id, document_id, search_range, body)
-        repetitive_rate, document_result = similarity_search_result
+        # response_data = dict(index=index_id, task=task_id, document=document_id, title=document.title,
+        #                      repetitive_rate=repetitive_rate, result=document_result)
 
-        response_data = dict(index=index_id, task=task_id, document=document_id, title=document.title,
-                             repetitive_rate=repetitive_rate, result=document_result)
+        request_queue = get_result_queue()
+        job_type = JobType.SINGLE_CHECK_JOB
+        job = JobFactory.create_job(job_type, request_queue, index_id, task_id, document_id, search_range, body)
+        job.start()
+
+        response_data = dict(index=index_id, task=task_id, document=document_id, title=document.title)
         return OKResponse(response_data, start_time)
