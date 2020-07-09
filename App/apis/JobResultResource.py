@@ -3,7 +3,7 @@ from datetime import datetime
 
 from flask_restful import Resource
 
-from App.jobs.JobTypeEnums import JobStatus
+from App.jobs.JobTypeEnums import JobStatus, JobType
 from App.responses import OKResponse
 from App.settings import get_config
 from App.utils.DateEncoder import Dicer2Encoder
@@ -22,7 +22,20 @@ class JobResultResource(Resource):
 
         response_data = dict()
 
+        # TODO 添加其他状态的处理函数
         if job_result["status"] == JobStatus.SUCCESS.value:
-            print(111)
+            response_data = success_job_result_handler(job_result)
 
         return OKResponse(data=Dicer2Encoder.jsonify(response_data), start_time=start_time)
+
+
+def success_job_result_handler(job_result):
+    data, took = job_result.get("data"), job_result.get("took")
+    job_type = data.get("job_type")
+
+    response_data = dict(took=took)
+
+    if job_type == JobType.SINGLE_CHECK_JOB.value:
+        response_data.update(data)
+
+    return response_data
