@@ -2,7 +2,8 @@ from datetime import datetime
 
 from App.apis.SearchResource import SearchResource
 from App.controllers import BaseController
-from App.jobs.JobFactory import JobFactory, JobType
+from App.jobs.JobFactory import JobFactory
+from App.jobs.JobTypeEnums import JobType
 from App.responses import OKResponse
 
 

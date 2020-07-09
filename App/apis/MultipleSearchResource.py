@@ -1,6 +1,7 @@
 from App.apis.SearchResource import SearchResource
 from App.jobs import get_result_queue
-from App.jobs.JobFactory import JobFactory, JobType
+from App.jobs.JobFactory import JobFactory
+from App.jobs.JobTypeEnums import JobType
 
 
 class MultipleSearchResource(SearchResource):
@@ -12,4 +13,4 @@ class MultipleSearchResource(SearchResource):
         job = JobFactory.create_job(JobType.MULTIPLE_CHECK_JOB, request_queue, 1, 2)
         job.start()
 
-        return {"mag": "success"}
+        return {"msg": "success"}

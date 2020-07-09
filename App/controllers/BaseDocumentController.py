@@ -7,7 +7,7 @@ from elasticsearch_dsl import Search
 from App.controllers.BaseTaskController import BaseTaskController
 from App.models import Article
 from App.responses import NotFoundAbort
-from App.utils.DateEncoder import DateEncoder
+from App.utils.DateEncoder import Dicer2Encoder
 from App.utils.DocumentTools import DocumentTools
 from App.utils.DocxLoader import DocxLoader
 
@@ -93,7 +93,7 @@ class BaseDocumentController(BaseTaskController):
         doc_data.update(body=docx_loader.text)
 
         file_path = get_document_storage_path(index_id, task_id, document_id, version, makedir=True)
-        DateEncoder.save(file_path, doc_data)
+        Dicer2Encoder.save(file_path, doc_data)
 
     def create_document(self, index_id, task_id, document_id, file, **kwargs):
         task_instance = self.get_task_instance(index_id, task_id)

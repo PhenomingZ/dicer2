@@ -1,5 +1,6 @@
 from App.jobs import get_result_queue
-from App.jobs.JobProduct import JobSingleProduct, JobMultipleProduct, JobType
+from App.jobs.JobProduct import JobSingleProduct, JobMultipleProduct
+from App.jobs.JobTypeEnums import JobType
 from App.responses import BadRequestAbort
 
 

@@ -1,16 +1,11 @@
 import time
 
 from datetime import datetime
-from enum import Enum
 
 from App.jobs import get_job_pool
-from App.jobs.JobQueuePutter import JobSuccessQueuePutter, JobStartedQueuePutter
+from App.jobs.JobQueuePutter import JobSuccessQueuePutter, JobStartedQueuePutter, JobRunningQueuePutter
 from App.jobs.JobSingleHandler import job_single_handler
-
-
-class JobType(Enum):
-    SINGLE_CHECK_JOB = "single"
-    MULTIPLE_CHECK_JOB = "multiple"
+from App.jobs.JobTypeEnums import JobType
 
 
 class JobProduct(object):
@@ -40,13 +35,20 @@ class JobProduct(object):
 
 class JobSingleProduct(JobProduct):
     def target(self, index_id, task_id, document_id, search_range, document):
-        result = job_single_handler(index_id, task_id, document_id, search_range, document.body)
-        repetitive_rate, document_result = result
+        JobRunningQueuePutter(self.id, self.queue, self.start_time).put({
+            "index": index_id,
+            "task": task_id,
+            "document": document_id,
+            "job_type": JobType.SINGLE_CHECK_JOB
+        })
+        repetitive, result = job_single_handler(index_id, task_id, document_id, search_range, document.body)
         JobSuccessQueuePutter(self.id, self.queue, self.start_time).put({
-            "title": document.title,
+            "index": index_id,
+            "task": task_id,
+            "document": document_id,
             "job_type": JobType.SINGLE_CHECK_JOB,
-            "repetitive_rate": repetitive_rate,
-            "document_result": document_result
+            "repetitive_rate": repetitive,
+            "document_result": result
         })
 
 

@@ -4,7 +4,7 @@ from App.responses import OKResponse, CreatedResponse, DeletedResponse, UpdatedR
 
 from datetime import datetime
 
-from App.utils.DateEncoder import DateEncoder
+from App.utils.DateEncoder import Dicer2Encoder
 
 
 class DocumentsResource(Dicer2Resource):
@@ -78,4 +78,4 @@ class DocumentsResource(Dicer2Resource):
 
         response_data = dict(index=index, task=task, document=document, version=version, title=result.title,
                              created_at=result.created_at, updated_at=result.updated_at, body=body)
-        return OKResponse(data=DateEncoder.jsonify(response_data), start_time=start_time)
+        return OKResponse(data=Dicer2Encoder.jsonify(response_data), start_time=start_time)
