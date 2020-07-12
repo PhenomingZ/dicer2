@@ -23,5 +23,9 @@ def NotFoundAbort(data):
     BaseAbort(404, "NOT FOUND", data)
 
 
+def InternalServerErrorAbort(data):
+    BaseAbort(500, "INTERNAL SERVER ERROR", data)
+
+
 def ElasticSearchConnectionRefusedAbort(data):
     BaseAbort(500, "ElasticSearch Connection Refused", data)

@@ -17,3 +17,6 @@ DICER2_STORAGE_PATH = "store"
 
 # Document checking job processing number
 JOB_PROCESSING_NUM = os.cpu_count()
+
+# Enable CORS
+ENABLE_CORS = True

@@ -23,6 +23,9 @@ def init_config(app):
     new_config.JOB_PROCESSING_NUM = app.config["JOB_PROCESSING_NUM"]
     print(f"JOB_PROCESSING_NUM = {new_config.JOB_PROCESSING_NUM}")
 
+    new_config.ENABLE_CORS = app.config["ENABLE_CORS"]
+    print(f"ENABLE_CORS = {new_config.ENABLE_CORS}")
+
     global config
     config = new_config
 

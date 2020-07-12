@@ -25,6 +25,3 @@ class SingleSearchResource(SearchResource):
 
         response_data = dict(msg="Job Starting", job_id=job.id)
         return OKResponse(response_data, start_time)
-
-    # response_data = dict(index=index_id, task=task_id, document=document_id, title=document.title,
-    #                      repetitive_rate=repetitive_rate, result=document_result)

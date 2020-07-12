@@ -2,7 +2,7 @@ from elasticsearch.exceptions import ConnectionError
 from urllib3.exceptions import NewConnectionError
 
 from App.hooks.ElasticConnectionCheckHook import init_elastic_connection
-from App.responses import ElasticSearchConnectionRefusedAbort
+from App.responses import ElasticSearchConnectionRefusedAbort, InternalServerErrorAbort
 
 
 def init_hook(app):
@@ -20,5 +20,5 @@ def init_hook(app):
     @app.after_request
     def after_request(response):
         if response.status_code == 500:
-            ElasticSearchConnectionRefusedAbort("(Runtime Error) Elastic connection refused!")
+            InternalServerErrorAbort("(Runtime Error) DICER2 has a internal server error!")
         return response

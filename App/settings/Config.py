@@ -5,3 +5,4 @@ class Config(object):
     IMAGE_HAMMING_THRESHOLD_VALUE = 0.8
     DICER2_STORAGE_PATH = "./store"
     JOB_PROCESSING_NUM = 4
+    ENABLE_CORS = False

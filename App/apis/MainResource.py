@@ -1,6 +1,6 @@
 from flask_restful import Resource
 
-dicer2_version = "v0.1.8"
+dicer2_version = "v0.2.0"
 elastic_search_version = "7.6.2"
 
 

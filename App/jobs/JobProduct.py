@@ -3,7 +3,8 @@ import time
 from datetime import datetime
 
 from App.jobs import get_job_pool
-from App.jobs.JobQueuePutter import JobSuccessQueuePutter, JobStartedQueuePutter, JobRunningQueuePutter
+from App.jobs.JobQueuePutter import JobSuccessQueuePutter, JobStartedQueuePutter, JobRunningQueuePutter, \
+    JobFailingQueuePutter
 from App.jobs.JobSingleHandler import job_single_handler
 from App.jobs.JobTypeEnums import JobType
 
@@ -23,12 +24,15 @@ class JobProduct(object):
         try:
             self.target(*args)
         except Exception as e:
-            print(e)
+            JobFailingQueuePutter(self.id, self.queue, self.start_time).put({
+                "job_type": self.job_type,
+                "error_msg": str(e)
+            })
 
     def start(self):
         self.start_time = datetime.now()
         JobStartedQueuePutter(self.id, self.queue, self.start_time).put({
-            "job_type": JobType.SINGLE_CHECK_JOB
+            "job_type": self.job_type
         })
         get_job_pool().apply_async(self.wrapped_target, self.args)
 
@@ -53,7 +57,6 @@ class JobSingleProduct(JobProduct):
 
 
 class JobMultipleProduct(JobProduct):
-    def target(self, q, a, b):
-        q.put(1)
+    def target(self, a, b):
         print(1 / 0)
         print(a, b)
