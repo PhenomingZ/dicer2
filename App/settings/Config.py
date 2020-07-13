@@ -6,3 +6,4 @@ class Config(object):
     DICER2_STORAGE_PATH = "./store"
     JOB_PROCESSING_NUM = 4
     ENABLE_CORS = False
+    ENABLE_ERROR_TRACEBACK = False

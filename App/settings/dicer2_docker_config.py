@@ -20,3 +20,6 @@ JOB_PROCESSING_NUM = os.cpu_count()
 
 # Enable CORS
 ENABLE_CORS = True
+
+# Enable error traceback display
+ENABLE_ERROR_TRACEBACK = True

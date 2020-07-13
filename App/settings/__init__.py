@@ -26,6 +26,9 @@ def init_config(app):
     new_config.ENABLE_CORS = app.config["ENABLE_CORS"]
     print(f"ENABLE_CORS = {new_config.ENABLE_CORS}")
 
+    new_config.ENABLE_ERROR_TRACEBACK = app.config["ENABLE_ERROR_TRACEBACK"]
+    print(f"ENABLE_ERROR_TRACEBACK = {new_config.ENABLE_ERROR_TRACEBACK}")
+
     global config
     config = new_config
 

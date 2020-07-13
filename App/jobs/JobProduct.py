@@ -1,4 +1,5 @@
 import time
+import traceback
 
 from datetime import datetime
 
@@ -8,6 +9,7 @@ from App.jobs.JobQueuePutter import JobSuccessQueuePutter, JobStartedQueuePutter
     JobFailingQueuePutter
 from App.jobs.JobSingleHandler import job_single_handler
 from App.jobs.JobTypeEnums import JobType
+from App.settings import get_config
 
 
 class JobProduct(object):
@@ -25,11 +27,14 @@ class JobProduct(object):
         try:
             self.target(*args)
         except Exception as e:
+            enable_error_traceback = get_config().ENABLE_ERROR_TRACEBACK
+            error_msg = traceback.format_exc() if enable_error_traceback else str(e)
+
             JobFailingQueuePutter(self.id, self.queue, self.start_time).put({
                 "job_type": self.job_type,
-                "error_msg": str(e)
+                "error_msg": error_msg
             })
-            print(e)
+            print(error_msg)
 
     def start(self):
         self.start_time = datetime.now()
@@ -47,7 +52,8 @@ class JobSingleProduct(JobProduct):
             "document": document_id,
             "job_type": JobType.SINGLE_CHECK_JOB
         })
-        repetitive, result = job_single_handler(index_id, task_id, document_id, search_range, document.body)
+        ret = job_single_handler(index_id, task_id, document_id, search_range, document.body)
+        repetitive, result, total_valid_parts = ret
         JobSuccessQueuePutter(self.id, self.queue, self.start_time).put({
             "index": index_id,
             "task": task_id,

@@ -18,7 +18,7 @@ def job_single_handler(index_id, task_id, document_id, search_range, body):
     doc_id = DocumentTools.get_doc_id(index_id, task_id, document_id)
 
     total_parts = len(body)
-    total_valid_parts = 0
+    total_val_parts = 0
 
     document_result = []
 
@@ -28,7 +28,7 @@ def job_single_handler(index_id, task_id, document_id, search_range, body):
         if mark == 0 and len(line) <= minimal_line_length:
             continue
 
-        total_valid_parts += 1
+        total_val_parts += 1
 
         line_result = {
             "origin": line,
@@ -86,9 +86,9 @@ def job_single_handler(index_id, task_id, document_id, search_range, body):
             document_result.append(line_result)
 
     # 全文复制比
-    if total_valid_parts == 0:
+    if total_val_parts == 0:
         repetitive_rate = 0
     else:
-        repetitive_rate = len(document_result) / total_valid_parts
+        repetitive_rate = len(document_result) / total_val_parts
 
-    return repetitive_rate, document_result
+    return repetitive_rate, document_result, total_val_parts
