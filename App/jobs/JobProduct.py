@@ -3,6 +3,7 @@ import time
 from datetime import datetime
 
 from App.jobs import get_job_pool
+from App.jobs.JobMultipleHandler import job_multiple_handler
 from App.jobs.JobQueuePutter import JobSuccessQueuePutter, JobStartedQueuePutter, JobRunningQueuePutter, \
     JobFailingQueuePutter
 from App.jobs.JobSingleHandler import job_single_handler
@@ -28,6 +29,7 @@ class JobProduct(object):
                 "job_type": self.job_type,
                 "error_msg": str(e)
             })
+            print(e)
 
     def start(self):
         self.start_time = datetime.now()
@@ -57,6 +59,15 @@ class JobSingleProduct(JobProduct):
 
 
 class JobMultipleProduct(JobProduct):
-    def target(self, a, b):
-        print(1 / 0)
-        print(a, b)
+    def target(self, source_range, search_range):
+        JobRunningQueuePutter(self.id, self.queue, self.start_time).put({
+            "source_range": source_range,
+            "search_range": search_range,
+            "job_type": JobType.MULTIPLE_CHECK_JOB
+        })
+        job_multiple_handler(source_range, search_range)
+        JobSuccessQueuePutter(self.id, self.queue, self.start_time).put({
+            "source_range": source_range,
+            "search_range": search_range,
+            "job_type": JobType.MULTIPLE_CHECK_JOB
+        })

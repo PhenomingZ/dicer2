@@ -10,7 +10,7 @@ from App.responses import OKResponse
 class SingleSearchResource(SearchResource):
 
     @classmethod
-    def get(cls):
+    def post(cls):
         start_time = datetime.now()
 
         index_id = cls.get_parameter("index", required=True, location=["json", "form"])

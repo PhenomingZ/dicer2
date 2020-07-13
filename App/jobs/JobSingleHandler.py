@@ -6,14 +6,14 @@ from App.utils.DocumentTools import DocumentTools
 from App.utils.ImageSimilarity import p_hash_img_similarity
 from App.utils.JaccardIndex import JaccardIndex
 
+host = get_config().ELASTICSEARCH_HOST
+connection = connections.create_connection(hosts=[host])
+
 
 def job_single_handler(index_id, task_id, document_id, search_range, body):
-    host = get_config().ELASTICSEARCH_HOST
     minimal_line_length = get_config().MINIMAL_LINE_LENGTH
     jaccard_threshold_value = get_config().JACCARD_THRESHOLD_VALUE
     image_hamming_threshold_value = get_config().IMAGE_HAMMING_THRESHOLD_VALUE
-
-    connection = connections.create_connection(hosts=[host])
 
     doc_id = DocumentTools.get_doc_id(index_id, task_id, document_id)
 
