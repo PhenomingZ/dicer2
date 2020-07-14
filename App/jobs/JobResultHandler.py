@@ -14,19 +14,20 @@ def result_handler(result_queue):
         store_job_path = os.path.join(store_folder_path, job_result.id + ".json")
         os.makedirs(store_folder_path, exist_ok=True)
 
+        msg = job_result.msg
         try:
             if job_result.status == JobStatus.STARTED:
-                print(f"[STARTED] Job ID: '{job_result.id}'")
+                print(f"[STARTED] Job ID: '{job_result.id}' msg: {msg}")
             elif job_result.status == JobStatus.SUCCESS:
-                print(f"[SUCCESS] Job ID: '{job_result.id}'")
+                print(f"[SUCCESS] Job ID: '{job_result.id}' msg: {msg}")
             elif job_result.status == JobStatus.WAITING:
-                print(f"[WAITING] Job ID: '{job_result.id}'")
+                print(f"[WAITING] Job ID: '{job_result.id}' msg: {msg}")
             elif job_result.status == JobStatus.RUNNING:
-                print(f"[RUNNING] Job ID: '{job_result.id}'")
+                print(f"[RUNNING] Job ID: '{job_result.id}' msg: {msg}")
             elif job_result.status == JobStatus.WARNING:
-                print(f"[WARNING] Job ID: '{job_result.id}'")
+                print(f"[WARNING] Job ID: '{job_result.id}' msg: {msg}")
             elif job_result.status == JobStatus.FAILING:
-                print(f"[FAILING] Job ID: '{job_result.id}'")
+                print(f"[FAILING] Job ID: '{job_result.id}' msg: {msg}")
 
             Dicer2Encoder.save(store_job_path, job_result.to_dict())
         except Exception as e:

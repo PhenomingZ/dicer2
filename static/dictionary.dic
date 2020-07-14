@@ -8,3 +8,9 @@ errorlog
 accesslog
 phenoming
 mimetype
+louvain
+matplotlib
+cmap
+viridis
+networkx
+pyplot

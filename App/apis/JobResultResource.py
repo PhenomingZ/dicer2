@@ -19,13 +19,21 @@ class JobResultResource(Resource):
         # TODO 给job加个名字属性 再给列表加上分页功能
         if job_id == "_list":
             job_file_list = os.listdir(store_folder_path)
+
+            # 返回结果列表按照时间从近到远排序
+            job_file_list.sort(key=lambda x: x.split(".")[0], reverse=True)
+
             job_list = list()
 
+            count = 0
             for job in job_file_list:
+                count += 1
+
                 job_path = os.path.join(store_folder_path, job)
                 job_result = Dicer2Encoder.load(job_path)
                 job_detail = JobResultHandler(job_result)
                 job_list.append({
+                    "no": count,
                     "id": job.split(".")[0],
                     "took": job_detail.took,
                     "type": job_detail.type,

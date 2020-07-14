@@ -91,4 +91,6 @@ def job_single_handler(index_id, task_id, document_id, search_range, body):
     else:
         repetitive_rate = len(document_result) / total_val_parts
 
-    return repetitive_rate, document_result, total_val_parts
+    document_detail = dict(index=index_id, task=task_id, document=document_id)
+
+    return repetitive_rate, document_result, total_val_parts, document_detail
