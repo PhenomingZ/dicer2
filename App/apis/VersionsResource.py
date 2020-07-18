@@ -8,9 +8,17 @@ from App.utils.DateEncoder import Dicer2Encoder
 
 
 class VersionsResource(Resource):
+    """ 文档版本资源相关接口 """
 
     @classmethod
     def get(cls, index, task, document):
+        """
+        获取一个文档的所有历史版本列表
+        :param index: Document所属的index
+        :param task: Document所属的task
+        :param document: Document的id
+        :return: 获取成功响应
+        """
         start_time = datetime.now()
 
         versions = BaseController().list_versions(index, task, document)

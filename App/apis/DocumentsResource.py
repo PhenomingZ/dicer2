@@ -8,9 +8,17 @@ from App.utils.DateEncoder import Dicer2Encoder
 
 
 class DocumentsResource(Dicer2Resource):
+    """ Document相关资源接口 """
 
     @classmethod
     def post(cls, index, task, document):
+        """
+        创建新的Document
+        :param index: Document所属的index
+        :param task: Document所属的task
+        :param document: Document的id
+        :return: 创建成功响应
+        """
         start_time = datetime.now()
 
         file = cls.get_parameter("file", required=True, location=["file"])
@@ -23,6 +31,13 @@ class DocumentsResource(Dicer2Resource):
 
     @classmethod
     def delete(cls, index, task, document):
+        """
+        删除一个Document
+        :param index: Document所属的index
+        :param task: Document所属的task
+        :param document: Document的id
+        :return: 删除成功响应
+        """
         start_time = datetime.now()
 
         version = cls.get_parameter("version", required=False, location=["json", "form"])
@@ -34,6 +49,13 @@ class DocumentsResource(Dicer2Resource):
 
     @classmethod
     def put(cls, index, task, document):
+        """
+        完全更新一个Document
+        :param index: Document所属的index
+        :param task: Document所属的task
+        :param document: Document的id
+        :return: 更新成功响应
+        """
         start_time = datetime.now()
 
         file = cls.get_parameter("file", required=True, location=["file"])
@@ -46,6 +68,13 @@ class DocumentsResource(Dicer2Resource):
 
     @classmethod
     def patch(cls, index, task, document):
+        """
+        部分更新一个Document
+        :param index: Document所属的index
+        :param task: Document所属的task
+        :param document: Document的id
+        :return: 更新成功响应
+        """
         start_time = datetime.now()
 
         file = cls.get_parameter("file", required=False, location=["file"])
@@ -58,6 +87,13 @@ class DocumentsResource(Dicer2Resource):
 
     @classmethod
     def get(cls, index, task, document):
+        """
+        获取一个Document的信息
+        :param index: Document所属的index
+        :param task: Document所属的task
+        :param document: Document的id
+        :return: 获取成功响应
+        """
         start_time = datetime.now()
 
         version = cls.get_parameter("version", required=False, location=["json", "form"])

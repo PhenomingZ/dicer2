@@ -5,6 +5,12 @@ from App.models import Base
 
 
 def init_elastic_connection(app):
+    """
+    初始化ElasticSearch连接和基本信息数据库
+    :param app: DICER2使用的app对象
+    :return:
+    """
+
     # Define a default Elasticsearch client
     connections.create_connection(hosts=[app.config['ELASTICSEARCH_HOST']])
 

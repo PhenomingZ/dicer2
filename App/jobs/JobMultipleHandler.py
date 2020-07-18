@@ -17,6 +17,14 @@ connections.create_connection(hosts=[host])
 
 
 def job_multiple_handler(progress_callback, source_range: dict, search_range: dict):
+    """
+    联合查重任务执行函数
+    :param progress_callback: 用于处理任务进度的回调函数
+    :param source_range: 查重源范围
+    :param search_range: 目标检索范围
+    :return: 联合查重结果对象
+    """
+
     pool = ThreadPoolExecutor(max_workers=4)
 
     # 查重结果的加权无向图（文档相关度取平均做权值）

@@ -2,6 +2,14 @@ from flask_restful import abort
 
 
 def BaseAbort(status, msg, data):
+    """
+    中止请求执行的异常处理方法
+    :param status: 异常码
+    :param msg: 异常信息
+    :param data: 异常数据
+    :return:
+    """
+
     meta = {
         "took": -1,
         "msg": msg,

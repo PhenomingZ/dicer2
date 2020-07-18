@@ -9,9 +9,16 @@ from App.utils.DateEncoder import Dicer2Encoder
 
 
 class JobResultResource(Resource):
+    """ Job相关资源接口 """
 
     @classmethod
     def get(cls, job_id):
+        """
+        通过job_id获取对应job执行结果
+        :param job_id: job的id，若为'_list'则显示全部job的列表
+        :return: 获取成功响应
+        """
+
         start_time = datetime.now()
 
         store_folder_path = os.path.join(get_config().DICER2_STORAGE_PATH, "_jobs")
@@ -56,6 +63,8 @@ class JobResultResource(Resource):
 
 
 class JobResultHandler(object):
+    """ 将获取到的任务结果规范为响应格式 """
+
     def __init__(self, job_result):
         self.took = job_result.get("took")
         self.stat = job_result.get("status")

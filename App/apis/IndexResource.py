@@ -7,9 +7,15 @@ from App.utils.DateEncoder import Dicer2Encoder
 
 
 class IndexResource(Dicer2Resource):
+    """ Index相关资源接口 """
 
     @classmethod
     def post(cls, index):
+        """
+        创建一个index
+        :param index: index的id
+        :return: 创建成功响应
+        """
         start_time = datetime.now()
 
         title = cls.get_parameter("title", required=True, location=["json", "form"])
@@ -21,6 +27,11 @@ class IndexResource(Dicer2Resource):
 
     @classmethod
     def delete(cls, index):
+        """
+        删除一个index
+        :param index: index的id
+        :return: 删除成功响应
+        """
         start_time = datetime.now()
 
         BaseController().delete_index(index_id=index)
@@ -30,6 +41,11 @@ class IndexResource(Dicer2Resource):
 
     @classmethod
     def put(cls, index):
+        """
+        完全更新一个index
+        :param index: index的id
+        :return: 更新成功响应
+        """
         start_time = datetime.now()
 
         title = cls.get_parameter("title", required=True, location=["json", "form"])
@@ -41,6 +57,11 @@ class IndexResource(Dicer2Resource):
 
     @classmethod
     def patch(cls, index):
+        """
+        部分更新一个index
+        :param index: index的id
+        :return: 更新成功响应
+        """
         start_time = datetime.now()
 
         title = cls.get_parameter("title", required=False, location=["json", "form"])
@@ -52,6 +73,11 @@ class IndexResource(Dicer2Resource):
 
     @classmethod
     def get(cls, index):
+        """
+        获取一个index的信息
+        :param index: index的id
+        :return: 获取成功响应
+        """
         start_time = datetime.now()
 
         result = BaseController().get_index(index_id=index)

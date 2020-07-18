@@ -7,9 +7,14 @@ from App.utils.DateEncoder import Dicer2Encoder
 
 
 class SummaryResource(Dicer2Resource):
+    """ 文档存储概览资源相关接口 """
 
     @classmethod
     def get(cls):
+        """
+        获取存储在数据库中的文档概览
+        :return: 获取成功响应
+        """
         start_time = datetime.now()
 
         dicer2_base = Base.get(id="dicer2")

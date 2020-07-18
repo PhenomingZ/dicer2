@@ -1,14 +1,19 @@
-from flask_restful import Resource
+from App.apis.Dicer2Resource import Dicer2Resource
 
 dicer2_version = "v0.2.0"
 elastic_search_version = "7.6.2"
 
 
 # TODO 在这里要检查ES集群的健康状态并返回
-class MainResource(Resource):
+class MainResource(Dicer2Resource):
+    """ DICER2主页 """
 
     @staticmethod
     def get():
+        """
+        获取DICER2的基本信息
+        :return: DICER2的基本信息
+        """
         return {
             "name": "Dicer2",
             "version": {

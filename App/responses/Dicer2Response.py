@@ -5,12 +5,20 @@ from flask import Response
 
 
 class Dicer2Response(Response):
+    """ DICER2请求响应基类 """
+
     msg = "OK"
     charset = 'utf-8'
     default_status = 200
     default_mimetype = "application/json"
 
     def __init__(self, data, start_time, **kwargs):
+        """
+        请求响应初始化
+        :param data: 响应携带数据
+        :param start_time: 请求开始时间
+        :param kwargs: 其他参数
+        """
 
         response = json.dumps({
             "meta": {

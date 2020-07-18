@@ -6,8 +6,18 @@ from App.responses import ElasticSearchConnectionRefusedAbort, InternalServerErr
 
 
 def init_hook(app):
+    """
+    初始化钩子函数
+    :param app: DICER2使用的app对象
+    :return:
+    """
+
     @app.before_first_request
     def before_first():
+        """
+        第一次接收请求时尝试初始化对ElasticSearch的连接
+        :return:
+        """
         try:
             init_elastic_connection(app)
         except ConnectionRefusedError:
@@ -19,6 +29,11 @@ def init_hook(app):
 
     @app.after_request
     def after_request(response):
+        """
+        请求返回时检查是否出现500内部错误
+        :param response: 请求返回对象
+        :return:
+        """
         if response.status_code == 500:
             InternalServerErrorAbort("(Runtime Error) DICER2 has a internal server error!")
         return response

@@ -1,4 +1,6 @@
 class Config(object):
+    """ DICER2配置类 """
+
     ELASTICSEARCH_HOST = "localhost"
     MINIMAL_LINE_LENGTH = 25
     JACCARD_THRESHOLD_VALUE = 0.45

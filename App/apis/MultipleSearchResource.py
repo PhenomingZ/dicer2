@@ -7,9 +7,14 @@ from App.responses import OKResponse
 
 
 class MultipleSearchResource(SearchResource):
+    """ 联合查重相关资源接口 """
 
     @classmethod
     def post(cls):
+        """
+        发送一个联合查重请求
+        :return: 发送成功响应
+        """
         start_time = datetime.now()
 
         source_range = cls.get_parameter("source_range", required=True, location=["json", "form"])

@@ -8,9 +8,18 @@ from App.responses import BadRequestAbort
 
 
 class Dicer2Resource(Resource):
+    """ DICER2所有Resource的父类 """
 
     @classmethod
     def get_parameter(cls, key, default_value=None, required=False, location=None):
+        """
+        DICER2获取请求中的参数的类方法
+        :param key: 请求的参数名
+        :param default_value: 请求的参数的默认值
+        :param required: 请求的参数是否必须
+        :param location: 请求的参数位于请求体的位置
+        :return: 请求参数的值
+        """
 
         if isinstance(location, str):
             location = [location]

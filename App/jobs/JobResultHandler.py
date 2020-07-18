@@ -7,6 +7,12 @@ from App.utils.DateEncoder import Dicer2Encoder
 
 
 def result_handler(result_queue):
+    """
+    消息队列中消息处理函数
+    :param result_queue: 使用的消息队列对象
+    :return:
+    """
+
     while True:
         job_result: QueueMessage = result_queue.get()
 

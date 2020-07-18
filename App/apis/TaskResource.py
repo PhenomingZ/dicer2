@@ -8,9 +8,16 @@ from App.utils.DateEncoder import Dicer2Encoder
 
 
 class TaskResource(Dicer2Resource):
+    """ Task相关资源接口 """
 
     @classmethod
     def post(cls, index, task):
+        """
+        新建一个Task
+        :param index: Task所属的index
+        :param task: Task的id
+        :return: 创建成功响应
+        """
         start_time = datetime.now()
 
         title = cls.get_parameter("title", required=True, location=["json", "form"])
@@ -22,6 +29,12 @@ class TaskResource(Dicer2Resource):
 
     @classmethod
     def delete(cls, index, task):
+        """
+        删除一个task
+        :param index: Task所属的index
+        :param task: Task的id
+        :return: 删除成功响应
+        """
         start_time = datetime.now()
 
         BaseController().delete_task(index_id=index, task_id=task)
@@ -30,6 +43,12 @@ class TaskResource(Dicer2Resource):
 
     @classmethod
     def put(cls, index, task):
+        """
+        完整更新一个task
+        :param index: Task所属的index
+        :param task: Task的id
+        :return: 更新成功响应
+        """
         start_time = datetime.now()
 
         title = cls.get_parameter("title", required=True, location=["json", "form"])
@@ -41,6 +60,12 @@ class TaskResource(Dicer2Resource):
 
     @classmethod
     def patch(cls, index, task):
+        """
+        部分更新一个task
+        :param index: Task所属的index
+        :param task: Task的id
+        :return: 更新成功响应
+        """
         start_time = datetime.now()
 
         title = cls.get_parameter("title", required=False, location=["json", "form"])
@@ -52,6 +77,12 @@ class TaskResource(Dicer2Resource):
 
     @classmethod
     def get(cls, index, task):
+        """
+        获取一个task的信息
+        :param index: Task所属的index
+        :param task: Task的id
+        :return: 获取成功响应
+        """
         start_time = datetime.now()
 
         result = BaseController().get_task(index_id=index, task_id=task)

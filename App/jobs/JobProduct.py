@@ -16,6 +16,12 @@ from App.settings import get_config
 
 class JobProduct(object):
     def __init__(self, job_type, queue, args):
+        """
+        初始化Job对象
+        :param job_type: Job的类别
+        :param queue: 当前Job要使用的消息队列对象
+        :param args: 当前Job要执行的任务需要传入的参数，需以元组的形式传入
+        """
         self.id = str(int(time.time() * 1000000))
         self.start_time = None
         self.job_type = job_type
@@ -23,9 +29,19 @@ class JobProduct(object):
         self.args = args
 
     def target(self, *args):
+        """
+        需由子类重写，该Job待执行的任务
+        :param args: 当前Job要执行的任务需要传入的参数，需以元组展开的形式传入
+        :return: 返回值由子类定义
+        """
         pass
 
     def wrapped_target(self, *args):
+        """
+        用于获取子进程中的异常的装饰方法，也是实际传入子进程的方法
+        :param args: 当前Job要执行的任务需要传入的参数，需以元组展开的形式传入
+        :return:
+        """
         try:
             self.target(*args)
         except Exception as e:
@@ -40,6 +56,10 @@ class JobProduct(object):
             print(error_msg)
 
     def start(self):
+        """
+        创建子进程，开始一项Job
+        :return:
+        """
         self.start_time = datetime.now()
         JobStartedQueuePutter(self.id, self.queue, self.start_time).put({
             "progress": 0,
@@ -49,7 +69,18 @@ class JobProduct(object):
 
 
 class JobSingleProduct(JobProduct):
+    """ 单文档查重的JobProduct子类 """
+
     def target(self, index_id, task_id, document_id, search_range, document):
+        """
+        单独查重任务的执行函数
+        :param index_id: 被查重文档所属index
+        :param task_id: 被查重文档所属task
+        :param document_id: 被查重文档的id
+        :param search_range: 查重范围
+        :param document: 被查重文档的BaseDocumentMapping对象
+        :return:
+        """
         JobRunningQueuePutter(self.id, self.queue, self.start_time).put({
             "progress": 0,
             "index": index_id,
@@ -71,12 +102,20 @@ class JobSingleProduct(JobProduct):
 
 
 class JobMultipleProduct(JobProduct):
+    """ 联合文档查重的JobProduct子类 """
+
     total_doc_count = 0
     finished_count = 0
     source_range = None
     search_range = None
 
     def target(self, source_range, search_range):
+        """
+        联合文档查重的执行函数
+        :param source_range: 被查重文档的范围，精确到task
+        :param search_range: 查重范围
+        :return:
+        """
         for index_id, tasks in source_range.items():
             for task_id in tasks:
                 task_instance: BaseTask = BaseController().get_task(index_id, task_id)
@@ -94,6 +133,11 @@ class JobMultipleProduct(JobProduct):
         }, "Multiple job finished successfully!")
 
     def progress_callback(self, res):
+        """
+        作为联合查重每个线程的回调函数，负责将任务进度记录发送给消息队列
+        :param res: 单个任务线程的返回值
+        :return:
+        """
         self.finished_count += 1
         progress = self.finished_count / self.total_doc_count
 

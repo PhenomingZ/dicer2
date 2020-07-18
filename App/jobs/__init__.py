@@ -10,6 +10,12 @@ result_queue = None
 
 
 def init_job(app):
+    """
+    初始化Job模块
+    :param app: DICER2使用的app对象
+    :return:
+    """
+
     global job_processing_pool
     job_processing_pool = multiprocessing.Pool(app.config['JOB_PROCESSING_NUM'])
 
@@ -21,8 +27,16 @@ def init_job(app):
 
 
 def get_job_pool():
+    """
+    获取进程池对象
+    :return: 进程池对象
+    """
     return job_processing_pool
 
 
 def get_result_queue():
+    """
+    获取消息队列对象
+    :return: 消息队列对象
+    """
     return result_queue

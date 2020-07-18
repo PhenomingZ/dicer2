@@ -4,6 +4,12 @@ config = Config()
 
 
 def init_config(app):
+    """
+    初始化全局配置
+    :param app: DICER2使用的app对象
+    :return:
+    """
+
     new_config = Config()
     new_config.ELASTICSEARCH_HOST = app.config["ELASTICSEARCH_HOST"]
     print(f"ELASTICSEARCH_HOST = {new_config.ELASTICSEARCH_HOST}")
@@ -34,4 +40,9 @@ def init_config(app):
 
 
 def get_config():
+    """
+    获取全局配置对象
+    :return:
+    """
+
     return config

@@ -9,7 +9,13 @@ import re
 
 
 class DocxLoader(object):
+    """ Docx文件读取器 """
+
     def __init__(self, file):
+        """
+        初始化文件读取器
+        :param file: docx文件的文件流
+        """
 
         # load docx
         self.document = Document(file)
@@ -29,11 +35,21 @@ class DocxLoader(object):
 
     @property
     def text(self):
+        """
+        :return: docx文档的全文
+        """
+
         return self._text
 
     # 计算图片的局部哈希值--pHash
     @classmethod
     def p_hash(cls, img):
+        """
+        计算图片的pHash值
+        :param img: 图片的文件流
+        :return: 图片的pHash值
+        """
+
         img = img.resize((8, 8), Image.ANTIALIAS).convert('L')
         avg = reduce(lambda x, y: x + y, img.getdata()) / 64.
         hash_value = reduce(lambda x, y: x | (y[1] << y[0]),
@@ -42,6 +58,12 @@ class DocxLoader(object):
         return hash_value
 
     def test_handler(self, text):
+        """
+        文本处理方法，将长句拆分为短句
+        :param text: 未处理的长句子
+        :return:
+        """
+
         sep_text = re.split(r"[。？！；]", text)
 
         tmp = ""
@@ -66,6 +88,12 @@ class DocxLoader(object):
             self._text.append((0, tmp))
 
     def image_handler(self, images):
+        """
+        图片处理方法，将图片转换为pHash保存
+        :param images: docx中获取的图片
+        :return:
+        """
+
         for image in images:
             for embed in image.xpath('.//a:blip/@r:embed'):
                 part = self.document.part.related_parts[embed]

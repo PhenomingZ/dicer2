@@ -14,6 +14,11 @@ api = Api()
 
 
 def init_api(app):
+    """
+    初始化接口
+    :param app: DICER2使用的app对象
+    :return:
+    """
     api.init_app(app)
 
 

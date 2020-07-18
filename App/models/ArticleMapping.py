@@ -1,8 +1,9 @@
 from elasticsearch_dsl import Document, Text, Keyword, Integer, Boolean
 
 
-# 该类用于指定待查文档存入ElasticSearch包含的字段
 class Article(Document):
+    """ 待查文档存入ElasticSearch的字段结构 """
+
     index = Keyword()
     task = Keyword()
     document = Keyword()

@@ -11,6 +11,16 @@ connection = connections.create_connection(hosts=[host])
 
 
 def job_single_handler(index_id, task_id, document_id, search_range, body):
+    """
+    单独查重任务处理函数
+    :param index_id: 待查重文档的index
+    :param task_id: 待查重文档的task
+    :param document_id: 待查重文档的document
+    :param search_range: 目标检索范围
+    :param body: 待查重文档的全文
+    :return: 重复比, 查重对应结果, 全部有效段落数, 待查重文档详细信息（用于回调函数）
+    """
+
     minimal_line_length = get_config().MINIMAL_LINE_LENGTH
     jaccard_threshold_value = get_config().JACCARD_THRESHOLD_VALUE
     image_hamming_threshold_value = get_config().IMAGE_HAMMING_THRESHOLD_VALUE

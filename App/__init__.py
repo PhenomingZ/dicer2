@@ -8,6 +8,12 @@ from App.settings import init_config
 
 
 def create_app(config):
+    """
+    创建新的app对象
+    :param config: DICER2配置文件路径
+    :return: 新建的app对象
+    """
+
     app = Flask(__name__)
 
     app.config.from_pyfile(config)
