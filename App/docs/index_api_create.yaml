@@ -17,7 +17,7 @@ parameters:
     description: index title
 responses:
   201:
-    description: Create successful response
+    description: Create success response
     schema:
       properties:
         meta:

@@ -1,18 +1,23 @@
-Get a index
+Get a task
 ---
 tags:
-  - Index API
+  - Task API
 description:
-  Get a index from dicer2
+  Get a task from dicer2
 parameters:
   - in: path
     name: index
     type: string
     required: true
     description: index id
+  - in: path
+    name: task
+    type: string
+    required: true
+    description: task id
 responses:
   200:
-    description: Get successful response
+    description: Get success response
     schema:
       properties:
         meta:
@@ -24,29 +29,32 @@ responses:
             index:
               type: string
               description: index id
+            task:
+              type: string
+              description: task id
             title:
               type: string
-              description: index title
+              description: task title
             created_at:
               type: string
-              description: index created time
-            task_count:
+              description: task created time
+            doc_count:
               type: integer
-              description: number of tasks in this index
-            tasks:
+              description: number of documents in this task
+            docs:
               type: array
-              description: tasks information
+              description: documents information
               items:
                 type: object
                 properties:
-                  task:
+                  doc:
                     type: string
-                    description: task name
+                    description: document name
                   title:
                     type: string
-                    description: task title
+                    description: document title
                   created_at:
                     type: string
-                    description: task created time
+                    description: document created time
   404:
-    description: Index not found
+    description: Task not found

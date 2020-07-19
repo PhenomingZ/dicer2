@@ -3,7 +3,7 @@ Partial update a index
 tags:
   - Index API
 description:
-  Update a index with partial parameters into dicer2
+  Update a index with partial parameters from dicer2
 parameters:
   - in: path
     name: index
@@ -17,7 +17,7 @@ parameters:
     description: index title
 responses:
   200:
-    description: Update successful response
+    description: Update success response
     schema:
       properties:
         meta:

@@ -1,15 +1,20 @@
-Delete a index
+Delete a new task
 ---
 tags:
-  - Index API
+  - Task API
 description:
-  Delete a index from dicer2
+  Delete a task from dicer2
 parameters:
   - in: path
     name: index
     type: string
     required: true
     description: index id
+  - in: path
+    name: task
+    type: string
+    required: true
+    description: task id
 responses:
   200:
     description: Delete success response
@@ -24,5 +29,8 @@ responses:
             index:
               type: string
               description: index id
+            task:
+              type: string
+              description: task id
   404:
-    description: Index not found
+    description: Task not found

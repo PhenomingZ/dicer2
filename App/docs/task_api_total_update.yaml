@@ -1,20 +1,25 @@
-Total update a index
+Total update a task
 ---
 tags:
-  - Index API
+  - Task API
 description:
-  Update a index with total parameters from dicer2
+  Total update a task from dicer2
 parameters:
   - in: path
     name: index
     type: string
     required: true
     description: index id
+  - in: path
+    name: task
+    type: string
+    required: true
+    description: task id
   - in: formData
     name: title
     type: string
     required: true
-    description: index title
+    description: task title
 responses:
   200:
     description: Update success response
@@ -29,8 +34,11 @@ responses:
             index:
               type: string
               description: index id
+            task:
+              type: string
+              description: task id
             title:
               type: string
-              description: index title
+              description: task title
   404:
-    description: Index not found
+    description: Task not found
