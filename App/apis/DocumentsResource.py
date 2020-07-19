@@ -13,12 +13,46 @@ class DocumentsResource(Dicer2Resource):
     @classmethod
     def post(cls, index, task, document):
         """
-        创建新的Document
-        :param index: Document所属的index
-        :param task: Document所属的task
-        :param document: Document的id
-        :return: 创建成功响应
-        """
+        Create a new document
+        ---
+        tags:
+          - Document API
+        description:
+          Upload a file and create a document into dicer2
+        parameters:
+          - in: path
+            name: index
+            type: string
+            required: true
+            description: index id
+          - in: path
+            name: task
+            type: string
+            required: true
+            description: task id
+          - in: path
+            name: document
+            type: string
+            required: true
+            description: document id
+          - in: formData
+            name: file
+            type: file
+            required: true
+            description: file stream
+          - in: formData
+            name: title
+            type: string
+            required: false
+            description: document title
+        responses:
+          201:
+            description: Create successful response
+            schema:
+              id: CreatedResponse
+              $ref: '/_swagger/created_response.yaml/'
+         """
+
         start_time = datetime.now()
 
         file = cls.get_parameter("file", required=True, location=["file"])

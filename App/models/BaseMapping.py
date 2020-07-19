@@ -3,7 +3,7 @@ from datetime import datetime
 from elasticsearch_dsl import Document, Integer, Nested
 
 from App.models.BaseIndexMapping import BaseIndex
-from App.responses import ForbiddenAbort
+from App.responses import ForbiddenAbort, NotFoundAbort
 
 
 class Base(Document):
@@ -99,7 +99,7 @@ class Base(Document):
         for index_loc, index_item in enumerate(self.index):
             if index_item.id == index_id:
                 return index_item
-        ForbiddenAbort(f"Index '{index_id}' is not exist!")
+        NotFoundAbort(f"Index '{index_id}' is not exist!")
 
     def get_index_loc(self, index_id):
         """
@@ -111,4 +111,4 @@ class Base(Document):
         for index_loc, index_item in enumerate(self.index):
             if index_item.id == index_id:
                 return index_loc
-        ForbiddenAbort(f"Index '{index_id}' is not exist!")
+        NotFoundAbort(f"Index '{index_id}' is not exist!")

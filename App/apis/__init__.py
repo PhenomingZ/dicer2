@@ -1,6 +1,8 @@
 from flask_restful import Api
 
 from App.apis.MultipleSearchResource import MultipleSearchResource
+from App.apis.StaticFileResource import StaticFileResource
+from App.apis.SwaggerYamlResource import SwaggerYamlResource
 from App.apis.VersionsResource import VersionsResource
 from App.apis.DocumentsResource import DocumentsResource
 from App.apis.IndexResource import IndexResource
@@ -27,6 +29,12 @@ api.add_resource(MainResource, "/", endpoint="main")
 
 # Summary of dicer2
 api.add_resource(SummaryResource, "/_summary/", endpoint="_summary")
+
+# Static file visit
+api.add_resource(StaticFileResource, "/_file/<string:filename>/", endpoint="_file")
+
+# Swagger yaml file visit
+api.add_resource(SwaggerYamlResource, "/_swagger/<string:filename>/", endpoint="_swagger")
 
 # Versions view of document
 api.add_resource(VersionsResource, "/_versions/<string:index>/<string:task>/<string:document>/", endpoint="_versions")

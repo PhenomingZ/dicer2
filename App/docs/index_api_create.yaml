@@ -1,0 +1,36 @@
+Create a new index
+---
+tags:
+  - Index API
+description:
+  Create a index into dicer2
+parameters:
+  - in: path
+    name: index
+    type: string
+    required: true
+    description: index id
+  - in: formData
+    name: title
+    type: string
+    required: true
+    description: index title
+responses:
+  201:
+    description: Create successful response
+    schema:
+      properties:
+        meta:
+          $ref: '/_swagger/meta_data.yaml/'
+        data:
+          type: object
+          description: response data
+          properties:
+            index:
+              type: string
+              description: index id
+            title:
+              type: string
+              description: index title
+  403:
+    description: Index is already exist

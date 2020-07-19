@@ -1,0 +1,36 @@
+Partial update a index
+---
+tags:
+  - Index API
+description:
+  Update a index with partial parameters into dicer2
+parameters:
+  - in: path
+    name: index
+    type: string
+    required: true
+    description: index id
+  - in: formData
+    name: title
+    type: string
+    required: false
+    description: index title
+responses:
+  200:
+    description: Update successful response
+    schema:
+      properties:
+        meta:
+          $ref: '/_swagger/meta_data.yaml/'
+        data:
+          type: object
+          description: response data
+          properties:
+            index:
+              type: string
+              description: index id
+            title:
+              type: string
+              description: index title
+  404:
+    description: Index not found

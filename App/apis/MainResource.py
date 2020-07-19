@@ -11,9 +11,30 @@ class MainResource(Dicer2Resource):
     @staticmethod
     def get():
         """
-        获取DICER2的基本信息
-        :return: DICER2的基本信息
-        """
+        The base information of dicer2
+        ---
+        tags:
+          - Base API
+        description:
+          It shows dicer2 version and ElasticSearch cluster status
+        responses:
+          200:
+            description: dicer2 basic information
+            schema:
+              properties:
+                name:
+                  type: string
+                version:
+                  type: object
+                  properties:
+                    dicer2_version:
+                      type: string
+                    elastic_search_version:
+                      type: string
+                msg:
+                  type: string
+         """
+
         return {
             "name": "Dicer2",
             "version": {

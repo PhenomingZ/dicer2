@@ -1,0 +1,28 @@
+Delete a index
+---
+tags:
+  - Index API
+description:
+  Delete a index from dicer2
+parameters:
+  - in: path
+    name: index
+    type: string
+    required: true
+    description: index id
+responses:
+  200:
+    description: Delete successful response
+    schema:
+      properties:
+        meta:
+          $ref: '/_swagger/meta_data.yaml/'
+        data:
+          type: object
+          description: response data
+          properties:
+            index:
+              type: string
+              description: index id
+  404:
+    description: Index not found

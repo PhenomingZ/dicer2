@@ -3,7 +3,7 @@ from datetime import datetime
 from elasticsearch_dsl import InnerDoc, Keyword, Text, Integer, Nested, Date
 
 from App.models.BaseTaskMapping import BaseTask
-from App.responses import ForbiddenAbort
+from App.responses import NotFoundAbort, ForbiddenAbort
 
 
 class BaseIndex(InnerDoc):
@@ -86,7 +86,7 @@ class BaseIndex(InnerDoc):
         for task_loc, task_item in enumerate(self.tasks):
             if task_item.id == task_id:
                 return task_item
-        ForbiddenAbort(f"Task '{task_id}' is not exist!")
+        NotFoundAbort(f"Task '{task_id}' is not exist!")
 
     def get_task_loc(self, task_id):
         """
@@ -98,4 +98,4 @@ class BaseIndex(InnerDoc):
         for task_loc, task_item in enumerate(self.tasks):
             if task_item.id == task_id:
                 return task_loc
-        ForbiddenAbort(f"Task '{task_id}' is not exist!")
+        NotFoundAbort(f"Task '{task_id}' is not exist!")

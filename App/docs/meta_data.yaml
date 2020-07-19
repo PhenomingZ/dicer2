@@ -1,0 +1,12 @@
+type: object
+description: meta data
+properties:
+  took:
+    type: integer
+    description: exec time
+  msg:
+    type: string
+    description: response message
+  status:
+    type: integer
+    description: status code

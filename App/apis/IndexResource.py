@@ -1,4 +1,5 @@
 from datetime import datetime
+from flasgger import swag_from
 
 from App.apis.Dicer2Resource import Dicer2Resource
 from App.controllers import BaseController
@@ -10,6 +11,7 @@ class IndexResource(Dicer2Resource):
     """ Index相关资源接口 """
 
     @classmethod
+    @swag_from("../docs/index_api_create.yaml")
     def post(cls, index):
         """
         创建一个index
@@ -26,6 +28,7 @@ class IndexResource(Dicer2Resource):
         return CreatedResponse(data=response_data, start_time=start_time)
 
     @classmethod
+    @swag_from("../docs/index_api_delete.yaml")
     def delete(cls, index):
         """
         删除一个index
@@ -40,6 +43,7 @@ class IndexResource(Dicer2Resource):
         return DeletedResponse(data=response_data, start_time=start_time)
 
     @classmethod
+    @swag_from("../docs/index_api_total_update.yaml")
     def put(cls, index):
         """
         完全更新一个index
@@ -56,6 +60,7 @@ class IndexResource(Dicer2Resource):
         return UpdatedResponse(data=response_data, start_time=start_time)
 
     @classmethod
+    @swag_from("../docs/index_api_partial_update.yaml")
     def patch(cls, index):
         """
         部分更新一个index
@@ -72,6 +77,7 @@ class IndexResource(Dicer2Resource):
         return UpdatedResponse(data=response_data, start_time=start_time)
 
     @classmethod
+    @swag_from("../docs/index_api_get.yaml")
     def get(cls, index):
         """
         获取一个index的信息
