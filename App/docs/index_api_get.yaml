@@ -39,15 +39,6 @@ responses:
               description: tasks information
               items:
                 type: object
-                properties:
-                  task:
-                    type: string
-                    description: task name
-                  title:
-                    type: string
-                    description: task title
-                  created_at:
-                    type: string
-                    description: task created time
+w
   404:
     description: Index not found

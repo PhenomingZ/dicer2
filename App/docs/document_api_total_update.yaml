@@ -55,7 +55,7 @@ responses:
               type: string
               description: document title
             version:
-              type: string
+              type: integer
               description: document version after update
   404:
     description: Document not found

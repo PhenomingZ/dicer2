@@ -72,7 +72,7 @@ class DocumentsResource(Dicer2Resource):
 
         version = BaseController().update_document(index, task, document, file=file, title=title)
 
-        response_data = dict(index=index, task=task, document=document, title=title, version=str(version))
+        response_data = dict(index=index, task=task, document=document, title=title, version=version)
         return UpdatedResponse(data=response_data, start_time=start_time)
 
     @classmethod
@@ -92,7 +92,7 @@ class DocumentsResource(Dicer2Resource):
 
         version = BaseController().update_document(index, task, document, file=file, title=title)
 
-        response_data = dict(index=index, task=task, document=document, title=title, version=str(version))
+        response_data = dict(index=index, task=task, document=document, title=title, version=version)
         return UpdatedResponse(data=response_data, start_time=start_time)
 
     @classmethod

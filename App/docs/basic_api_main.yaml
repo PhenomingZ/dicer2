@@ -1,0 +1,22 @@
+The basic information of dicer2
+---
+tags:
+  - Basic API
+description:
+  It shows dicer2 version and ElasticSearch cluster status
+responses:
+  200:
+    description: dicer2 basic information
+    schema:
+      properties:
+        name:
+          type: string
+        version:
+          type: object
+          properties:
+            dicer2_version:
+              type: string
+            elastic_search_version:
+              type: string
+        msg:
+          type: string

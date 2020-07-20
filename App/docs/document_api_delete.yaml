@@ -22,7 +22,7 @@ parameters:
     description: document id
   - in: formData
     name: version
-    type: string
+    type: integer
     required: false
     description: document version
 responses:

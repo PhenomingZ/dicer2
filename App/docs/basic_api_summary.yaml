@@ -1,0 +1,80 @@
+Get documents summary
+---
+tags:
+  - Basic API
+description:
+  Get documents summary
+responses:
+  201:
+    description: Create success response
+    schema:
+      id: DocumentCreatedResponse
+      properties:
+        meta:
+          $ref: '/_swagger/meta_data.yaml/'
+        data:
+          type: object
+          description: response data
+          properties:
+            index_count:
+              type: integer
+              description: index count
+            indexs:
+              type: array
+              description: index list
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: index id
+                  title:
+                    type: string
+                    description: index title
+                  task_count:
+                    type: integer
+                    description: task count
+                  created_at:
+                    type: string
+                    description: index create time
+                  tasks:
+                    type: array
+                    description: task list
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: task id
+                        title:
+                          type: string
+                          description: task title
+                        doc_count:
+                          type: integer
+                          description: document count
+                        created_at:
+                          type: string
+                          description: task create time
+                        docs:
+                          type: array
+                          description: document list
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                description: document id
+                              version:
+                                type: integer
+                                description: document version
+                              title:
+                                type: string
+                                description: document title
+                              created_at:
+                                type: string
+                                description: document create time
+                              updated_at:
+                                type: string
+                                description: document update time
+
+

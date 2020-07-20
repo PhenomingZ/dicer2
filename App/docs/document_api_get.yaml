@@ -50,7 +50,7 @@ responses:
               type: string
               description: document title
             version:
-              type: string
+              type: integer
               description: document version
             created_at:
               type: string

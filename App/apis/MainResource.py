@@ -1,5 +1,7 @@
 from App.apis.Dicer2Resource import Dicer2Resource
 
+from flasgger import swag_from
+
 dicer2_version = "v0.2.0"
 elastic_search_version = "7.6.2"
 
@@ -9,32 +11,8 @@ class MainResource(Dicer2Resource):
     """ DICER2主页 """
 
     @staticmethod
+    @swag_from("../docs/basic_api_main.yaml")
     def get():
-        """
-        The base information of dicer2
-        ---
-        tags:
-          - Base API
-        description:
-          It shows dicer2 version and ElasticSearch cluster status
-        responses:
-          200:
-            description: dicer2 basic information
-            schema:
-              properties:
-                name:
-                  type: string
-                version:
-                  type: object
-                  properties:
-                    dicer2_version:
-                      type: string
-                    elastic_search_version:
-                      type: string
-                msg:
-                  type: string
-         """
-
         return {
             "name": "Dicer2",
             "version": {
