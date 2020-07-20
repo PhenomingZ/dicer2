@@ -1,4 +1,5 @@
 from datetime import datetime
+from flasgger import swag_from
 
 from flask_restful import Resource
 
@@ -11,6 +12,7 @@ class VersionsResource(Resource):
     """ 文档版本资源相关接口 """
 
     @classmethod
+    @swag_from("../docs/document_api_version.yaml")
     def get(cls, index, task, document):
         """
         获取一个文档的所有历史版本列表

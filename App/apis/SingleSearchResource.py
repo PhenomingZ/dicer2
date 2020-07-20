@@ -1,4 +1,5 @@
 from datetime import datetime
+from flasgger import swag_from
 
 from App.apis.SearchResource import SearchResource
 from App.controllers import BaseController
@@ -11,6 +12,7 @@ class SingleSearchResource(SearchResource):
     """ 单独查重相关资源接口 """
 
     @classmethod
+    @swag_from("../docs/search_api_single.yaml")
     def post(cls):
         """
         发送一个单独查重请求

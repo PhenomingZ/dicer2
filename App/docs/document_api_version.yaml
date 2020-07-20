@@ -1,0 +1,60 @@
+List versions of a document
+---
+tags:
+  - Document API
+description:
+  List versions of a document
+parameters:
+  - in: path
+    name: index
+    type: string
+    required: true
+    description: index id
+  - in: path
+    name: task
+    type: string
+    required: true
+    description: task id
+  - in: path
+    name: document
+    type: string
+    required: true
+    description: document id
+responses:
+  200:
+    description: Version list get success response
+    schema:
+      properties:
+        meta:
+          $ref: '/_swagger/meta_data.yaml/'
+        data:
+          type: object
+          description: response data
+          properties:
+            index:
+              type: string
+              description: index id
+            task:
+              type: string
+              description: task id
+            document:
+              type: string
+              description: document id
+            versions:
+              type: array
+              description: document versions list
+              items:
+                type: object
+                properties:
+                  version:
+                    type: integer
+                    description: document version
+                  title:
+                    type: string
+                    description: document title
+                  updated_at:
+                    type: string
+                    description: document update time
+
+  404:
+    description: Document not found
