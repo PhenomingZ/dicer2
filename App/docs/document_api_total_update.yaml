@@ -1,9 +1,9 @@
-Total update a task
+Total update a document
 ---
 tags:
-  - Task API
+  - Document API
 description:
-  Total update a task from dicer2
+  Total update a document from dicer2
 parameters:
   - in: path
     name: index
@@ -15,16 +15,26 @@ parameters:
     type: string
     required: true
     description: task id
+  - in: path
+    name: document
+    type: string
+    required: true
+    description: document id
   - in: formData
     name: title
     type: string
     required: true
-    description: task title
+    description: document title
+  - in: formData
+    name: file
+    type: file
+    required: true
+    description: document body file
 responses:
   200:
     description: Update success response
     schema:
-      id: TaskUpdateResponse
+      id: DocumentUpdateResponse
       properties:
         meta:
           $ref: '/_swagger/meta_data.yaml/'
@@ -38,8 +48,14 @@ responses:
             task:
               type: string
               description: task id
+            document:
+              type: string
+              description: document id
             title:
               type: string
-              description: task title
+              description: document title
+            version:
+              type: string
+              description: document version after update
   404:
-    description: Task not found
+    description: Document not found

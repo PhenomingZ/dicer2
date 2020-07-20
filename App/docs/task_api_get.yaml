@@ -19,6 +19,7 @@ responses:
   200:
     description: Get success response
     schema:
+      id: TaskGetResponse
       properties:
         meta:
           $ref: '/_swagger/meta_data.yaml/'

@@ -1,7 +1,7 @@
-Delete a new task
+Delete a document
 ---
 tags:
-  - Task API
+  - Document API
 description:
   Delete a task from dicer2
 parameters:
@@ -15,11 +15,21 @@ parameters:
     type: string
     required: true
     description: task id
+  - in: path
+    name: document
+    type: string
+    required: true
+    description: document id
+  - in: formData
+    name: version
+    type: string
+    required: false
+    description: document version
 responses:
   200:
     description: Delete success response
     schema:
-      id: TaskDeletedResponse
+      id: DocumentDeletedResponse
       properties:
         meta:
           $ref: '/_swagger/meta_data.yaml/'
@@ -33,5 +43,8 @@ responses:
             task:
               type: string
               description: task id
-  404:
-    description: Task not found
+            document:
+              type: string
+              description: document id
+  403:
+    description: Document is already exist

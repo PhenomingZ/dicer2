@@ -24,6 +24,7 @@ responses:
   201:
     description: Create success response
     schema:
+      id: TaskCreatedResponse
       properties:
         meta:
           $ref: '/_swagger/meta_data.yaml/'

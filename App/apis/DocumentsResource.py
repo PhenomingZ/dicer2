@@ -3,6 +3,7 @@ from App.controllers import BaseController
 from App.responses import OKResponse, CreatedResponse, DeletedResponse, UpdatedResponse
 
 from datetime import datetime
+from flasgger import swag_from
 
 from App.utils.DateEncoder import Dicer2Encoder
 
@@ -11,47 +12,15 @@ class DocumentsResource(Dicer2Resource):
     """ Document相关资源接口 """
 
     @classmethod
+    @swag_from("../docs/document_api_create.yaml")
     def post(cls, index, task, document):
         """
-        Create a new document
-        ---
-        tags:
-          - Document API
-        description:
-          Upload a file and create a document into dicer2
-        parameters:
-          - in: path
-            name: index
-            type: string
-            required: true
-            description: index id
-          - in: path
-            name: task
-            type: string
-            required: true
-            description: task id
-          - in: path
-            name: document
-            type: string
-            required: true
-            description: document id
-          - in: formData
-            name: file
-            type: file
-            required: true
-            description: file stream
-          - in: formData
-            name: title
-            type: string
-            required: false
-            description: document title
-        responses:
-          201:
-            description: Create successful response
-            schema:
-              id: CreatedResponse
-              $ref: '/_swagger/created_response.yaml/'
-         """
+        创建一个Document
+        :param index: Document所属的index
+        :param task: Document所属的task
+        :param document: Document的id
+        :return: 创建成功响应
+        """
 
         start_time = datetime.now()
 
@@ -64,6 +33,7 @@ class DocumentsResource(Dicer2Resource):
         return CreatedResponse(data=response_data, start_time=start_time)
 
     @classmethod
+    @swag_from("../docs/document_api_delete.yaml")
     def delete(cls, index, task, document):
         """
         删除一个Document
@@ -72,16 +42,21 @@ class DocumentsResource(Dicer2Resource):
         :param document: Document的id
         :return: 删除成功响应
         """
+
         start_time = datetime.now()
 
         version = cls.get_parameter("version", required=False, location=["json", "form"])
 
         BaseController().delete_document(index, task, document, version)
 
-        response_data = dict(index=index, task=task, document=document)
+        if not version:
+            version = "_all"
+
+        response_data = dict(index=index, task=task, document=document, version=version)
         return DeletedResponse(data=response_data, start_time=start_time)
 
     @classmethod
+    @swag_from("../docs/document_api_total_update.yaml")
     def put(cls, index, task, document):
         """
         完全更新一个Document
@@ -95,12 +70,13 @@ class DocumentsResource(Dicer2Resource):
         file = cls.get_parameter("file", required=True, location=["file"])
         title = cls.get_parameter("title", required=True, location=["json", "form"])
 
-        BaseController().update_document(index, task, document, file=file, title=title)
+        version = BaseController().update_document(index, task, document, file=file, title=title)
 
-        response_data = dict(index=index, task=task, document=document, title=title)
+        response_data = dict(index=index, task=task, document=document, title=title, version=str(version))
         return UpdatedResponse(data=response_data, start_time=start_time)
 
     @classmethod
+    @swag_from("../docs/document_api_partial_update.yaml")
     def patch(cls, index, task, document):
         """
         部分更新一个Document
@@ -114,12 +90,13 @@ class DocumentsResource(Dicer2Resource):
         file = cls.get_parameter("file", required=False, location=["file"])
         title = cls.get_parameter("title", required=False, location=["json", "form"])
 
-        BaseController().update_document(index, task, document, file=file, title=title)
+        version = BaseController().update_document(index, task, document, file=file, title=title)
 
-        response_data = dict(index=index, task=task, document=document, title=title)
+        response_data = dict(index=index, task=task, document=document, title=title, version=str(version))
         return UpdatedResponse(data=response_data, start_time=start_time)
 
     @classmethod
+    @swag_from("../docs/document_api_get.yaml")
     def get(cls, index, task, document):
         """
         获取一个Document的信息

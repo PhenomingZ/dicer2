@@ -19,6 +19,7 @@ responses:
   200:
     description: Update success response
     schema:
+      id: IndexUpdateResponse
       properties:
         meta:
           $ref: '/_swagger/meta_data.yaml/'

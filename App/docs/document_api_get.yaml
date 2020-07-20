@@ -1,0 +1,67 @@
+Get a document
+---
+tags:
+  - Document API
+description:
+  Get a document from dicer2 ( If you want to test this resource in swagger-ui, "version" field must be empty )
+parameters:
+  - in: path
+    name: index
+    type: string
+    required: true
+    description: index id
+  - in: path
+    name: task
+    type: string
+    required: true
+    description: task id
+  - in: path
+    name: document
+    type: string
+    required: true
+    description: document id
+  - in: formData
+    name: version
+    type: string
+    required: false
+    description: document version
+responses:
+  200:
+    description: Get success response
+    schema:
+      id: DocumentGetResponse
+      properties:
+        meta:
+          $ref: '/_swagger/meta_data.yaml/'
+        data:
+          type: object
+          description: response data
+          properties:
+            index:
+              type: string
+              description: index id
+            task:
+              type: string
+              description: task id
+            document:
+              type: string
+              description: document id
+            title:
+              type: string
+              description: document title
+            version:
+              type: string
+              description: document version
+            created_at:
+              type: string
+              description: document create time
+            updated_at:
+              type: string
+              description: document update time
+            body:
+              type: array
+              description: document body
+              items:
+                type: string
+  404:
+    description: Document not found

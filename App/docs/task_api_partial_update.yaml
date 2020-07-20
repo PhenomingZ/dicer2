@@ -24,6 +24,7 @@ responses:
   200:
     description: Update success response
     schema:
+      id: TaskUpdateResponse
       properties:
         meta:
           $ref: '/_swagger/meta_data.yaml/'

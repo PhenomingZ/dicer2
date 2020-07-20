@@ -19,6 +19,7 @@ responses:
   201:
     description: Create success response
     schema:
+      id: IndexCreatedResponse
       properties:
         meta:
           $ref: '/_swagger/meta_data.yaml/'

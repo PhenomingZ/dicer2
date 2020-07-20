@@ -147,7 +147,14 @@ class BaseDocumentController(BaseTaskController):
         """
         task_instance = self.get_task_instance(index_id, task_id)
         doc_data = task_instance.get_doc(document_id).to_dict()
-        doc_data.update(body=docx_loader.text)
+
+        if docx_loader.text:
+            doc_data.update(body=docx_loader.text)
+        else:
+            body = get_article_data(index_id, task_id, document_id, version - 1).get("body")
+            if not body:
+                body = list()
+            doc_data.update(body=body)
 
         file_path = get_document_storage_path(index_id, task_id, document_id, version, makedir=True)
         Dicer2Encoder.save(file_path, doc_data)
@@ -210,13 +217,14 @@ class BaseDocumentController(BaseTaskController):
         :param document_id: 目标document
         :param file: 用于更新document的文件流
         :param kwargs: 用于更新document的其他字段
-        :return:
+        :return: 本次更新的版本号
         """
         task_instance = self.get_task_instance(index_id, task_id)
 
         docx_loader = DocxLoader(file)
 
         # 如果有title等字段的更新，则先更新到dicer2_base
+        # 在这里会对当前文档的版本号加1
         task_instance.update_doc(document_id, **kwargs)
 
         # 之后再获取当前的title，用于在有file更新的情况下对ES文档进行更新
@@ -230,6 +238,8 @@ class BaseDocumentController(BaseTaskController):
         self.persistence_version(index_id, task_id, document_id, docx_loader, article.version)
 
         self.base.save()
+
+        return article.version
 
     def get_document(self, index_id, task_id, document_id, version=None):
         """

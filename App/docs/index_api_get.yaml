@@ -14,6 +14,7 @@ responses:
   200:
     description: Get successful response
     schema:
+      id: IndexGetResponse
       properties:
         meta:
           $ref: '/_swagger/meta_data.yaml/'
