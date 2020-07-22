@@ -124,12 +124,15 @@ class JobMultipleProduct(JobProduct):
         self.source_range = source_range
         self.search_range = search_range
 
-        job_multiple_handler(self.progress_callback, source_range, search_range)
+        res = job_multiple_handler(self.progress_callback, source_range, search_range)
+
         JobSuccessQueuePutter(self.id, self.queue, self.start_time).put({
             "progress": 1,
             "source_range": source_range,
             "search_range": search_range,
-            "job_type": JobType.MULTIPLE_CHECK_JOB
+            "job_type": JobType.MULTIPLE_CHECK_JOB,
+            "result_summary": res[0],
+            "cluster_list": res[1]
         }, "Multiple job finished successfully!")
 
     def progress_callback(self, res):

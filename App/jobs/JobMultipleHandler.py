@@ -70,10 +70,18 @@ def job_multiple_handler(progress_callback, source_range: dict, search_range: di
     # 等待线程池中所有任务完成
     pool.shutdown()
 
+    result_summary = dict()
+
     for key in res_map.keys():
         index_id = detail_map.get(key).get("index")
         task_id = detail_map.get(key).get("task")
         document_id = detail_map.get(key).get("document")
+
+        # 首先将单个查重结果保存
+        if index_id not in result_summary:
+            result_summary[index_id] = dict()
+        if task_id not in result_summary[index_id]:
+            result_summary[index_id][task_id] = dict()
 
         res = res_map.get(key).result()
 
@@ -81,6 +89,15 @@ def job_multiple_handler(progress_callback, source_range: dict, search_range: di
         document_result = res[1]
         total_val_parts = res[2]
 
+        single_result = {
+            "repetitive_rate": repetitive_rate,
+            "compare_with": list(),  # 文档间相似度比较结果列表，后续步骤会用到
+            "document_result": document_result
+        }
+
+        result_summary[index_id][task_id][document_id] = single_result
+
+        # 接下来计算文档间的相似度权重生成权值图
         similar_count = dict()
 
         for line in document_result:
@@ -124,16 +141,28 @@ def job_multiple_handler(progress_callback, source_range: dict, search_range: di
             else:
                 g.add_edge(key, similar_key, weight=weight)
 
-    # edge_list = list()
-    # for origin, destination, data in g.edges(data=True):
-    #     origin_document_id = detail_map.get(origin).get("document")
-    #     destination_document_id = detail_map.get(destination).get("document")
-    #
-    #     edge_list.append((origin_document_id, destination_document_id, data['weight']))
-    #
-    # edge_list.sort(key=lambda x: x[2], reverse=True)
-    # for e in edge_list:
-    #     print(e)
+    # 展示文档间两两比较的相似度结果
+    def add_compare_result(node1, node2, dic, rep):
+
+        i = detail_map.get(node1).get("index")
+        t = detail_map.get(node1).get("task")
+        d = detail_map.get(node1).get("document")
+
+        compare_data = {
+            "index": detail_map.get(node2).get("index"),
+            "task": detail_map.get(node2).get("task"),
+            "document": detail_map.get(node2).get("document"),
+            "repetitive_rate": rep
+        }
+
+        if i in dic and t in dic[i] and d in dic[i][t]:
+            ret = dic[i][t][d]
+            ret["compare_with"].append(compare_data)
+            ret["compare_with"].sort(key=lambda x: x["repetitive_rate"], reverse=True)
+
+    for origin, destination, data in g.edges(data=True):
+        add_compare_result(origin, destination, result_summary, data["weight"])
+        add_compare_result(destination, origin, result_summary, data["weight"])
 
     # Louvain社群发现算法
     partition = community_louvain.best_partition(g)
@@ -143,13 +172,19 @@ def job_multiple_handler(progress_callback, source_range: dict, search_range: di
         if doc_id not in source_map:
             continue
 
-        repetitive_rate = res_map.get(doc_id).result()[0]
-
         partition_cluster.setdefault(part, [])
-        partition_cluster[part].append(("%.4f" % repetitive_rate, source_map.get(doc_id).get("document")))
+        partition_cluster[part].append({
+            "index": source_map.get(doc_id).get("index"),
+            "task": source_map.get(doc_id).get("task"),
+            "document": source_map.get(doc_id).get("document"),
+            "repetitive_rate": res_map.get(doc_id).result()[0]
+        })
 
-    # for k, v in partition_cluster.items():
-    #     v.sort(key=lambda x: x[0], reverse=True)
-    #     print(f"类别{k}")
-    #     print("==============")
-    #     print(v)
+    cluster_list = list()
+    for cluster_members in partition_cluster.values():
+        cluster_members.sort(key=lambda x: x["repetitive_rate"], reverse=True)
+        cluster_list.append(cluster_members)
+
+    cluster_list.sort(key=lambda x: len(x), reverse=True)
+
+    return result_summary, cluster_list

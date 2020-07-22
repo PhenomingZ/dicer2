@@ -1,0 +1,38 @@
+Get a job result and status
+---
+tags:
+  - Search API
+description:
+  Get a job result and status
+parameters:
+  - in: path
+    name: job_id
+    required: true
+    description: job id
+
+responses:
+  200:
+    description: Job started success response
+    schema:
+      id: JobResultResponse
+      properties:
+        meta:
+          $ref: '/_swagger/meta_data.yaml/'
+        data:
+          type: object
+          description: response data
+          properties:
+            took:
+              type: integer
+              description: job exec time
+            status:
+              type: string
+              description: job status like 'success'/'running'...
+            progress:
+              type: number
+              description: job progress from 0.0 to 1.0
+            job_type:
+              type: string
+              description: job type is used to identify how to handle other properties
+  404:
+    description: Job not found

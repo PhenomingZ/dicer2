@@ -1,0 +1,43 @@
+Get job list
+---
+tags:
+  - Search API
+description:
+  Get job list
+
+responses:
+  200:
+    description: Get success response
+    schema:
+      id: JobListResponse
+      properties:
+        meta:
+          $ref: '/_swagger/meta_data.yaml/'
+        data:
+          type: object
+          description: response data
+          properties:
+            job_count:
+              type: integer
+              description: job counts
+            job_list:
+              type: array
+              description: job information list
+              items:
+                type: object
+                properties:
+                  'no':
+                    type: integer
+                    description: job number, latest job has number '1'
+                  id:
+                    type: string
+                    description: job id
+                  took:
+                    type: integer
+                    description: job exec time
+                  type:
+                    type: string
+                    description: job type
+                  status:
+                    type: string
+                    description: job status

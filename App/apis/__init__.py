@@ -11,6 +11,7 @@ from App.apis.SingleSearchResource import SingleSearchResource
 from App.apis.SummaryResource import SummaryResource
 from App.apis.TaskResource import TaskResource
 from App.apis.JobResultResource import JobResultResource
+from App.apis.JobListResource import JobListResource
 
 api = Api()
 
@@ -53,6 +54,9 @@ api.add_resource(SingleSearchResource, "/_search/_single/", endpoint="single_sea
 
 # Search for multiple documents
 api.add_resource(MultipleSearchResource, "/_search/_multiple/", endpoint="multiple_search")
+
+# GET job list
+api.add_resource(JobListResource, "/_job/_list/", endpoint="_job_list")
 
 # GET job result
 api.add_resource(JobResultResource, "/_job/<string:job_id>/", endpoint="_job")
