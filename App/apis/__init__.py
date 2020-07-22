@@ -9,6 +9,7 @@ from App.apis.IndexResource import IndexResource
 from App.apis.MainResource import MainResource
 from App.apis.SingleSearchResource import SingleSearchResource
 from App.apis.SummaryResource import SummaryResource
+from App.apis.SettingsResource import SettingsResource
 from App.apis.TaskResource import TaskResource
 from App.apis.JobResultResource import JobResultResource
 from App.apis.JobListResource import JobListResource
@@ -30,6 +31,9 @@ api.add_resource(MainResource, "/", endpoint="main")
 
 # Summary of dicer2
 api.add_resource(SummaryResource, "/_summary/", endpoint="_summary")
+
+# Refresh settings
+api.add_resource(SettingsResource, "/_setting/", endpoint="_settings")
 
 # Static file visit
 api.add_resource(StaticFileResource, "/_file/<string:filename>/", endpoint="_file")
@@ -60,5 +64,3 @@ api.add_resource(JobListResource, "/_job/_list/", endpoint="_job_list")
 
 # GET job result
 api.add_resource(JobResultResource, "/_job/<string:job_id>/", endpoint="_job")
-
-# TODO 添加重新加载配置项的API

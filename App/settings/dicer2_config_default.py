@@ -1,7 +1,7 @@
 import os
 
 # ElasticSearch cluster host
-ELASTICSEARCH_HOST = "elasticsearch"
+ELASTICSEARCH_HOST = "localhost"
 
 # Minimal line length used to check repetition
 MINIMAL_LINE_LENGTH = 25

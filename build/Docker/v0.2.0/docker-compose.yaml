@@ -1,0 +1,81 @@
+version: '2.2'
+services:
+  dicer2:
+    image: phenoming/dicer2:v0.2.0
+    container_name: dicer2
+    depends_on:
+      - elasticsearch
+      - elasticsearch2
+    restart: on-failure
+    volumes:
+      - dicer2data:/usr/local/dicer2/store
+      - logsdata:/usr/local/dicer2/logs
+    ports:
+      - "9605:9605"
+    networks:
+      - dicer2net
+  cerebro:
+    image: phenoming/cerebro:v0.1.1
+    container_name: cerebro
+    restart: on-failure
+    ports:
+      - "9000:9000"
+    command:
+      - -Dhosts.0.host=http://elasticsearch:9200
+    networks:
+      - dicer2net
+  elasticsearch:
+    image: phenoming/elasticsearch:v0.1.1
+    container_name: es7_01
+    environment:
+      - cluster.name=dicer2
+      - node.name=es7_01
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.seed_hosts=es7_01,es7_02
+      - cluster.initial_master_nodes=es7_01,es7_02
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    restart: on-failure
+    volumes:
+      - esdata1:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - dicer2net
+  elasticsearch2:
+    image: phenoming/elasticsearch:v0.1.1
+    container_name: es7_02
+    environment:
+      - cluster.name=dicer2
+      - node.name=es7_02
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.seed_hosts=es7_01,es7_02
+      - cluster.initial_master_nodes=es7_01,es7_02
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    restart: on-failure
+    volumes:
+      - esdata2:/usr/share/elasticsearch/data
+    networks:
+      - dicer2net
+
+
+volumes:
+  logsdata:
+    driver: local
+  dicer2data:
+    driver: local
+  esdata1:
+    driver: local
+  esdata2:
+    driver: local
+
+networks:
+  dicer2net:
+    driver: bridge

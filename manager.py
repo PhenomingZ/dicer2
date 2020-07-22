@@ -1,10 +1,8 @@
-import os
-
 from flask_script import Manager
 
 from App import create_app
 
-app = create_app(os.getenv("DICER2_CONFIG_PATH", "settings/dicer2_config.py"))
+app = create_app("settings/dicer2_config.py")
 
 manager = Manager(app)
 
