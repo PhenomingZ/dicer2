@@ -1,4 +1,5 @@
 from datetime import datetime
+from flasgger import swag_from
 
 from App.apis.SearchResource import SearchResource
 from App.jobs.JobFactory import JobFactory
@@ -10,6 +11,7 @@ class MultipleSearchResource(SearchResource):
     """ 联合查重相关资源接口 """
 
     @classmethod
+    @swag_from("../docs/search_api_multiple.yaml")
     def post(cls):
         """
         发送一个联合查重请求

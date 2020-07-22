@@ -1,16 +1,16 @@
-Create a job of single document
+Create a job of multiple documents
 ---
 tags:
   - Search API
 description: >
-  <div>Create a job of single document</div>
+  <div>Create a job of multiple documents</div>
   <dic>===============================</div>
   <div>request body example:</div>
   <div style="color: red; margin: 15px;">
   {<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;"index": "course-one",<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;"task": "2015",<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;"document": "2015003",<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;"source_range": {<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"course-one": ["2015", "2016", "2017", "2018"]<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;},<br>
   &nbsp;&nbsp;&nbsp;&nbsp;"search_range": {<br>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"course-one": ["2015", "2016", "2017", "2018"]<br>
   &nbsp;&nbsp;&nbsp;&nbsp;}<br>
@@ -22,22 +22,21 @@ parameters:
     required: true
     description: search range
     schema:
-      id: SingleDocumentCheck
+      id: MultipleDocumentCheck
       required:
-        - index
-        - task
-        - document
+        - source_range
         - search_range
       properties:
-        index:
-          type: string
-          description: Source index id
-        task:
-          type: string
-          description: Source task id
-        document:
-          type: string
-          description: Source document id
+        source_range:
+          type: object
+          description: Source range of index and task
+          properties:
+            your_index_id:
+              type: array
+              description: One or more index to be checked
+              items:
+                type: string
+                description: Task id included in target index
         search_range:
           type: object
           description: Search range of index and task
