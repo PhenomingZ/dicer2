@@ -1,7 +1,6 @@
 from flask_restful import Resource
 
 
-# TODO 添加任务的相关配置项，可用于覆盖系统默认配置
 class JobResource(Resource):
     """ Job相关资源接口基类 """
 

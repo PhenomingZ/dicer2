@@ -7,7 +7,6 @@ from flasgger import swag_from
 from App.apis.Dicer2Resource import Dicer2Resource
 from App.responses import UpdatedResponse, OKResponse
 
-# TODO 添加swagger文档
 from App.settings import get_config
 
 
