@@ -27,7 +27,8 @@ class SingleSearchResource(SearchResource):
 
         document = BaseController().get_document(index_id, task_id, document_id)
 
-        job = JobFactory.create_job(JobType.SINGLE_CHECK_JOB, index_id, task_id, document_id, search_range, document)
+        job = JobFactory.create_job(JobType.SINGLE_CHECK_JOB, index_id, task_id, document_id, search_range, document,
+                                    **cls.get_custom_configs())
         job.start()
 
         response_data = dict(msg="Job Starting", job_id=job.id)

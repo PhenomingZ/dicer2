@@ -15,7 +15,7 @@ from App.settings import get_config
 
 
 class JobProduct(object):
-    def __init__(self, job_type, queue, args):
+    def __init__(self, job_type, queue, args, kwargs):
         """
         初始化Job对象
         :param job_type: Job的类别
@@ -27,23 +27,26 @@ class JobProduct(object):
         self.job_type = job_type
         self.queue = queue
         self.args = args
+        self.kwargs = kwargs
 
-    def target(self, *args):
+    def target(self, *args, **kwargs):
         """
         需由子类重写，该Job待执行的任务
         :param args: 当前Job要执行的任务需要传入的参数，需以元组展开的形式传入
+        :param kwargs: 当前Job要执行的任务需要传入的参数，需以键值对展开的形式传入
         :return: 返回值由子类定义
         """
         pass
 
-    def wrapped_target(self, *args):
+    def wrapped_target(self, *args, **kwargs):
         """
         用于获取子进程中的异常的装饰方法，也是实际传入子进程的方法
         :param args: 当前Job要执行的任务需要传入的参数，需以元组展开的形式传入
+        :param kwargs: 当前Job要执行的任务需要传入的参数，需以键值对展开的形式传入
         :return:
         """
         try:
-            self.target(*args)
+            self.target(*args, **kwargs)
         except Exception as e:
             enable_error_traceback = get_config().ENABLE_ERROR_TRACEBACK
             error_msg = traceback.format_exc() if enable_error_traceback else str(e)
@@ -65,13 +68,13 @@ class JobProduct(object):
             "progress": 0,
             "job_type": self.job_type
         }, "Job Started!")
-        get_job_pool().apply_async(self.wrapped_target, self.args)
+        get_job_pool().apply_async(self.wrapped_target, self.args, self.kwargs)
 
 
 class JobSingleProduct(JobProduct):
     """ 单文档查重的JobProduct子类 """
 
-    def target(self, index_id, task_id, document_id, search_range, document):
+    def target(self, index_id, task_id, document_id, search_range, document, **kwargs):
         """
         单独查重任务的执行函数
         :param index_id: 被查重文档所属index
@@ -86,9 +89,10 @@ class JobSingleProduct(JobProduct):
             "index": index_id,
             "task": task_id,
             "document": document_id,
-            "job_type": JobType.SINGLE_CHECK_JOB
+            "job_type": JobType.SINGLE_CHECK_JOB,
+            "custom_config": self.kwargs
         }, "Single job is running!")
-        ret = job_single_handler(index_id, task_id, document_id, search_range, document.body)
+        ret = job_single_handler(index_id, task_id, document_id, search_range, document.body, **kwargs)
         repetitive, result = ret[0], ret[1]
         JobSuccessQueuePutter(self.id, self.queue, self.start_time).put({
             "progress": 1,
@@ -96,6 +100,7 @@ class JobSingleProduct(JobProduct):
             "task": task_id,
             "document": document_id,
             "job_type": JobType.SINGLE_CHECK_JOB,
+            "custom_config": self.kwargs,
             "repetitive_rate": repetitive,
             "document_result": result
         }, "Single job finished successfully!")
@@ -109,7 +114,7 @@ class JobMultipleProduct(JobProduct):
     source_range = None
     search_range = None
 
-    def target(self, source_range, search_range):
+    def target(self, source_range, search_range, **kwargs):
         """
         联合文档查重的执行函数
         :param source_range: 被查重文档的范围，精确到task
@@ -124,13 +129,14 @@ class JobMultipleProduct(JobProduct):
         self.source_range = source_range
         self.search_range = search_range
 
-        res = job_multiple_handler(self.progress_callback, source_range, search_range)
+        res = job_multiple_handler(self.progress_callback, source_range, search_range, **kwargs)
 
         JobSuccessQueuePutter(self.id, self.queue, self.start_time).put({
             "progress": 1,
             "source_range": source_range,
             "search_range": search_range,
             "job_type": JobType.MULTIPLE_CHECK_JOB,
+            "custom_config": self.kwargs,
             "result_summary": res[0],
             "cluster_list": res[1]
         }, "Multiple job finished successfully!")
@@ -157,5 +163,6 @@ class JobMultipleProduct(JobProduct):
             "progress": progress,
             "source_range": self.source_range,
             "search_range": self.search_range,
-            "job_type": JobType.MULTIPLE_CHECK_JOB
+            "job_type": JobType.MULTIPLE_CHECK_JOB,
+            "custom_config": self.kwargs
         }, progress_str + detail_str)

@@ -6,11 +6,13 @@ from App.utils.DocumentTools import DocumentTools
 from App.utils.ImageSimilarity import p_hash_img_similarity
 from App.utils.JaccardIndex import JaccardIndex
 
-host = get_config().ELASTICSEARCH_HOST
+config = get_config()
+
+host = config.ELASTICSEARCH_HOST
 connection = connections.create_connection(hosts=[host])
 
 
-def job_single_handler(index_id, task_id, document_id, search_range, body):
+def job_single_handler(index_id, task_id, document_id, search_range, body, **kwargs):
     """
     单独查重任务处理函数
     :param index_id: 待查重文档的index
@@ -21,9 +23,15 @@ def job_single_handler(index_id, task_id, document_id, search_range, body):
     :return: 重复比, 查重对应结果, 全部有效段落数, 待查重文档详细信息（用于回调函数）
     """
 
-    minimal_line_length = get_config().MINIMAL_LINE_LENGTH
-    jaccard_threshold_value = get_config().JACCARD_THRESHOLD_VALUE
-    image_hamming_threshold_value = get_config().IMAGE_HAMMING_THRESHOLD_VALUE
+    def get_value(key, default):
+        if key in kwargs and kwargs.get(key):
+            return kwargs.get(key)
+        else:
+            return default
+
+    minimal_line_length = get_value("minimal_line_length", config.MINIMAL_LINE_LENGTH)
+    jaccard_threshold_value = get_value("jaccard_threshold_value", config.JACCARD_THRESHOLD_VALUE)
+    image_hamming_threshold_value = get_value("image_hamming_threshold_value", config.IMAGE_HAMMING_THRESHOLD_VALUE)
 
     doc_id = DocumentTools.get_doc_id(index_id, task_id, document_id)
 

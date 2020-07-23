@@ -34,5 +34,8 @@ responses:
             job_type:
               type: string
               description: job type is used to identify how to handle other properties
+            custom_config:
+              type: object
+              description: Show user custom configs
   404:
     description: Job not found

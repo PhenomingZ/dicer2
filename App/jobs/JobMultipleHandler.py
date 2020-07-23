@@ -16,7 +16,7 @@ host = get_config().ELASTICSEARCH_HOST
 connections.create_connection(hosts=[host])
 
 
-def job_multiple_handler(progress_callback, source_range: dict, search_range: dict):
+def job_multiple_handler(progress_callback, source_range: dict, search_range: dict, **kwargs):
     """
     联合查重任务执行函数
     :param progress_callback: 用于处理任务进度的回调函数
@@ -48,7 +48,9 @@ def job_multiple_handler(progress_callback, source_range: dict, search_range: di
                 document_id = doc.id
                 document: BaseDocument = BaseController().get_document(index_id, task_id, document_id)
 
-                res = pool.submit(job_single_handler, index_id, task_id, document_id, search_range, document.body)
+                res = pool.submit(job_single_handler,
+                                  index_id, task_id, document_id, search_range, document.body, **kwargs)
+
                 res.add_done_callback(progress_callback)
 
                 # 不能在这里把result添加到列表，会非常耗时

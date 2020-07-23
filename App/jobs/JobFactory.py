@@ -8,7 +8,7 @@ class JobFactory(object):
     """ 创建Job的工厂类 """
 
     @classmethod
-    def create_job(cls, job_type, *args):
+    def create_job(cls, job_type, *args, **kwargs):
         """
         创建一个任务对象
         :param job_type: Job类型
@@ -19,8 +19,8 @@ class JobFactory(object):
         queue = get_result_queue()
 
         if job_type == JobType.SINGLE_CHECK_JOB:
-            return JobSingleProduct(job_type=job_type, queue=queue, args=args)
+            return JobSingleProduct(job_type=job_type, queue=queue, args=args, kwargs=kwargs)
         elif job_type == JobType.MULTIPLE_CHECK_JOB:
-            return JobMultipleProduct(job_type=job_type, queue=queue, args=args)
+            return JobMultipleProduct(job_type=job_type, queue=queue, args=args, kwargs=kwargs)
         else:
             BadRequestAbort(f"Job type '{job_type}' is not supported!")
