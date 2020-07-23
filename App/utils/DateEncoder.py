@@ -2,6 +2,7 @@ import json
 import datetime
 
 from App.jobs.JobTypeEnums import JobStatus, JobType
+from App.settings import get_config
 
 
 class DateEncoder(json.JSONEncoder):
@@ -40,8 +41,7 @@ class DateEncoder(json.JSONEncoder):
 
         with open(path, "w") as fp:
             d = cls.jsonify(data)
-            # TODO 将是否以ASCII码保存设置在配置文件中
-            s = json.dumps(d, ensure_ascii=False)
+            s = json.dumps(d, ensure_ascii=get_config().ENSURE_ASCII)
             fp.write(s)
             fp.close()
 

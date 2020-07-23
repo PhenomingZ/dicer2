@@ -35,6 +35,9 @@ def init_config(app):
     new_config.ENABLE_ERROR_TRACEBACK = app.config["ENABLE_ERROR_TRACEBACK"]
     print(f"ENABLE_ERROR_TRACEBACK = {new_config.ENABLE_ERROR_TRACEBACK}")
 
+    new_config.ENSURE_ASCII = app.config["ENSURE_ASCII"]
+    print(f"ENSURE_ASCII = {new_config.ENSURE_ASCII}")
+
     global config
     config = new_config
 

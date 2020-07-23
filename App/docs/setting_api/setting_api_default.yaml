@@ -1,0 +1,20 @@
+Set global configs to default
+---
+tags:
+  - Setting API
+description:
+  Set global configs to default value
+responses:
+  200:
+    description: Update success response
+    schema:
+      properties:
+        meta:
+          $ref: '/_swagger/meta_data.yaml/'
+        data:
+          type: object
+          description: response data
+          properties:
+            msg:
+              type: string
+              description: response message

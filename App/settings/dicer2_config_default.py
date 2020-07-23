@@ -23,3 +23,6 @@ ENABLE_CORS = True
 
 # Enable error traceback display
 ENABLE_ERROR_TRACEBACK = True
+
+# Job result ensure_ascii
+ENSURE_ASCII = True

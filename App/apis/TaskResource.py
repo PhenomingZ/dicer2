@@ -12,7 +12,7 @@ class TaskResource(Dicer2Resource):
     """ Task相关资源接口 """
 
     @classmethod
-    @swag_from("../docs/task_api_create.yaml")
+    @swag_from("../docs/task_api/task_api_create.yaml")
     def post(cls, index, task):
         """
         新建一个Task
@@ -30,7 +30,7 @@ class TaskResource(Dicer2Resource):
         return CreatedResponse(data=response_data, start_time=start_time)
 
     @classmethod
-    @swag_from("../docs/task_api_delete.yaml")
+    @swag_from("../docs/task_api/task_api_delete.yaml")
     def delete(cls, index, task):
         """
         删除一个task
@@ -45,7 +45,7 @@ class TaskResource(Dicer2Resource):
         return DeletedResponse(data=response_data, start_time=start_time)
 
     @classmethod
-    @swag_from("../docs/task_api_total_update.yaml")
+    @swag_from("../docs/task_api/task_api_total_update.yaml")
     def put(cls, index, task):
         """
         完整更新一个task
@@ -63,7 +63,7 @@ class TaskResource(Dicer2Resource):
         return UpdatedResponse(data=response_data, start_time=start_time)
 
     @classmethod
-    @swag_from("../docs/task_api_partial_update.yaml")
+    @swag_from("../docs/task_api/task_api_partial_update.yaml")
     def patch(cls, index, task):
         """
         部分更新一个task
@@ -81,7 +81,7 @@ class TaskResource(Dicer2Resource):
         return UpdatedResponse(data=response_data, start_time=start_time)
 
     @classmethod
-    @swag_from("../docs/task_api_get.yaml")
+    @swag_from("../docs/task_api/task_api_get.yaml")
     def get(cls, index, task):
         """
         获取一个task的信息

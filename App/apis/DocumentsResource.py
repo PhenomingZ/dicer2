@@ -12,7 +12,7 @@ class DocumentsResource(Dicer2Resource):
     """ Document相关资源接口 """
 
     @classmethod
-    @swag_from("../docs/document_api_create.yaml")
+    @swag_from("../docs/document_api/document_api_create.yaml")
     def post(cls, index, task, document):
         """
         创建一个Document
@@ -33,7 +33,7 @@ class DocumentsResource(Dicer2Resource):
         return CreatedResponse(data=response_data, start_time=start_time)
 
     @classmethod
-    @swag_from("../docs/document_api_delete.yaml")
+    @swag_from("../docs/document_api/document_api_delete.yaml")
     def delete(cls, index, task, document):
         """
         删除一个Document
@@ -56,7 +56,7 @@ class DocumentsResource(Dicer2Resource):
         return DeletedResponse(data=response_data, start_time=start_time)
 
     @classmethod
-    @swag_from("../docs/document_api_total_update.yaml")
+    @swag_from("../docs/document_api/document_api_total_update.yaml")
     def put(cls, index, task, document):
         """
         完全更新一个Document
@@ -76,7 +76,7 @@ class DocumentsResource(Dicer2Resource):
         return UpdatedResponse(data=response_data, start_time=start_time)
 
     @classmethod
-    @swag_from("../docs/document_api_partial_update.yaml")
+    @swag_from("../docs/document_api/document_api_partial_update.yaml")
     def patch(cls, index, task, document):
         """
         部分更新一个Document
@@ -96,7 +96,7 @@ class DocumentsResource(Dicer2Resource):
         return UpdatedResponse(data=response_data, start_time=start_time)
 
     @classmethod
-    @swag_from("../docs/document_api_get.yaml")
+    @swag_from("../docs/document_api/document_api_get.yaml")
     def get(cls, index, task, document):
         """
         获取一个Document的信息

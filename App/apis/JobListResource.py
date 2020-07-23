@@ -12,7 +12,7 @@ class JobListResource(JobResource):
     """ Job列表相关资源接口 """
 
     @classmethod
-    @swag_from("../docs/search_api_job_list.yaml")
+    @swag_from("../docs/search_api/search_api_job_list.yaml")
     def get(cls):
         """
         获取全部job列表

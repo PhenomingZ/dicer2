@@ -11,7 +11,7 @@ class MainResource(Dicer2Resource):
     """ DICER2主页 """
 
     @staticmethod
-    @swag_from("../docs/basic_api_main.yaml")
+    @swag_from("../docs/basic_api/basic_api_main.yaml")
     def get():
         return {
             "name": "Dicer2",

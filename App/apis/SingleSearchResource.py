@@ -12,7 +12,7 @@ class SingleSearchResource(SearchResource):
     """ 单独查重相关资源接口 """
 
     @classmethod
-    @swag_from("../docs/search_api_single.yaml")
+    @swag_from("../docs/search_api/search_api_single.yaml")
     def post(cls):
         """
         发送一个单独查重请求

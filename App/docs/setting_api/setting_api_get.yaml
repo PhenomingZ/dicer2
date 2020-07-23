@@ -1,0 +1,35 @@
+Get global configs
+---
+tags:
+  - Setting API
+description:
+  Get global configs
+responses:
+  200:
+    description: Get success response
+    schema:
+      properties:
+        meta:
+          $ref: '/_swagger/meta_data.yaml/'
+        data:
+          type: object
+          description: response data
+          properties:
+            ELASTICSEARCH_HOST:
+              type: string
+            MINIMAL_LINE_LENGTH:
+              type: string
+            JACCARD_THRESHOLD_VALUE:
+              type: string
+            IMAGE_HAMMING_THRESHOLD_VALUE:
+              type: string
+            DICER2_STORAGE_PATH:
+              type: string
+            JOB_PROCESSING_NUM:
+              type: string
+            ENABLE_CORS:
+              type: string
+            ENABLE_ERROR_TRACEBACK:
+              type: string
+            ENSURE_ASCII:
+              type: string

@@ -5,7 +5,10 @@ from datetime import datetime
 from flasgger import swag_from
 
 from App.apis.Dicer2Resource import Dicer2Resource
-from App.responses import UpdatedResponse
+from App.responses import UpdatedResponse, OKResponse
+
+# TODO 添加swagger文档
+from App.settings import get_config
 
 
 def refresh_config(key, value):
@@ -29,10 +32,26 @@ def refresh_config(key, value):
     fp.write(s)
     fp.close()
 
+    print(f"Config '{key}' is updated to '{value}', the service needs to be restarted to take effect")
+
 
 class SettingsResource(Dicer2Resource):
 
     @classmethod
+    @swag_from("../docs/setting_api/setting_api_get.yaml")
+    def get(cls):
+        """
+        获取全局配置信息
+        :return:
+        """
+        start_time = datetime.now()
+
+        config = get_config()
+
+        return OKResponse(data=config.__dict__, start_time=start_time)
+
+    @classmethod
+    @swag_from("../docs/setting_api/setting_api_default.yaml")
     def put(cls):
         """
         恢复默认配置，需要重启服务生效
@@ -46,6 +65,7 @@ class SettingsResource(Dicer2Resource):
         return UpdatedResponse(data=response_data, start_time=start_time)
 
     @classmethod
+    @swag_from("../docs/setting_api/setting_api_update.yaml")
     def patch(cls):
         """
         更改全局配置，会修改配置文件，需要重启服务生效
@@ -76,6 +96,9 @@ class SettingsResource(Dicer2Resource):
 
         enable_error_traceback = cls.get_parameter("ENABLE_ERROR_TRACEBACK", location=["json", "form"])
         refresh_config("ENABLE_ERROR_TRACEBACK", enable_error_traceback)
+
+        ensure_ascii = cls.get_parameter("ENSURE_ASCII", location=["json", "form"])
+        refresh_config("ENSURE_ASCII", ensure_ascii)
 
         response_data = dict(msg="Update settings success, the service needs to be restarted to take effect")
         return UpdatedResponse(data=response_data, start_time=start_time)

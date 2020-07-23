@@ -9,3 +9,4 @@ class Config(object):
     JOB_PROCESSING_NUM = 4
     ENABLE_CORS = False
     ENABLE_ERROR_TRACEBACK = False
+    ENSURE_ASCII = True

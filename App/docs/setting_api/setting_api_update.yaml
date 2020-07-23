@@ -1,0 +1,57 @@
+Update global configs
+---
+tags:
+  - Setting API
+description:
+  Update global configs
+parameters:
+  - in: formData
+    name: ELASTICSEARCH_HOST
+    type: string
+    required: false
+  - in: formData
+    name: MINIMAL_LINE_LENGTH
+    type: integer
+    required: false
+  - in: formData
+    name: JACCARD_THRESHOLD_VALUE
+    type: number
+    required: false
+  - in: formData
+    name: IMAGE_HAMMING_THRESHOLD_VALUE
+    type: number
+    required: false
+  - in: formData
+    name: DICER2_STORAGE_PATH
+    type: string
+    required: false
+  - in: formData
+    name: JOB_PROCESSING_NUM
+    type: number
+    required: false
+  - in: formData
+    name: ENABLE_CORS
+    type: boolean
+    required: false
+  - in: formData
+    name: ENABLE_ERROR_TRACEBACK
+    type: boolean
+    required: false
+  - in: formData
+    name: ENSURE_ASCII
+    type: boolean
+    required: false
+responses:
+  200:
+    description: Update success response
+    schema:
+      properties:
+        meta:
+          $ref: '/_swagger/meta_data.yaml/'
+        data:
+          type: object
+          description: response data
+          properties:
+            msg:
+              type: string
+              description: response message

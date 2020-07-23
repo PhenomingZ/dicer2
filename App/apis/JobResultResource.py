@@ -12,7 +12,7 @@ class JobResultResource(JobResource):
     """ Job相关资源接口 """
 
     @classmethod
-    @swag_from("../docs/search_api_job_result.yaml")
+    @swag_from("../docs/search_api/search_api_job_result.yaml")
     def get(cls, job_id):
         """
         通过job_id获取对应job执行结果

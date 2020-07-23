@@ -11,7 +11,7 @@ class SummaryResource(Dicer2Resource):
     """ 文档存储概览资源相关接口 """
 
     @classmethod
-    @swag_from("../docs/basic_api_summary.yaml")
+    @swag_from("../docs/basic_api/basic_api_summary.yaml")
     def get(cls):
         """
         获取存储在数据库中的文档概览

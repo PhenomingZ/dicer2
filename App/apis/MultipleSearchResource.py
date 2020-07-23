@@ -11,7 +11,7 @@ class MultipleSearchResource(SearchResource):
     """ 联合查重相关资源接口 """
 
     @classmethod
-    @swag_from("../docs/search_api_multiple.yaml")
+    @swag_from("../docs/search_api/search_api_multiple.yaml")
     def post(cls):
         """
         发送一个联合查重请求
