@@ -1,7 +1,7 @@
 Get a job result and status
 ---
 tags:
-  - Search API
+  - Job API
 description:
   Get a job result and status
 parameters:

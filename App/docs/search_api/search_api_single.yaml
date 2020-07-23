@@ -14,8 +14,8 @@ description: >
   &nbsp;&nbsp;&nbsp;&nbsp;"search_range": {<br>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"course-one": ["2015", "2016", "2017", "2018"]<br>
   &nbsp;&nbsp;&nbsp;&nbsp;}<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;"MINIMAL_LINE_LENGTH": 20,<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;"JACCARD_THRESHOLD_VALUE": 0.5,<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;"MINIMAL_LINE_LENGTH": 25,<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;"JACCARD_THRESHOLD_VALUE": 0.45,<br>
   &nbsp;&nbsp;&nbsp;&nbsp;"IMAGE_HAMMING_THRESHOLD_VALUE": 0.8<br>
   }<br>
   </div>
