@@ -29,6 +29,7 @@ def job_single_handler(index_id, task_id, document_id, search_range, body, **kwa
         else:
             return default
 
+    search_precision = get_value("search_precision", config.SEARCH_PRECISION)
     minimal_line_length = get_value("minimal_line_length", config.MINIMAL_LINE_LENGTH)
     jaccard_threshold_value = get_value("jaccard_threshold_value", config.JACCARD_THRESHOLD_VALUE)
     image_hamming_threshold_value = get_value("image_hamming_threshold_value", config.IMAGE_HAMMING_THRESHOLD_VALUE)
@@ -62,8 +63,7 @@ def job_single_handler(index_id, task_id, document_id, search_range, body, **kwa
             if mark == 0:
                 s = Search(using=connection, index=index).query("match", body=line).filter("terms", task=tasks)
 
-                # TODO 在配置项中添加对ES结果的查询精度设置
-                for hit in s[0:5]:
+                for hit in s[0:search_precision]:
                     if hit.doc_id == doc_id or len(hit.body) <= minimal_line_length:
                         continue
 

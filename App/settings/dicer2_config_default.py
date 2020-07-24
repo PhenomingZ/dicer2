@@ -26,3 +26,6 @@ ENABLE_ERROR_TRACEBACK = True
 
 # Job result ensure_ascii
 ENSURE_ASCII = True
+
+# Search precision: The number of valid results for each line of searches
+SEARCH_PRECISION = 5

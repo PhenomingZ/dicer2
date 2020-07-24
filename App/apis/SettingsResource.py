@@ -99,5 +99,8 @@ class SettingsResource(Dicer2Resource):
         ensure_ascii = cls.get_parameter("ENSURE_ASCII", location=["json", "form"])
         refresh_config("ENSURE_ASCII", ensure_ascii)
 
+        search_precision = cls.get_parameter("SEARCH_PRECISION", location=["json", "form"])
+        refresh_config("SEARCH_PRECISION", search_precision)
+
         response_data = dict(msg="Update settings success, the service needs to be restarted to take effect")
         return UpdatedResponse(data=response_data, start_time=start_time)

@@ -30,6 +30,10 @@ parameters:
     type: number
     required: false
   - in: formData
+    name: SEARCH_PRECISION
+    type: number
+    required: false
+  - in: formData
     name: ENABLE_CORS
     type: boolean
     required: false

@@ -38,6 +38,9 @@ def init_config(app):
     new_config.ENSURE_ASCII = app.config["ENSURE_ASCII"]
     print(f"ENSURE_ASCII = {new_config.ENSURE_ASCII}")
 
+    new_config.SEARCH_PRECISION = app.config["SEARCH_PRECISION"]
+    print(f"SEARCH_PRECISION = {new_config.SEARCH_PRECISION}")
+
     global config
     config = new_config
 
