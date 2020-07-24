@@ -40,6 +40,7 @@ class JobListResource(JobResource):
             job_list.append({
                 "no": count,
                 "id": job.split(".")[0],
+                "name": job_detail.name,
                 "took": job_detail.took,
                 "type": job_detail.type,
                 "status": job_detail.stat,

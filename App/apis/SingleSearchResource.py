@@ -20,6 +20,8 @@ class SingleSearchResource(SearchResource):
         """
         start_time = datetime.now()
 
+        job_name = cls.get_parameter("name", location=["json", "form"])
+
         index_id = cls.get_parameter("index", required=True, location=["json", "form"])
         task_id = cls.get_parameter("task", required=True, location=["json", "form"])
         document_id = cls.get_parameter("document", required=True, location=["json", "form"])
@@ -27,8 +29,8 @@ class SingleSearchResource(SearchResource):
 
         document = BaseController().get_document(index_id, task_id, document_id)
 
-        job = JobFactory.create_job(JobType.SINGLE_CHECK_JOB, index_id, task_id, document_id, search_range, document,
-                                    **cls.get_custom_configs())
+        job = JobFactory.create_job(JobType.SINGLE_CHECK_JOB, job_name, index_id, task_id, document_id,
+                                    search_range, document, **cls.get_custom_configs())
         job.start()
 
         response_data = dict(msg="Job Starting", job_id=job.id)

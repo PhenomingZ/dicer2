@@ -19,10 +19,12 @@ class MultipleSearchResource(SearchResource):
         """
         start_time = datetime.now()
 
+        job_name = cls.get_parameter("name", location=["json", "form"])
+
         source_range = cls.get_parameter("source_range", required=True, location=["json", "form"])
         search_range = cls.get_parameter("search_range", required=True, location=["json", "form"])
 
-        job = JobFactory.create_job(JobType.MULTIPLE_CHECK_JOB, source_range, search_range,
+        job = JobFactory.create_job(JobType.MULTIPLE_CHECK_JOB, job_name, source_range, search_range,
                                     **cls.get_custom_configs())
         job.start()
 

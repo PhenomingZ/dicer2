@@ -22,6 +22,12 @@ responses:
           type: object
           description: response data
           properties:
+            id:
+              type: string
+              description: job id
+            name:
+              type: string
+              description: job name
             took:
               type: integer
               description: job exec time

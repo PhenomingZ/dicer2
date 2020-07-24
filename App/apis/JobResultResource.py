@@ -24,7 +24,7 @@ class JobResultResource(JobResource):
 
         store_folder_path = os.path.join(get_config().DICER2_STORAGE_PATH, "_jobs")
 
-        # TODO 给job加个名字属性 再给列表加上分页功能
+        # TODO 给job列表加上分页功能
         store_job_path = os.path.join(store_folder_path, job_id + ".json")
 
         try:

@@ -15,16 +15,18 @@ from App.settings import get_config
 
 
 class JobProduct(object):
-    def __init__(self, job_type, queue, args, kwargs):
+    def __init__(self, job_type, job_name, queue, args, kwargs):
         """
         初始化Job对象
         :param job_type: Job的类别
+        :param job_name: Job的名称
         :param queue: 当前Job要使用的消息队列对象
         :param args: 当前Job要执行的任务需要传入的参数，需以元组的形式传入
         """
         self.id = str(int(time.time() * 1000000))
         self.start_time = None
         self.job_type = job_type
+        self.name = job_name
         self.queue = queue
         self.args = args
         self.kwargs = kwargs
@@ -51,7 +53,7 @@ class JobProduct(object):
             enable_error_traceback = get_config().ENABLE_ERROR_TRACEBACK
             error_msg = traceback.format_exc() if enable_error_traceback else str(e)
 
-            JobFailingQueuePutter(self.id, self.queue, self.start_time).put({
+            JobFailingQueuePutter(self.id, self.name, self.queue, self.start_time).put({
                 "progress": 0,
                 "job_type": self.job_type,
                 "error_msg": error_msg
@@ -64,7 +66,7 @@ class JobProduct(object):
         :return:
         """
         self.start_time = datetime.now()
-        JobStartedQueuePutter(self.id, self.queue, self.start_time).put({
+        JobStartedQueuePutter(self.id, self.name, self.queue, self.start_time).put({
             "progress": 0,
             "job_type": self.job_type
         }, "Job Started!")
@@ -84,7 +86,7 @@ class JobSingleProduct(JobProduct):
         :param document: 被查重文档的BaseDocumentMapping对象
         :return:
         """
-        JobRunningQueuePutter(self.id, self.queue, self.start_time).put({
+        JobRunningQueuePutter(self.id, self.name, self.queue, self.start_time).put({
             "progress": 0,
             "index": index_id,
             "task": task_id,
@@ -94,7 +96,7 @@ class JobSingleProduct(JobProduct):
         }, "Single job is running!")
         ret = job_single_handler(index_id, task_id, document_id, search_range, document.body, **kwargs)
         repetitive, result = ret[0], ret[1]
-        JobSuccessQueuePutter(self.id, self.queue, self.start_time).put({
+        JobSuccessQueuePutter(self.id, self.name, self.queue, self.start_time).put({
             "progress": 1,
             "index": index_id,
             "task": task_id,
@@ -131,7 +133,7 @@ class JobMultipleProduct(JobProduct):
 
         res = job_multiple_handler(self.progress_callback, source_range, search_range, **kwargs)
 
-        JobSuccessQueuePutter(self.id, self.queue, self.start_time).put({
+        JobSuccessQueuePutter(self.id, self.name, self.queue, self.start_time).put({
             "progress": 1,
             "source_range": source_range,
             "search_range": search_range,
@@ -159,7 +161,7 @@ class JobMultipleProduct(JobProduct):
         progress_str = "Progress: %.2f" % (progress * 100) + "%\t"
         detail_str = f"rep_rate: {repetitive_rate}\tindex: {index}\ttask: {task}\tdocument: {document}"
 
-        JobRunningQueuePutter(self.id, self.queue, self.start_time).put({
+        JobRunningQueuePutter(self.id, self.name, self.queue, self.start_time).put({
             "progress": progress,
             "source_range": self.source_range,
             "search_range": self.search_range,
