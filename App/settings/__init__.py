@@ -1,8 +1,11 @@
+import types
+
 from App.settings.Config import Config
 
 config = Config()
 
 
+# TODO 更新配置更新策略，每次更新配置都重新从文件中获取，原本必须重启生效的配置项可能会立刻生效
 def init_config(app):
     """
     初始化全局配置
@@ -45,10 +48,26 @@ def init_config(app):
     config = new_config
 
 
+def from_py_file(filepath):
+    """
+    将py文件转化为类对象
+    :param filepath: 文件路径
+    :return:
+    """
+
+    d = types.ModuleType("config")
+    d.__file__ = filepath
+
+    with open(filepath, mode="rb") as config_file:
+        exec(compile(config_file.read(), filepath, "exec"), d.__dict__)
+
+    return d
+
+
 def get_config():
     """
     获取全局配置对象
     :return:
     """
 
-    return config
+    return from_py_file("./App/settings/dicer2_config.py")

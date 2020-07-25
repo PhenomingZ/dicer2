@@ -47,13 +47,24 @@ class SettingsResource(Dicer2Resource):
 
         config = get_config()
 
-        return OKResponse(data=config.__dict__, start_time=start_time)
+        config_dic = config.__dict__
+
+        # 直接读取到的config是一个包含冗余信息的对象，需要去除
+        pop_key = ["os"]
+        for k, v in config.__dict__.items():
+            if "__" in k:
+                pop_key.append(k)
+
+        for k in pop_key:
+            config_dic.pop(k)
+
+        return OKResponse(data=config_dic, start_time=start_time)
 
     @classmethod
     @swag_from("../docs/setting_api/setting_api_default.yaml")
     def put(cls):
         """
-        恢复默认配置，需要重启服务生效
+        恢复默认配置，部分需要重启服务生效
         :return:
         """
         start_time = datetime.now()
@@ -67,11 +78,12 @@ class SettingsResource(Dicer2Resource):
     @swag_from("../docs/setting_api/setting_api_update.yaml")
     def patch(cls):
         """
-        更改全局配置，会修改配置文件，需要重启服务生效
+        更改全局配置，会修改配置文件，部分需要重启服务生效
         :return:
         """
         start_time = datetime.now()
 
+        # 需要重启后生效
         elasticsearch_host = cls.get_parameter("ELASTICSEARCH_HOST", location=["json", "form"])
         refresh_config("ELASTICSEARCH_HOST", elasticsearch_host)
 
@@ -87,9 +99,11 @@ class SettingsResource(Dicer2Resource):
         dicer2_storage_path = cls.get_parameter("DICER2_STORAGE_PATH", location=["json", "form"])
         refresh_config("DICER2_STORAGE_PATH", dicer2_storage_path)
 
+        # 需要重启后生效
         job_processing_num = cls.get_parameter("JOB_PROCESSING_NUM", location=["json", "form"])
         refresh_config("JOB_PROCESSING_NUM", job_processing_num)
 
+        # 需要重启后生效
         enable_cors = cls.get_parameter("ENABLE_CORS", location=["json", "form"])
         refresh_config("ENABLE_CORS", enable_cors)
 
@@ -102,5 +116,5 @@ class SettingsResource(Dicer2Resource):
         search_precision = cls.get_parameter("SEARCH_PRECISION", location=["json", "form"])
         refresh_config("SEARCH_PRECISION", search_precision)
 
-        response_data = dict(msg="Update settings success, the service needs to be restarted to take effect")
+        response_data = dict(msg="Update settings success")
         return UpdatedResponse(data=response_data, start_time=start_time)

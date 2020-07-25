@@ -26,6 +26,6 @@ def create_app(config):
 
     init_hook(app)
 
-    init_job(app)
+    init_job()
 
     return app

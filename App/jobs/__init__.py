@@ -3,21 +3,22 @@ import multiprocessing
 from App.jobs.JobResultHandler import result_handler
 
 # 初始化进程池
+from App.settings import get_config
+
 job_processing_pool = None
 
 # 初始化消息队列
 result_queue = None
 
 
-def init_job(app):
+def init_job():
     """
     初始化Job模块
-    :param app: DICER2使用的app对象
     :return:
     """
 
     global job_processing_pool
-    job_processing_pool = multiprocessing.Pool(app.config['JOB_PROCESSING_NUM'])
+    job_processing_pool = multiprocessing.Pool(get_config().JOB_PROCESSING_NUM)
 
     global result_queue
     result_queue = multiprocessing.Manager().Queue()

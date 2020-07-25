@@ -6,9 +6,7 @@ from App.utils.DocumentTools import DocumentTools
 from App.utils.ImageSimilarity import p_hash_img_similarity
 from App.utils.JaccardIndex import JaccardIndex
 
-config = get_config()
-
-host = config.ELASTICSEARCH_HOST
+host = get_config().ELASTICSEARCH_HOST
 connection = connections.create_connection(hosts=[host])
 
 
@@ -22,6 +20,8 @@ def job_single_handler(index_id, task_id, document_id, search_range, body, **kwa
     :param body: 待查重文档的全文
     :return: 重复比, 查重对应结果, 全部有效段落数, 待查重文档详细信息（用于回调函数）
     """
+
+    config = get_config()
 
     def get_value(key, default):
         if key in kwargs and kwargs.get(key):

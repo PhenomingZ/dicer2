@@ -19,7 +19,7 @@ def init_hook(app):
         :return:
         """
         try:
-            init_elastic_connection(app)
+            init_elastic_connection()
         except ConnectionRefusedError:
             elastic_search_connection_refused_abort("(Init Error) Elastic connection refused!")
         except NewConnectionError:

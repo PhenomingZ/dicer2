@@ -2,17 +2,17 @@ from elasticsearch import NotFoundError
 from elasticsearch_dsl import connections
 
 from App.models import Base
+from App.settings import get_config
 
 
-def init_elastic_connection(app):
+def init_elastic_connection():
     """
     初始化ElasticSearch连接和基本信息数据库
-    :param app: DICER2使用的app对象
     :return:
     """
 
     # Define a default Elasticsearch client
-    connections.create_connection(hosts=[app.config['ELASTICSEARCH_HOST']])
+    connections.create_connection(hosts=[get_config().ELASTICSEARCH_HOST])
 
     # Init Dicer2 base index
     try:

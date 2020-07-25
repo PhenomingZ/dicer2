@@ -9,6 +9,7 @@ parameters:
     name: ELASTICSEARCH_HOST
     type: string
     required: false
+    description: Need restart service
   - in: formData
     name: MINIMAL_LINE_LENGTH
     type: integer
@@ -29,6 +30,7 @@ parameters:
     name: JOB_PROCESSING_NUM
     type: number
     required: false
+    description: Need restart service
   - in: formData
     name: SEARCH_PRECISION
     type: number
@@ -37,6 +39,7 @@ parameters:
     name: ENABLE_CORS
     type: boolean
     required: false
+    description: Need restart service
   - in: formData
     name: ENABLE_ERROR_TRACEBACK
     type: boolean
