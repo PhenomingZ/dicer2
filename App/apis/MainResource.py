@@ -2,22 +2,38 @@ from App.apis.Dicer2Resource import Dicer2Resource
 
 from flasgger import swag_from
 
+import requests
+
+from App.settings import get_config
+
 dicer2_version = "v0.2.0"
 elastic_search_version = "7.6.2"
 
+config = get_config()
 
-# TODO 在这里要检查ES集群的健康状态并返回
+
 class MainResource(Dicer2Resource):
     """ DICER2主页 """
 
     @staticmethod
     @swag_from("../docs/basic_api/basic_api_main.yaml")
     def get():
+
+        try:
+            response = requests.request("GET", f"http://{config.ELASTICSEARCH_HOST}:9200/")
+            elastic_details = response.json()
+            elastic_details.pop("tagline")
+            elastic_connect = "Available"
+        except Exception as e:
+            elastic_connect = "NOT Available"
+            elastic_details = dict()
+            print(e)
+
+        # 诚实至上
         return {
             "name": "Dicer2",
-            "version": {
-                "dicer2_version": dicer2_version,
-                "elastic_search_version": elastic_search_version
-            },
-            "msg": "Check your documents cooler!"
+            "version": dicer2_version,
+            "elastic_connect": elastic_connect,
+            "elastic_details": elastic_details,
+            "tagline": "Honesty is the best policy."
         }

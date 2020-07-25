@@ -20,7 +20,7 @@ parameters:
     type: string
     required: true
     description: document id
-  - in: formData
+  - in: query
     name: version
     type: string
     required: false

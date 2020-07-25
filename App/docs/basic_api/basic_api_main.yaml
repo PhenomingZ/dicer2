@@ -12,11 +12,10 @@ responses:
         name:
           type: string
         version:
+          type: string
+        elastic_connect:
+          type: string
+        elastic_details:
           type: object
-          properties:
-            dicer2_version:
-              type: string
-            elastic_search_version:
-              type: string
-        msg:
+        tagline:
           type: string

@@ -107,7 +107,7 @@ class DocumentsResource(Dicer2Resource):
         """
         start_time = datetime.now()
 
-        version = cls.get_parameter("version", required=False, location=["json", "form"])
+        version = cls.get_parameter("version", required=False, location=["args"])
 
         result = BaseController().get_document(index, task, document, version)
 
