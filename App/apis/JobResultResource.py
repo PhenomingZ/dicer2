@@ -3,7 +3,7 @@ from datetime import datetime
 from flasgger import swag_from
 
 from App.apis.JobResource import JobResource
-from App.responses import OKResponse, NotFoundAbort
+from App.responses import OKResponse, not_found_abort
 from App.settings import get_config
 from App.utils.DateEncoder import Dicer2Encoder
 
@@ -24,13 +24,12 @@ class JobResultResource(JobResource):
 
         store_folder_path = os.path.join(get_config().DICER2_STORAGE_PATH, "_jobs")
 
-        # TODO 给job列表加上分页功能
         store_job_path = os.path.join(store_folder_path, job_id + ".json")
 
         try:
             job_result = Dicer2Encoder.load(store_job_path)
         except FileNotFoundError:
-            return NotFoundAbort(f"Job '{job_id}' not found")
+            return not_found_abort(f"Job '{job_id}' not found")
 
         response_data = cls.JobResultHandler(job_result).get_response_data()
 

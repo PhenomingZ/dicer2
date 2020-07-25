@@ -4,6 +4,15 @@ tags:
   - Job API
 description:
   Get job list
+parameters:
+  - in: query
+    name: limit
+    required: false
+    description: Limit number of jobs displayed per page
+  - in: query
+    name: page
+    required: false
+    description: The number of pages currently displayed
 
 responses:
   200:

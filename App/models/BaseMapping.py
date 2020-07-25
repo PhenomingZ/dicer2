@@ -3,7 +3,7 @@ from datetime import datetime
 from elasticsearch_dsl import Document, Integer, Nested
 
 from App.models.BaseIndexMapping import BaseIndex
-from App.responses import ForbiddenAbort, NotFoundAbort
+from App.responses import forbidden_abort, not_found_abort
 
 
 class Base(Document):
@@ -48,10 +48,10 @@ class Base(Document):
         """
 
         if self.isExist(index_id):
-            ForbiddenAbort(f"Index '{index_id}' is already exist!")
+            forbidden_abort(f"Index '{index_id}' is already exist!")
 
         if index_id[0] == "_":
-            ForbiddenAbort(f"Index name can not start with '_'")
+            forbidden_abort(f"Index name can not start with '_'")
 
         title = kwargs.get("title")
 
@@ -99,7 +99,7 @@ class Base(Document):
         for index_loc, index_item in enumerate(self.index):
             if index_item.id == index_id:
                 return index_item
-        NotFoundAbort(f"Index '{index_id}' is not exist!")
+        not_found_abort(f"Index '{index_id}' is not exist!")
 
     def get_index_loc(self, index_id):
         """
@@ -111,4 +111,4 @@ class Base(Document):
         for index_loc, index_item in enumerate(self.index):
             if index_item.id == index_id:
                 return index_loc
-        NotFoundAbort(f"Index '{index_id}' is not exist!")
+        not_found_abort(f"Index '{index_id}' is not exist!")

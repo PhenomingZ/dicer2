@@ -6,7 +6,7 @@ from elasticsearch_dsl import Search
 
 from App.controllers.BaseTaskController import BaseTaskController
 from App.models import Article
-from App.responses import NotFoundAbort
+from App.responses import not_found_abort
 from App.utils.DateEncoder import Dicer2Encoder
 from App.utils.DocumentTools import DocumentTools
 from App.utils.DocxLoader import DocxLoader
@@ -87,7 +87,7 @@ def get_article_data(index_id, task_id, document_id, version):
         fp = open(file_path, "r")
         return json.load(fp)
     except FileNotFoundError:
-        NotFoundAbort(f"Version '{version}' of document '{index_id}'-'{task_id}'-'{document_id}' is not exist")
+        not_found_abort(f"Version '{version}' of document '{index_id}'-'{task_id}'-'{document_id}' is not exist")
 
 
 class BaseDocumentController(BaseTaskController):
@@ -117,7 +117,7 @@ class BaseDocumentController(BaseTaskController):
         try:
             file_list = os.listdir(storage_path)
         except FileNotFoundError:
-            NotFoundAbort(f"Document '{index_id}'-'{task_id}'-'{document_id}' is not exist")
+            not_found_abort(f"Document '{index_id}'-'{task_id}'-'{document_id}' is not exist")
 
         version_list = []
 
@@ -195,7 +195,7 @@ class BaseDocumentController(BaseTaskController):
             try:
                 os.remove(version_file_path)
             except FileNotFoundError:
-                NotFoundAbort(f"Version '{version}' of document '{index_id}/{task_id}/{document_id}' is not exist")
+                not_found_abort(f"Version '{version}' of document '{index_id}/{task_id}/{document_id}' is not exist")
 
             return
 

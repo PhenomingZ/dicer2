@@ -3,7 +3,7 @@ import os
 from elasticsearch import NotFoundError
 
 from App.models import Base
-from App.responses import NotFoundAbort, BadRequestAbort
+from App.responses import not_found_abort, bad_request_abort
 from App.settings import get_config
 
 
@@ -17,7 +17,7 @@ class Dicer2Controller(object):
         try:
             self.base = Base.get(id="dicer2")
         except NotFoundError:
-            NotFoundAbort("Base document 'dicer2' in ElasticSearch is not found!")
+            not_found_abort("Base document 'dicer2' in ElasticSearch is not found!")
 
     @classmethod
     def get_storage_path(cls, index_id, task_id="", document_id=""):
@@ -30,6 +30,6 @@ class Dicer2Controller(object):
         """
 
         if not index_id:
-            BadRequestAbort("Dicer2 can not parse a path without index_id!")
+            bad_request_abort("Dicer2 can not parse a path without index_id!")
 
         return os.path.join(get_config().DICER2_STORAGE_PATH, index_id, task_id, document_id)

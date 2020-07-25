@@ -1,7 +1,7 @@
-from flask_restful import Resource
+from App.apis.Dicer2Resource import Dicer2Resource
 
 
-class JobResource(Resource):
+class JobResource(Dicer2Resource):
     """ Job相关资源接口基类 """
 
     class JobResultHandler(object):

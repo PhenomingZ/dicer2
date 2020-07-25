@@ -4,7 +4,7 @@ from elasticsearch import NotFoundError
 from elasticsearch_dsl import Search
 
 from App.controllers.BaseIndexController import BaseIndexController
-from App.responses import NotFoundAbort
+from App.responses import not_found_abort
 
 
 class BaseTaskController(BaseIndexController):
@@ -19,7 +19,7 @@ class BaseTaskController(BaseIndexController):
         try:
             Search(index=index_id).query("match", task=task_id).delete()
         except NotFoundError:
-            NotFoundAbort(f"Task '{index_id}/{task_id}' is not exist!")
+            not_found_abort(f"Task '{index_id}/{task_id}' is not exist!")
 
     def create_task(self, index_id, task_id, **kwargs):
         """

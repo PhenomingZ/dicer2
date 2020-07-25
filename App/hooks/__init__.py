@@ -2,7 +2,7 @@ from elasticsearch.exceptions import ConnectionError
 from urllib3.exceptions import NewConnectionError
 
 from App.hooks.ElasticConnectionCheckHook import init_elastic_connection
-from App.responses import ElasticSearchConnectionRefusedAbort, InternalServerErrorAbort
+from App.responses import elastic_search_connection_refused_abort, internal_server_error_abort
 
 
 def init_hook(app):
@@ -21,11 +21,11 @@ def init_hook(app):
         try:
             init_elastic_connection(app)
         except ConnectionRefusedError:
-            ElasticSearchConnectionRefusedAbort("(Init Error) Elastic connection refused!")
+            elastic_search_connection_refused_abort("(Init Error) Elastic connection refused!")
         except NewConnectionError:
-            ElasticSearchConnectionRefusedAbort("(Init Error) Failed to establish a new connection to ElasticSearch")
+            elastic_search_connection_refused_abort("(Init Error) Failed to establish a new connection to ElasticSearch")
         except ConnectionError:
-            ElasticSearchConnectionRefusedAbort("(Init Error) Failed to connect to ElasticSearch")
+            elastic_search_connection_refused_abort("(Init Error) Failed to connect to ElasticSearch")
 
     @app.after_request
     def after_request(response):
@@ -35,5 +35,5 @@ def init_hook(app):
         :return:
         """
         if response.status_code == 500:
-            InternalServerErrorAbort("(Runtime Error) DICER2 has a internal server error!")
+            internal_server_error_abort("(Runtime Error) DICER2 has a internal server error!")
         return response

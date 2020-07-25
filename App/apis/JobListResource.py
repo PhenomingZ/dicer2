@@ -3,7 +3,7 @@ from datetime import datetime
 from flasgger import swag_from
 
 from App.apis.JobResource import JobResource
-from App.responses import OKResponse
+from App.responses import OKResponse, bad_request_abort
 from App.settings import get_config
 from App.utils.DateEncoder import Dicer2Encoder
 
@@ -20,6 +20,9 @@ class JobListResource(JobResource):
         """
 
         start_time = datetime.now()
+
+        limit = cls.get_parameter("limit", default_value=0, location=["args"], data_type="integer")
+        page = cls.get_parameter("page", default_value=1, location=["args"], data_type="integer")
 
         store_folder_path = os.path.join(get_config().DICER2_STORAGE_PATH, "_jobs")
 
@@ -45,5 +48,19 @@ class JobListResource(JobResource):
                 "type": job_detail.type,
                 "status": job_detail.stat,
             })
-        response_data = dict(job_count=len(job_list), job_list=job_list)
+
+        total_jobs = len(job_list)
+
+        if limit <= 0:
+            total_pages = 1
+            limit = total_jobs
+        else:
+            total_pages = (total_jobs // limit) + (0 if total_jobs % limit == 0 else 1)
+
+        if page > total_pages:
+            bad_request_abort("The current number of pages exceeds the total pages")
+
+        job_list = job_list[(page - 1) * limit: ((page - 1) + 1) * limit]
+
+        response_data = dict(total_jobs=total_jobs, total_pages=total_pages, limit=limit, page=page, job_list=job_list)
         return OKResponse(data=Dicer2Encoder.jsonify(response_data), start_time=start_time)

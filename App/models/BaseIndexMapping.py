@@ -3,7 +3,7 @@ from datetime import datetime
 from elasticsearch_dsl import InnerDoc, Keyword, Text, Integer, Nested, Date
 
 from App.models.BaseTaskMapping import BaseTask
-from App.responses import NotFoundAbort, ForbiddenAbort
+from App.responses import not_found_abort, forbidden_abort
 
 
 class BaseIndex(InnerDoc):
@@ -36,10 +36,10 @@ class BaseIndex(InnerDoc):
         """
 
         if self.isExist(task_id):
-            ForbiddenAbort(f"Task '{task_id}' is already exist!")
+            forbidden_abort(f"Task '{task_id}' is already exist!")
 
         if task_id[0] == "_":
-            ForbiddenAbort(f"Task name can not start with '_'")
+            forbidden_abort(f"Task name can not start with '_'")
 
         title = kwargs.get("title")
 
@@ -86,7 +86,7 @@ class BaseIndex(InnerDoc):
         for task_loc, task_item in enumerate(self.tasks):
             if task_item.id == task_id:
                 return task_item
-        NotFoundAbort(f"Task '{task_id}' is not exist!")
+        not_found_abort(f"Task '{task_id}' is not exist!")
 
     def get_task_loc(self, task_id):
         """
@@ -98,4 +98,4 @@ class BaseIndex(InnerDoc):
         for task_loc, task_item in enumerate(self.tasks):
             if task_item.id == task_id:
                 return task_loc
-        NotFoundAbort(f"Task '{task_id}' is not exist!")
+        not_found_abort(f"Task '{task_id}' is not exist!")

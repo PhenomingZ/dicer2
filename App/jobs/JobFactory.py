@@ -1,7 +1,7 @@
 from App.jobs import get_result_queue
 from App.jobs.JobProduct import JobSingleProduct, JobMultipleProduct
 from App.jobs.JobTypeEnums import JobType
-from App.responses import BadRequestAbort
+from App.responses import bad_request_abort
 
 
 class JobFactory(object):
@@ -32,4 +32,4 @@ class JobFactory(object):
 
             return JobMultipleProduct(job_type=job_type, job_name=job_name, queue=queue, args=args, kwargs=kwargs)
         else:
-            BadRequestAbort(f"Job type '{job_type}' is not supported!")
+            bad_request_abort(f"Job type '{job_type}' is not supported!")
