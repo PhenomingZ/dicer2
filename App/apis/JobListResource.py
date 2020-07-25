@@ -26,7 +26,11 @@ class JobListResource(JobResource):
 
         store_folder_path = os.path.join(get_config().DICER2_STORAGE_PATH, "_jobs")
 
-        job_file_list = os.listdir(store_folder_path)
+        try:
+            job_file_list = os.listdir(store_folder_path)
+        except FileNotFoundError:
+            job_file_list = list()
+            os.mkdir(store_folder_path)
 
         # 返回结果列表按照时间从近到远排序
         job_file_list.sort(key=lambda x: x.split(".")[0], reverse=True)
