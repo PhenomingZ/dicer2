@@ -5,7 +5,6 @@ from App.settings.Config import Config
 config = Config()
 
 
-# TODO 更新配置更新策略，每次更新配置都重新从文件中获取，原本必须重启生效的配置项可能会立刻生效
 def init_config(app):
     """
     初始化全局配置
