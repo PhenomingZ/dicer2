@@ -85,6 +85,8 @@ class SettingsResource(Dicer2Resource):
 
         # 需要重启后生效
         elasticsearch_host = cls.get_parameter("ELASTICSEARCH_HOST", location=["json", "form"])
+        if elasticsearch_host:
+            elasticsearch_host = f"\"{elasticsearch_host}\""
         refresh_config("ELASTICSEARCH_HOST", elasticsearch_host)
 
         minimal_line_length = cls.get_parameter("MINIMAL_LINE_LENGTH", location=["json", "form"])
@@ -97,6 +99,8 @@ class SettingsResource(Dicer2Resource):
         refresh_config("IMAGE_HAMMING_THRESHOLD_VALUE", image_hamming_threshold_value)
 
         dicer2_storage_path = cls.get_parameter("DICER2_STORAGE_PATH", location=["json", "form"])
+        if dicer2_storage_path:
+            dicer2_storage_path = f"\"{dicer2_storage_path}\""
         refresh_config("DICER2_STORAGE_PATH", dicer2_storage_path)
 
         # 需要重启后生效
@@ -105,12 +109,24 @@ class SettingsResource(Dicer2Resource):
 
         # 需要重启后生效
         enable_cors = cls.get_parameter("ENABLE_CORS", location=["json", "form"])
+        if enable_cors == "true":
+            enable_cors = "True"
+        if enable_cors == "false":
+            enable_cors = "False"
         refresh_config("ENABLE_CORS", enable_cors)
 
         enable_error_traceback = cls.get_parameter("ENABLE_ERROR_TRACEBACK", location=["json", "form"])
+        if enable_error_traceback == "true":
+            enable_error_traceback = "True"
+        if enable_error_traceback == "false":
+            enable_error_traceback = "False"
         refresh_config("ENABLE_ERROR_TRACEBACK", enable_error_traceback)
 
         ensure_ascii = cls.get_parameter("ENSURE_ASCII", location=["json", "form"])
+        if ensure_ascii == "true":
+            ensure_ascii = "True"
+        if ensure_ascii == "false":
+            ensure_ascii = "False"
         refresh_config("ENSURE_ASCII", ensure_ascii)
 
         search_precision = cls.get_parameter("SEARCH_PRECISION", location=["json", "form"])

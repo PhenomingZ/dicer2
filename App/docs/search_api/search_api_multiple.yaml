@@ -8,6 +8,7 @@ description: >
   <div>request body example:</div>
   <div style="color: red; margin: 15px;">
   {<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;"name": "My New Check Job",<br>
   &nbsp;&nbsp;&nbsp;&nbsp;"source_range": {<br>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"course-one": ["2015", "2016", "2017", "2018"]<br>
   &nbsp;&nbsp;&nbsp;&nbsp;},<br>

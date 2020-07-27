@@ -33,3 +33,5 @@ responses:
               type: string
             ENSURE_ASCII:
               type: string
+            SEARCH_PRECISION:
+              type: string
