@@ -13,6 +13,8 @@ class JobResource(Dicer2Resource):
             self.took = job_result.get("took")
             self.stat = job_result.get("status")
             self.data = job_result.get("data")
+            self.start_time = job_result.get("start_time")
+            self.end_time = job_result.get("end_time")
             self.type = self.data.get("job_type")
 
         def get_response_data(self):
@@ -21,6 +23,8 @@ class JobResource(Dicer2Resource):
                 name=self.name,
                 took=self.took,
                 status=self.stat,
+                start_time=self.start_time,
+                end_time=self.end_time
             )
             response_data.update(self.data)
 

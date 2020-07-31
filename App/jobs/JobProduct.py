@@ -92,7 +92,7 @@ class JobSingleProduct(JobProduct):
             "task": task_id,
             "document": document_id,
             "job_type": JobType.SINGLE_CHECK_JOB,
-            "custom_config": self.kwargs
+            "config": self.kwargs
         }, "Single job is running!")
         ret = job_single_handler(index_id, task_id, document_id, search_range, document.body, **kwargs)
         repetitive, result = ret[0], ret[1]
@@ -102,7 +102,7 @@ class JobSingleProduct(JobProduct):
             "task": task_id,
             "document": document_id,
             "job_type": JobType.SINGLE_CHECK_JOB,
-            "custom_config": self.kwargs,
+            "config": self.kwargs,
             "repetitive_rate": repetitive,
             "document_result": result
         }, "Single job finished successfully!")
@@ -138,7 +138,7 @@ class JobMultipleProduct(JobProduct):
             "source_range": source_range,
             "search_range": search_range,
             "job_type": JobType.MULTIPLE_CHECK_JOB,
-            "custom_config": self.kwargs,
+            "config": self.kwargs,
             "result_summary": res[0],
             "cluster_list": res[1]
         }, "Multiple job finished successfully!")
@@ -166,5 +166,5 @@ class JobMultipleProduct(JobProduct):
             "source_range": self.source_range,
             "search_range": self.search_range,
             "job_type": JobType.MULTIPLE_CHECK_JOB,
-            "custom_config": self.kwargs
+            "config": self.kwargs
         }, progress_str + detail_str)

@@ -20,8 +20,10 @@ class QueueMessage(object):
         self.name = job_name
         self.took = int((datetime.now() - start_time).total_seconds() * 1000)
         self.status = job_status
-        self.data = data
+        self.start_time = start_time
+        self.end_time = datetime.now()
         self.msg = "no message"
+        self.data = data
 
     def to_dict(self):
         """

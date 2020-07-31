@@ -1,4 +1,5 @@
 from App.apis.Dicer2Resource import Dicer2Resource
+from App.settings import get_config
 
 
 class SearchResource(Dicer2Resource):
@@ -6,10 +7,16 @@ class SearchResource(Dicer2Resource):
 
     @classmethod
     def get_custom_configs(cls):
-        search_precision = cls.get_parameter("SEARCH_PRECISION", location=["json", "form"])
-        minimal_line_length = cls.get_parameter("MINIMAL_LINE_LENGTH", location=["json", "form"])
-        jaccard_threshold_value = cls.get_parameter("JACCARD_THRESHOLD_VALUE", location=["json", "form"])
-        image_hamming_threshold_value = cls.get_parameter("IMAGE_HAMMING_THRESHOLD_VALUE", location=["json", "form"])
+        config = get_config()
+
+        search_precision = cls.get_parameter(
+            "SEARCH_PRECISION", config.SEARCH_PRECISION, location=["json", "form"])
+        minimal_line_length = cls.get_parameter(
+            "MINIMAL_LINE_LENGTH", config.MINIMAL_LINE_LENGTH, location=["json", "form"])
+        jaccard_threshold_value = cls.get_parameter(
+            "JACCARD_THRESHOLD_VALUE", config.JACCARD_THRESHOLD_VALUE, location=["json", "form"])
+        image_hamming_threshold_value = cls.get_parameter(
+            "IMAGE_HAMMING_THRESHOLD_VALUE", config.IMAGE_HAMMING_THRESHOLD_VALUE, location=["json", "form"])
 
         return dict(
             search_precision=search_precision,

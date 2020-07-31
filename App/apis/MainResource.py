@@ -6,8 +6,7 @@ import requests
 
 from App.settings import get_config
 
-dicer2_version = "v0.2.0"
-elastic_search_version = "7.6.2"
+dicer2_version = "v0.2.1"
 
 config = get_config()
 

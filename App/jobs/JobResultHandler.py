@@ -1,4 +1,5 @@
 import os
+import traceback
 
 from App.settings import get_config
 from App.jobs.JobQueuePutter import QueueMessage
@@ -20,6 +21,18 @@ def result_handler(result_queue):
         store_job_path = os.path.join(store_folder_path, job_result.id + ".json")
         os.makedirs(store_folder_path, exist_ok=True)
 
+        # 当线程池中已经有多个任务在进行时，其中某一个线程报错导致整个查重任务停止后，
+        # 后续的成功线程写入的进度信息会覆盖掉错误信息，所以在写入之前要先检查任务是否已经失败
+        try:
+            pre_result_data = Dicer2Encoder.load(store_job_path)
+            status = pre_result_data.get("status")
+
+            if status == "failing":
+                continue
+
+        except FileNotFoundError:
+            pass
+
         msg = job_result.msg
         try:
             if job_result.status == JobStatus.STARTED:
@@ -37,5 +50,8 @@ def result_handler(result_queue):
 
             Dicer2Encoder.save(store_job_path, job_result.to_dict())
         except Exception as e:
+            enable_error_traceback = get_config().ENABLE_ERROR_TRACEBACK
+            error_msg = traceback.format_exc() if enable_error_traceback else str(e)
+
             print(f"[FAILING] Error occurred when saving log for job '{job_result.id}'")
-            print(e)
+            print(error_msg)
