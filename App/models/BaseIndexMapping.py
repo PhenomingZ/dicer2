@@ -11,6 +11,7 @@ class BaseIndex(InnerDoc):
 
     id = Keyword()
     title = Text(analyzer="ik_max_word", search_analyzer="ik_smart")
+    desc = Text()
     task_count = Integer()
     tasks = Nested(BaseTask)
     created_at = Date()
@@ -42,8 +43,9 @@ class BaseIndex(InnerDoc):
             forbidden_abort(f"Task name can not start with '_'")
 
         title = kwargs.get("title")
+        desc = kwargs.get("desc")
 
-        new_task = BaseTask(id=task_id, title=title, doc_count=0, docs=[], created_at=datetime.now())
+        new_task = BaseTask(id=task_id, title=title, desc=desc, doc_count=0, docs=[], created_at=datetime.now())
         self.tasks.append(new_task)
 
         self.task_count += 1
@@ -70,9 +72,13 @@ class BaseIndex(InnerDoc):
         task_loc = self.get_task_loc(task_id)
 
         title = kwargs.get("title")
+        desc = kwargs.get("desc")
 
         if title:
             old_task.title = title
+
+        if desc:
+            old_task.desc = desc
 
         self.tasks[task_loc] = old_task
 

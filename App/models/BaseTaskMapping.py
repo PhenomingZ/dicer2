@@ -11,6 +11,7 @@ class BaseTask(InnerDoc):
 
     id = Keyword()
     title = Text(analyzer="ik_max_word", search_analyzer="ik_smart")
+    desc = Text()
     doc_count = Integer()
     docs = Nested(BaseDocument)
     created_at = Date()

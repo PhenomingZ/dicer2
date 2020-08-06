@@ -54,8 +54,9 @@ class Base(Document):
             forbidden_abort(f"Index name can not start with '_'")
 
         title = kwargs.get("title")
+        desc = kwargs.get("desc")
 
-        new_index = BaseIndex(id=index_id, title=title, task_count=0, tasks=[], created_at=datetime.now())
+        new_index = BaseIndex(id=index_id, title=title, desc=desc, task_count=0, tasks=[], created_at=datetime.now())
         self.index.append(new_index)
 
         self.index_count += 1
@@ -83,9 +84,13 @@ class Base(Document):
         index_loc = self.get_index_loc(index_id)
 
         title = kwargs.get("title")
+        desc = kwargs.get("desc")
 
         if title:
             old_index.title = title
+
+        if desc:
+            old_index.desc = desc
 
         self.index[index_loc] = old_index
 

@@ -7,6 +7,7 @@ from App.responses import OKResponse, CreatedResponse, DeletedResponse, UpdatedR
 from App.utils.DateEncoder import Dicer2Encoder
 
 
+# TODO 给index和task加上记录修改时间的功能
 class IndexResource(Dicer2Resource):
     """ Index相关资源接口 """
 
@@ -21,10 +22,11 @@ class IndexResource(Dicer2Resource):
         start_time = datetime.now()
 
         title = cls.get_parameter("title", required=True, location=["json", "form"])
+        desc = cls.get_parameter("desc", location=["json", "form"])
 
-        BaseController().create_index(index_id=index, title=title)
+        BaseController().create_index(index_id=index, title=title, desc=desc)
 
-        response_data = dict(index=index, title=title)
+        response_data = dict(index=index, title=title, desc=desc)
         return CreatedResponse(data=response_data, start_time=start_time)
 
     @classmethod
@@ -53,8 +55,9 @@ class IndexResource(Dicer2Resource):
         start_time = datetime.now()
 
         title = cls.get_parameter("title", required=True, location=["json", "form"])
+        desc = cls.get_parameter("desc", location=["json", "form"])
 
-        BaseController().update_index(index_id=index, title=title)
+        BaseController().update_index(index_id=index, title=title, desc=desc)
 
         response_data = dict(index=index, title=title)
         return UpdatedResponse(data=response_data, start_time=start_time)
@@ -70,8 +73,9 @@ class IndexResource(Dicer2Resource):
         start_time = datetime.now()
 
         title = cls.get_parameter("title", required=False, location=["json", "form"])
+        desc = cls.get_parameter("desc", location=["json", "form"])
 
-        BaseController().update_index(index_id=index, title=title)
+        BaseController().update_index(index_id=index, title=title, desc=desc)
 
         response_data = dict(index=index, title=title)
         return UpdatedResponse(data=response_data, start_time=start_time)
@@ -90,10 +94,10 @@ class IndexResource(Dicer2Resource):
 
         tasks_list = list()
         for task in result.tasks:
-            task_info = dict(task=task.id, title=task.title, created_at=task.created_at)
+            task_info = dict(task=task.id, title=task.title, desc=task.desc, created_at=task.created_at)
             tasks_list.append(task_info)
 
-        response_data = dict(index=index, title=result.title, created_at=result.created_at,
+        response_data = dict(index=index, title=result.title, desc=result.desc, created_at=result.created_at,
                              task_count=result.task_count, tasks=tasks_list)
 
         return OKResponse(data=Dicer2Encoder.jsonify(response_data), start_time=start_time)

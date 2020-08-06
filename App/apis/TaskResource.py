@@ -23,10 +23,11 @@ class TaskResource(Dicer2Resource):
         start_time = datetime.now()
 
         title = cls.get_parameter("title", required=True, location=["json", "form"])
+        desc = cls.get_parameter("desc", location=["json", "form"])
 
-        BaseController().create_task(index_id=index, task_id=task, title=title)
+        BaseController().create_task(index_id=index, task_id=task, title=title, desc=desc)
 
-        response_data = dict(index=index, task=task, title=title)
+        response_data = dict(index=index, task=task, title=title, desc=desc)
         return CreatedResponse(data=response_data, start_time=start_time)
 
     @classmethod
@@ -56,8 +57,9 @@ class TaskResource(Dicer2Resource):
         start_time = datetime.now()
 
         title = cls.get_parameter("title", required=True, location=["json", "form"])
+        desc = cls.get_parameter("desc", location=["json", "form"])
 
-        BaseController().update_task(index_id=index, task_id=task, title=title)
+        BaseController().update_task(index_id=index, task_id=task, title=title, desc=desc)
 
         response_data = dict(index=index, task=task, title=title)
         return UpdatedResponse(data=response_data, start_time=start_time)
@@ -74,10 +76,11 @@ class TaskResource(Dicer2Resource):
         start_time = datetime.now()
 
         title = cls.get_parameter("title", required=False, location=["json", "form"])
+        desc = cls.get_parameter("desc", location=["json", "form"])
 
-        BaseController().update_task(index_id=index, task_id=task, title=title)
+        BaseController().update_task(index_id=index, task_id=task, title=title, desc=desc)
 
-        response_data = dict(index=index, task=task, title=title)
+        response_data = dict(index=index, task=task, title=title, desc=desc)
         return UpdatedResponse(data=response_data, start_time=start_time)
 
     @classmethod
@@ -98,7 +101,7 @@ class TaskResource(Dicer2Resource):
             doc_info = dict(doc=doc.id, title=doc.title, created_at=doc.created_at)
             docs_list.append(doc_info)
 
-        response_data = dict(index=index, task=task, title=result.title, created_at=result.created_at,
+        response_data = dict(index=index, task=task, title=result.title, desc=result.desc, created_at=result.created_at,
                              doc_count=result.doc_count, docs=docs_list)
 
         return OKResponse(data=Dicer2Encoder.jsonify(response_data), start_time=start_time)
