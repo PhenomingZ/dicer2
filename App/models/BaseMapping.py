@@ -56,7 +56,8 @@ class Base(Document):
         title = kwargs.get("title")
         desc = kwargs.get("desc")
 
-        new_index = BaseIndex(id=index_id, title=title, desc=desc, task_count=0, tasks=[], created_at=datetime.now())
+        new_index = BaseIndex(id=index_id, title=title, desc=desc, task_count=0, tasks=[],
+                              created_at=datetime.now(), updated_at=datetime.now())
         self.index.append(new_index)
 
         self.index_count += 1
@@ -82,6 +83,8 @@ class Base(Document):
 
         old_index = self.get_index(index_id)
         index_loc = self.get_index_loc(index_id)
+
+        old_index.updated_at = datetime.now()
 
         title = kwargs.get("title")
         desc = kwargs.get("desc")

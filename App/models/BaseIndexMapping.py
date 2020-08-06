@@ -15,6 +15,7 @@ class BaseIndex(InnerDoc):
     task_count = Integer()
     tasks = Nested(BaseTask)
     created_at = Date()
+    updated_at = Date()
 
     def isExist(self, task_id):
         """
@@ -45,7 +46,8 @@ class BaseIndex(InnerDoc):
         title = kwargs.get("title")
         desc = kwargs.get("desc")
 
-        new_task = BaseTask(id=task_id, title=title, desc=desc, doc_count=0, docs=[], created_at=datetime.now())
+        new_task = BaseTask(id=task_id, title=title, desc=desc, doc_count=0, docs=[],
+                            created_at=datetime.now(), updated_at=datetime.now())
         self.tasks.append(new_task)
 
         self.task_count += 1
@@ -70,6 +72,8 @@ class BaseIndex(InnerDoc):
 
         old_task = self.get_task(task_id)
         task_loc = self.get_task_loc(task_id)
+
+        old_task.updated_at = datetime.now()
 
         title = kwargs.get("title")
         desc = kwargs.get("desc")

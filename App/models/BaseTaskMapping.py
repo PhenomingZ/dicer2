@@ -15,6 +15,7 @@ class BaseTask(InnerDoc):
     doc_count = Integer()
     docs = Nested(BaseDocument)
     created_at = Date()
+    updated_at = Date()
 
     def isExist(self, doc_id):
         """

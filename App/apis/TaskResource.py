@@ -101,7 +101,8 @@ class TaskResource(Dicer2Resource):
             doc_info = dict(doc=doc.id, title=doc.title, created_at=doc.created_at)
             docs_list.append(doc_info)
 
-        response_data = dict(index=index, task=task, title=result.title, desc=result.desc, created_at=result.created_at,
+        response_data = dict(index=index, task=task, title=result.title, desc=result.desc,
+                             created_at=result.created_at, updated_at=result.updated_at,
                              doc_count=result.doc_count, docs=docs_list)
 
         return OKResponse(data=Dicer2Encoder.jsonify(response_data), start_time=start_time)
