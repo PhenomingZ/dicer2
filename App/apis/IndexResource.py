@@ -8,6 +8,7 @@ from App.utils.DateEncoder import Dicer2Encoder
 
 
 # TODO 给index和task加上记录修改时间的功能
+# TODO index和task的描述功能加入swagger文档
 class IndexResource(Dicer2Resource):
     """ Index相关资源接口 """
 

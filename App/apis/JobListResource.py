@@ -44,6 +44,8 @@ class JobListResource(JobResource):
             job_path = os.path.join(store_folder_path, job)
             job_result = Dicer2Encoder.load(job_path)
             job_detail = cls.JobResultHandler(job_result)
+
+            # 只有单独查重任务有document字段，联合查重中document字段为null
             job_list.append({
                 "no": count,
                 "id": job.split(".")[0],
@@ -51,6 +53,11 @@ class JobListResource(JobResource):
                 "took": job_detail.took,
                 "type": job_detail.type,
                 "status": job_detail.stat,
+                "start_time": job_detail.start_time,
+                "end_time": job_detail.end_time,
+                "document": job_detail.data.get("document"),
+                "source_range": job_detail.data.get("source_range"),
+                "search_range": job_detail.data.get("search_range")
             })
 
         total_jobs = len(job_list)

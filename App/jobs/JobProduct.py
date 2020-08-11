@@ -86,11 +86,14 @@ class JobSingleProduct(JobProduct):
         :param document: 被查重文档的BaseDocumentMapping对象
         :return:
         """
+        source_range = {
+            index_id: [task_id]
+        }
         JobRunningQueuePutter(self.id, self.name, self.queue, self.start_time).put({
             "progress": 0,
-            "index": index_id,
-            "task": task_id,
             "document": document_id,
+            "source_range": source_range,
+            "search_range": search_range,
             "job_type": JobType.SINGLE_CHECK_JOB,
             "config": self.kwargs
         }, "Single job is running!")
@@ -98,9 +101,9 @@ class JobSingleProduct(JobProduct):
         repetitive, result = ret[0], ret[1]
         JobSuccessQueuePutter(self.id, self.name, self.queue, self.start_time).put({
             "progress": 1,
-            "index": index_id,
-            "task": task_id,
             "document": document_id,
+            "source_range": source_range,
+            "search_range": search_range,
             "job_type": JobType.SINGLE_CHECK_JOB,
             "config": self.kwargs,
             "repetitive_rate": repetitive,
