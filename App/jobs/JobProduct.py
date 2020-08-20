@@ -14,7 +14,6 @@ from App.models import BaseTask
 from App.settings import get_config
 
 
-# TODO 任务失败时的日志和正常情况下不同，前端不能正常展示
 class JobProduct(object):
     def __init__(self, job_type, job_name, queue, args, kwargs):
         """
@@ -31,6 +30,9 @@ class JobProduct(object):
         self.queue = queue
         self.args = args
         self.kwargs = kwargs
+
+        self.source_range = {}
+        self.search_range = {}
 
     def target(self, *args, **kwargs):
         """
@@ -56,7 +58,10 @@ class JobProduct(object):
 
             JobFailingQueuePutter(self.id, self.name, self.queue, self.start_time).put({
                 "progress": 0,
+                "source_range": self.source_range,
+                "search_range": self.search_range,
                 "job_type": self.job_type,
+                "config": self.kwargs,
                 "error_msg": error_msg
             }, "Job Failed!")
             print(error_msg)
@@ -69,7 +74,10 @@ class JobProduct(object):
         self.start_time = datetime.now()
         JobStartedQueuePutter(self.id, self.name, self.queue, self.start_time).put({
             "progress": 0,
-            "job_type": self.job_type
+            "source_range": self.source_range,
+            "search_range": self.search_range,
+            "job_type": self.job_type,
+            "config": self.kwargs,
         }, "Job Started!")
         get_job_pool().apply_async(self.wrapped_target, self.args, self.kwargs)
 
@@ -117,8 +125,6 @@ class JobMultipleProduct(JobProduct):
 
     total_doc_count = 0
     finished_count = 0
-    source_range = None
-    search_range = None
 
     def target(self, source_range, search_range, **kwargs):
         """
