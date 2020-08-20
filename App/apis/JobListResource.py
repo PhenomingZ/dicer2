@@ -8,6 +8,8 @@ from App.settings import get_config
 from App.utils.DateEncoder import Dicer2Encoder
 
 
+# TODO 这边必须做一个缓存表，否则查重结果大的时候会很慢
+# TODO 必须处理一下额外的文件，只能读取json文件，例如`.DS_Store`
 class JobListResource(JobResource):
     """ Job列表相关资源接口 """
 
@@ -56,6 +58,7 @@ class JobListResource(JobResource):
                 "start_time": job_detail.start_time,
                 "end_time": job_detail.end_time,
                 "document": job_detail.data.get("document"),
+                "progress": job_detail.data.get("progress"),
                 "source_range": job_detail.data.get("source_range"),
                 "search_range": job_detail.data.get("search_range")
             })

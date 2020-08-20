@@ -91,7 +91,7 @@ def job_single_handler(index_id, task_id, document_id, search_range, body, **kwa
                     similarity = p_hash_img_similarity(hit.body, line)
                     if similarity >= image_hamming_threshold_value:
                         line_result["similar"].append({
-                            "similarity": similarity,
+                            "repetitive_rate": similarity,
                             "index": hit.index,
                             "task": hit.task,
                             "document": hit.document,
