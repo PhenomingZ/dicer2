@@ -14,6 +14,7 @@ from App.models import BaseTask
 from App.settings import get_config
 
 
+# TODO 任务失败时的日志和正常情况下不同，前端不能正常展示
 class JobProduct(object):
     def __init__(self, job_type, job_name, queue, args, kwargs):
         """
