@@ -64,5 +64,3 @@ api.add_resource(JobListResource, "/_job/_list/", endpoint="_job_list")
 
 # GET job result
 api.add_resource(JobResultResource, "/_job/<string:job_id>/", endpoint="_job")
-
-# TODO 对所有的获取列表类的请求添加分页功能
