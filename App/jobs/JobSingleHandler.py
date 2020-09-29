@@ -42,6 +42,8 @@ def job_single_handler(index_id, task_id, document_id, search_range, body, **kwa
     document_result = []
 
     for line_num, line_with_mark in enumerate(body):
+
+        # mark 标记了该行是图片还是文本
         mark, line = line_with_mark[0], line_with_mark[1]
 
         if mark == 0 and len(line) <= minimal_line_length:

@@ -34,5 +34,5 @@ class MainResource(Dicer2Resource):
             "version": dicer2_version,
             "elastic_connect": elastic_connect,
             "elastic_details": elastic_details,
-            "tagline": "Honesty is the best policy."
+            "tagline": "More then a document."
         }
