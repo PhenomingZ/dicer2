@@ -28,7 +28,6 @@ class MainResource(Dicer2Resource):
             elastic_details = dict()
             print(e)
 
-        # 诚实至上
         return {
             "name": "Dicer2",
             "version": dicer2_version,

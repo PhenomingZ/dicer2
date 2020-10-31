@@ -1,4 +1,4 @@
-FROM phenoming/dicer2-base:v0.1.5
+FROM phenoming/dicer2-base:v0.2.1
 
 ENV PIP_MIRROR="https://pypi.tuna.tsinghua.edu.cn/simple"
 

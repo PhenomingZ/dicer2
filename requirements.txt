@@ -9,6 +9,7 @@ cycler==0.10.0
 decorator==4.4.2
 elasticsearch==7.7.0
 elasticsearch-dsl==7.2.0
+flake8==3.8.4
 flasgger==0.9.4
 Flask==1.1.2
 Flask-Cors==3.0.8
@@ -38,6 +39,8 @@ networkx==2.4
 numpy==1.19.0
 opencv-python==4.2.0.34
 Pillow==7.1.2
+pycodestyle==2.6.0
+pyflakes==2.2.0
 pylint==2.6.0
 pyparsing==2.4.7
 pyrsistent==0.16.0
