@@ -1,4 +1,4 @@
-FROM phenoming/dicer2-base:v0.2.0
+FROM phenoming/dicer2-base:v0.2.1
 
 ENV VERSION="v0.2.1"
 ENV DICER2_HOME="/usr/local/dicer2"
