@@ -1,6 +1,6 @@
-FROM phenoming/dicer2-base:v0.2.1
+FROM phenoming/dicer2-base:v0.2.0
 
-ENV VERSION="<version>"
+ENV VERSION="v0.2.1"
 ENV DICER2_HOME="/usr/local/dicer2"
 ENV PIP_MIRROR="https://pypi.tuna.tsinghua.edu.cn/simple"
 ENV GUNICORN_CONFIG_PATH="App/settings/gunicorn_config.py"
