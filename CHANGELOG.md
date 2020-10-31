@@ -1,3 +1,6 @@
+**v0.2.2 Change Log (2020.11.01)**
+1. 添加了SQLAlchemy将任务管理数据移动到MySQL中
+
 **v0.2.1 Change Log (2020.08.01)**
 1. 现在Job的详细结果中会包含Job的开始和结束时间了
 2. 现在Job的详细结果中`custom_config`字段修改为`config`字段，在用户没有自定义配置的情况下将显示默认配置

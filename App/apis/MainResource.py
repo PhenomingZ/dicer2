@@ -6,7 +6,7 @@ import requests
 
 from App.settings import get_config
 
-dicer2_version = "v0.2.1"
+dicer2_version = "v0.2.2"
 
 config = get_config()
 
