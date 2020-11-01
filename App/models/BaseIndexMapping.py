@@ -41,7 +41,7 @@ class BaseIndex(InnerDoc):
             forbidden_abort(f"Task '{task_id}' is already exist!")
 
         if task_id[0] == "_":
-            forbidden_abort(f"Task name can not start with '_'")
+            forbidden_abort("Task name can not start with '_'")
 
         title = kwargs.get("title")
         desc = kwargs.get("desc")

@@ -29,3 +29,35 @@ ENSURE_ASCII = True
 
 # Search precision: The number of valid results for each line of searches
 SEARCH_PRECISION = 5
+
+
+def get_db_uri(dbinfo):
+    """
+    创建Database URI
+    """
+    engine = dbinfo.get("ENGINE")
+    driver = dbinfo.get("DRIVER")
+    user = dbinfo.get("USER")
+    password = dbinfo.get("PASSWORD")
+    host = dbinfo.get("HOST")
+    port = dbinfo.get("PORT")
+    name = dbinfo.get("NAME")
+
+    return "{}+{}://{}:{}@{}:{}/{}".format(engine, driver, user, password, host, port, name)
+
+
+dbinfo = {
+    "ENGINE": "mysql",
+    "DRIVER": "pymysql",
+    "USER": "root",
+    "PASSWORD": "83953588abc",
+    "HOST": "mysql",
+    "PORT": "3306",
+    "NAME": "cgplag"
+}
+
+# Data base uri
+SQLALCHEMY_DATABASE_URI = get_db_uri(dbinfo)
+
+# SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future
+SQLALCHEMY_TRACK_MODIFICATIONS = False

@@ -41,7 +41,7 @@ class BaseTask(InnerDoc):
             forbidden_abort(f"Document '{doc_id}' is already exist!")
 
         if doc_id[0] == "_":
-            forbidden_abort(f"Document name can not start with '_'")
+            forbidden_abort("Document name can not start with '_'")
 
         title = kwargs.get("title")
 

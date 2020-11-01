@@ -51,7 +51,7 @@ class Base(Document):
             forbidden_abort(f"Index '{index_id}' is already exist!")
 
         if index_id[0] == "_":
-            forbidden_abort(f"Index name can not start with '_'")
+            forbidden_abort("Index name can not start with '_'")
 
         title = kwargs.get("title")
         desc = kwargs.get("desc")
