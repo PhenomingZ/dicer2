@@ -64,6 +64,18 @@ services:
       - esdata2:/usr/share/elasticsearch/data
     networks:
       - dicer2net
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 83953588abc
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
 
 
 volumes:
