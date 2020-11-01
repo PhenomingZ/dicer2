@@ -5,7 +5,8 @@ from elasticsearch_dsl.connections import connections
 
 from App.controllers import BaseController
 from App.jobs.JobSingleHandler import job_single_handler
-from App.models import BaseTask, BaseDocument
+from App.models.BaseTaskMapping import BaseTask
+from App.models.BaseDocumentMapping import BaseDocument
 from App.settings import get_config
 
 from concurrent.futures import ThreadPoolExecutor

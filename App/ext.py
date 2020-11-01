@@ -1,8 +1,11 @@
 import jieba
 from flasgger import Swagger
-from flask_cors import CORS
 
-from App.apis.MainResource import dicer2_version
+from flask_cors import CORS
+from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
+
+from App.apis.MainResource import DICER2_VERSION
 
 template = {
     "swagger": "2.0",
@@ -14,7 +17,7 @@ template = {
             "email": "694556046@qq.ccom",
             "url": "https://gitee.com/phenoming",
         },
-        "version": dicer2_version
+        "version": DICER2_VERSION
     },
     "host": "localhost:9605",
     "basePath": "/",
@@ -26,6 +29,9 @@ template = {
 # swagger 生成的文档可以访问`/apispec_1.json`获取JSON原始数据
 # 再拷贝到Swagger Editor中即可导出文档
 swagger = Swagger(template=template)
+
+db = SQLAlchemy()
+migrate = Migrate()
 
 
 def init_ext(app):
@@ -42,3 +48,6 @@ def init_ext(app):
 
     if app.config["ENABLE_CORS"]:
         CORS(app)
+
+    db.init_app(app)
+    migrate.init_app(app, db)

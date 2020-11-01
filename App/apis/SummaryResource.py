@@ -2,7 +2,7 @@ from datetime import datetime
 from flasgger import swag_from
 
 from App.apis.Dicer2Resource import Dicer2Resource
-from App.models import Base
+from App.models.BaseMapping import Base
 from App.responses import OKResponse
 from App.utils.DateEncoder import Dicer2Encoder
 

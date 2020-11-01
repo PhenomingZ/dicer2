@@ -1,7 +1,7 @@
 from elasticsearch import NotFoundError
 from elasticsearch_dsl import connections
 
-from App.models import Base
+from App.models.BaseMapping import Base
 from App.settings import get_config
 
 

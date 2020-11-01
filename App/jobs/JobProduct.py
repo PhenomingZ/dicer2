@@ -10,7 +10,7 @@ from App.jobs.JobQueuePutter import JobSuccessQueuePutter, JobStartedQueuePutter
     JobFailingQueuePutter
 from App.jobs.JobSingleHandler import job_single_handler
 from App.jobs.JobTypeEnums import JobType
-from App.models import BaseTask
+from App.models.BaseTaskMapping import BaseTask
 from App.settings import get_config
 
 

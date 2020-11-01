@@ -5,7 +5,7 @@ import shutil
 from elasticsearch_dsl import Search
 
 from App.controllers.BaseTaskController import BaseTaskController
-from App.models import Article
+from App.models.ArticleMapping import Article
 from App.responses import not_found_abort
 from App.utils.DateEncoder import Dicer2Encoder
 from App.utils.DocumentTools import DocumentTools

@@ -29,3 +29,27 @@ ENSURE_ASCII = True
 
 # Search precision: The number of valid results for each line of searches
 SEARCH_PRECISION = 5
+
+# MySQL database uri 
+def get_db_uri(dbinfo):
+    engine = dbinfo.get("ENGINE")
+    driver = dbinfo.get("DRIVER")
+    user = dbinfo.get("USER")
+    password = dbinfo.get("PASSWORD")
+    host = dbinfo.get("HOST")
+    port = dbinfo.get("PORT")
+    name = dbinfo.get("NAME")
+
+    return "{}+{}://{}:{}@{}:{}/{}".format(engine, driver, user, password, host, port, name)
+
+dbinfo = {
+        "ENGINE": "mysql",
+        "DRIVER": "pymysql",
+        "USER": "root",
+        "PASSWORD": "hadoop",
+        "HOST": "localhost",
+        "PORT": "3306",
+        "NAME": "FlaskAPI"
+    }
+
+SQLALCHEMY_DATABASE_URI = get_db_uri(dbinfo)

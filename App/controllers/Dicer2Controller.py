@@ -2,7 +2,7 @@ import os
 
 from elasticsearch import NotFoundError
 
-from App.models import Base
+from App.models.BaseMapping import Base
 from App.responses import not_found_abort, bad_request_abort
 from App.settings import get_config
 
