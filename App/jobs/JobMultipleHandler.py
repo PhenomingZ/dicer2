@@ -3,7 +3,7 @@ import networkx as nx
 from community import community_louvain
 from elasticsearch_dsl.connections import connections
 
-from App.controllers import BaseController
+from App.controllers.BaseController import BaseController
 from App.jobs.JobSingleHandler import job_single_handler
 from App.models.BaseTaskMapping import BaseTask
 from App.models.BaseDocumentMapping import BaseDocument

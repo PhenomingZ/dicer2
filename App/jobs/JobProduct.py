@@ -3,7 +3,7 @@ import traceback
 
 from datetime import datetime
 
-from App.controllers import BaseController
+from App.controllers.BaseController import BaseController
 from App.jobs import get_job_pool
 from App.jobs.JobMultipleHandler import job_multiple_handler
 from App.jobs.JobQueuePutter import JobSuccessQueuePutter, JobStartedQueuePutter, JobRunningQueuePutter, \

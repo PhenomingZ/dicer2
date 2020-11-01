@@ -1,5 +1,5 @@
 from App.apis.Dicer2Resource import Dicer2Resource
-from App.controllers import BaseController
+from App.controllers.BaseController import BaseController
 
 from datetime import datetime
 from flasgger import swag_from

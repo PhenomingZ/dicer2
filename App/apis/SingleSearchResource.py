@@ -2,7 +2,7 @@ from datetime import datetime
 from flasgger import swag_from
 
 from App.apis.SearchResource import SearchResource
-from App.controllers import BaseController
+from App.controllers.BaseController import BaseController
 from App.jobs.JobFactory import JobFactory
 from App.jobs.JobTypeEnums import JobType
 from App.responses import OKResponse
