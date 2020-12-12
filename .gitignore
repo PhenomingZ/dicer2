@@ -2,4 +2,5 @@
 /test/
 /store/
 /log/
+/migrations/
 __pycache__
