@@ -6,6 +6,7 @@ from PIL import Image
 from docx import Document
 
 import re
+import pygrading as gg
 
 
 class DocxLoader(object):
@@ -53,7 +54,8 @@ class DocxLoader(object):
         img = img.resize((8, 8), Image.ANTIALIAS).convert('L')
         avg = reduce(lambda x, y: x + y, img.getdata()) / 64.
         hash_value = reduce(lambda x, y: x | (y[1] << y[0]),
-                            enumerate(map(lambda i: 0 if i < avg else 1, img.getdata())),
+                            enumerate(
+                                map(lambda i: 0 if i < avg else 1, img.getdata())),
                             0)
         return hash_value
 
@@ -104,6 +106,9 @@ class DocxLoader(object):
 
                 img = Image.open(basename(part.partname))
 
+                # base64 = str(gg.utils.get_image_element(basename(part.partname)))
+                base64 = gg.utils.img2base64(basename(part.partname))
+
                 os.remove(basename(part.partname))
 
                 try:
@@ -112,4 +117,4 @@ class DocxLoader(object):
                     continue
 
                 # 添加一个元组，第一项是1代表图片，第二项是图片的hash值
-                self._text.append((1, image_hash))
+                self._text.append((1, image_hash, base64))

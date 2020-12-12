@@ -5,6 +5,8 @@ from App.settings import get_config
 from App.utils.DocumentTools import DocumentTools
 from App.utils.ImageSimilarity import p_hash_img_similarity
 from App.utils.JaccardIndex import JaccardIndex
+from App.controllers.BaseController import BaseController
+from App.models.BaseDocumentMapping import BaseDocument
 
 host = get_config().ELASTICSEARCH_HOST
 connection = connections.create_connection(hosts=[host])
@@ -92,16 +94,23 @@ def job_single_handler(index_id, task_id, document_id, search_range, body, **kwa
                 for hit in s.scan():
                     similarity = p_hash_img_similarity(hit.body, line)
                     if similarity >= image_hamming_threshold_value:
+
+                        # 如果查到有相似图，则通过找到相似图所在的文档，把图像找出来
+                        sim_doc: BaseDocument = BaseController().get_document(hit.index, hit.task, hit.document)
+
+                        sim_img = sim_doc.body[hit.part][2]
+
                         line_result["similar"].append({
                             "similarity": similarity,
                             "index": hit.index,
                             "task": hit.task,
                             "document": hit.document,
                             "title": hit.title,
-                            "body": hit.body,
+                            "body": sim_img,
                             "part": hit.part,
                             "total": hit.total
                         })
+                        break
         if line_result["similar"]:
             document_result.append(line_result)
 

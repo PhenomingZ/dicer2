@@ -119,7 +119,7 @@ class DocumentsResource(Dicer2Resource):
         # 筛选文档的查询结果，如果这一行是文本则显示，图片筛除
         for line in result.body:
             if line[0] == 1:
-                body.append("[图片]")
+                body.append(line[2])
             else:
                 body.append(line[1])
 
