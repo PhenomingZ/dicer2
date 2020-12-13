@@ -72,11 +72,20 @@ class DocxLoader(object):
         for sep in sep_text:
 
             line = sep.strip()
+
+            tmp_line = ""
+            for character in line:
+                if character not in "œ∑®†¥øπåß∂ƒ©˙∆˚¬≈ç√µ≤≥¡™£¢∞§¶•ªº":
+                    tmp_line += character
+
+            line = tmp_line
+
             if line:
 
                 tmp += line
 
                 if len(tmp) < 50:
+                    tmp += "，"
                     continue
 
                 tmp += "。"
@@ -106,8 +115,25 @@ class DocxLoader(object):
 
                 img = Image.open(basename(part.partname))
 
-                # base64 = str(gg.utils.get_image_element(basename(part.partname)))
-                base64 = gg.utils.img2base64(basename(part.partname))
+                ocr_result = gg.exec(
+                    "python test/OCR/test_ocr.py", basename(part.partname))
+
+                print(ocr_result.stdout)
+
+                result_img = "result_" + basename(part.partname)
+
+                img_ocr_text = ""
+
+                if ocr_result.returncode:
+                    base64 = gg.utils.img2base64(basename(part.partname))
+                else:
+                    base64 = gg.utils.img2base64(result_img)
+
+                    text_path = "text_" + basename(part.partname)
+                    img_ocr_text = gg.utils.readfile(text_path)
+
+                    os.remove(result_img)
+                    os.remove(text_path)
 
                 os.remove(basename(part.partname))
 
@@ -116,5 +142,5 @@ class DocxLoader(object):
                 except OSError:
                     continue
 
-                # 添加一个元组，第一项是1代表图片，第二项是图片的hash值
-                self._text.append((1, image_hash, base64))
+                # 添加一个元组，第一项是1代表图片，第二项是图片的hash值，第三项是图像的base64，第四项是识别出的文字
+                self._text.append((1, image_hash, base64, img_ocr_text))

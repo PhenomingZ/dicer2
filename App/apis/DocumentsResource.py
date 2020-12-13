@@ -116,7 +116,7 @@ class DocumentsResource(Dicer2Resource):
 
         body = []
 
-        # 筛选文档的查询结果，如果这一行是文本则显示，图片筛除
+        # 筛选文档的查询结果，如果这一行是文本则直接显示，图片显示base64
         for line in result.body:
             if line[0] == 1:
                 body.append(line[2])
